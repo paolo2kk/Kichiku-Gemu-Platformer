@@ -213,6 +213,29 @@ bool Map::Load(std::string path, std::string fileName)
             }
         }
 
+        for (pugi::xml_node objectGroupNode = mapFileXML.child("map").child("objectgroup"); objectGroupNode != NULL; objectGroupNode = objectGroupNode.next_sibling("objectgroup")) {
+
+            std::string objectLayerName = objectGroupNode.attribute("name").as_string();
+
+
+
+            for (pugi::xml_node objectNode = objectGroupNode.child("object"); objectNode != NULL; objectNode = objectNode.next_sibling("object")) {
+                Vector2D position;
+                position.setX(objectNode.attribute("x").as_float());
+                position.setY(objectNode.attribute("y").as_float());
+                float width = objectNode.attribute("width").as_float();
+                float height = objectNode.attribute("height").as_float();
+
+                PhysBody* platform = Engine::GetInstance().physics->CreateRectangle(
+                    position.getX() + width / 2,
+                    position.getY() + height / 2,
+                    width, height,
+                    bodyType::STATIC
+                );
+
+                platform->ctype = ColliderType::PLATFORM;
+            }
+        }
         ret = true;
 
         // L06: TODO 5: LOG all the data loaded iterate all tilesetsand LOG everything
