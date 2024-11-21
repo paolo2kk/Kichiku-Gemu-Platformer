@@ -318,7 +318,7 @@ bool Map::Load(std::string path, std::string fileName)
 }
 void Map::UpdateAnimatedTiles(float dt) {
     static int elapsedTime = 0;
-    elapsedTime += static_cast<int>(dt * 1000);
+    elapsedTime += static_cast<int>(dt);
 
     for (auto& tileset : mapData.tilesets) {
         for (auto& animatedTile : tileset->animatedTiles) {
