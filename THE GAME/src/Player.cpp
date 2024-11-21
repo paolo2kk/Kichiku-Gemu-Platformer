@@ -35,6 +35,8 @@ bool Player::Start() {
 	//Load animations
 	idle.LoadAnimations(parameters.child("animations").child("idle"));
 	currentAnimation = &idle;
+	walk.LoadAnimations(parameters.child("animations").child("walk"));
+	
 
 	// L08 TODO 5: Add physics to the player - initialize physics body
 	pbody = Engine::GetInstance().physics.get()->CreateRectangle((int)position.getX(), (int)position.getY(), texW - texW/4 , texH - texH/5, bodyType::DYNAMIC);
@@ -56,6 +58,7 @@ bool Player::Start() {
 
 bool Player::Update(float dt)
 {
+	currentAnimation = &idle;
 	// L08 TODO 5: Add physics to the player - updated player position using physics
 	b2Vec2 velocity = b2Vec2(0, pbody->body->GetLinearVelocity().y);
 
@@ -66,11 +69,13 @@ bool Player::Update(float dt)
 	// Move left
 	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 		velocity.x = -0.2 * 16;
+		currentAnimation = &walk;
 	}
 
 	// Move right
 	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 		velocity.x = 0.2 * 16;
+		currentAnimation = &walk;
 	}
 
 	// Move Up
