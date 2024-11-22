@@ -37,6 +37,8 @@ public:
 	// Return the player position
 	Vector2D GetPlayerPosition();
 
+	void WindowManipulation(float dt);
+
 public:
 	// Get tilePosDebug value
 	std::string GetTilePosDebug() {

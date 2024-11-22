@@ -28,6 +28,24 @@ public:
 	// Retrieve window scale
 	int GetScale() const;
 
+	void GetWindowPosition(int& x, int& y) const
+	{
+		if (window != nullptr)
+		{
+			SDL_GetWindowPosition(window, &x, &y);
+		}
+		else
+		{
+			x = 0;
+			y = 0;
+		}
+	}
+
+	SDL_Window* GetSDLWindow() const
+	{
+		return window;
+	}
+
 public:
 	// The window we'll be rendering to
 	SDL_Window* window;

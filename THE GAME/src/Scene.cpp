@@ -27,7 +27,7 @@ bool Scene::Awake()
 {
 	LOG("Loading Scene");
 	bool ret = true;
-
+	
 	//L04: TODO 3b: Instantiate the player using the entity manager
 	player = (Player*)Engine::GetInstance().entityManager->CreateEntity(EntityType::PLAYER);
 	player->SetParameters(configParameters.child("entities").child("player"));
@@ -79,6 +79,8 @@ bool Scene::Update(float dt)
 {
 	//L03 TODO 3: Make the camera movement independent of framerate
 	float camSpeed = 1;
+
+	WindowManipulation(dt);
 
 	if(Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 		Engine::GetInstance().render.get()->camera.y -= ceil(camSpeed * dt);
@@ -140,6 +142,41 @@ bool Scene::CleanUp()
 	LOG("Freeing scene");
 	return true;
 }
+void Scene::WindowManipulation(float dt)
+{
+	int windowX, windowY;
+	int screenWidth, screenHeight;
+	int windowWidth, windowHeight;
+
+	Engine::GetInstance().window.get()->GetWindowPosition(windowX, windowY);
+
+	SDL_DisplayMode displayMode;
+	SDL_GetCurrentDisplayMode(0, &displayMode);
+	screenWidth = displayMode.w;
+	screenHeight = displayMode.h;
+
+	SDL_GetWindowSize(Engine::GetInstance().window.get()->GetSDLWindow(), &windowWidth, &windowHeight);
+
+	int windowMoveSpeed = 2; 
+
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_I) == KEY_REPEAT)
+		windowY -= windowMoveSpeed * dt;
+
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_K) == KEY_REPEAT)
+		windowY += windowMoveSpeed * dt;
+
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_J) == KEY_REPEAT)
+		windowX -= windowMoveSpeed * dt;
+
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_L) == KEY_REPEAT)
+		windowX += windowMoveSpeed * dt;
+
+	windowX = std::max(0, std::min(windowX, screenWidth - windowWidth));
+	windowY = std::max(0, std::min(windowY, screenHeight - windowHeight));
+
+	SDL_SetWindowPosition(Engine::GetInstance().window.get()->GetSDLWindow(), windowX, windowY);
+}
+
 
 // Return the player position
 Vector2D Scene::GetPlayerPosition()
