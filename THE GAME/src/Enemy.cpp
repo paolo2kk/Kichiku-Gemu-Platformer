@@ -53,10 +53,9 @@ bool Enemy::Start() {
 
 bool Enemy::Update(float dt)
 {
-	// Pathfinding testing inputs
 	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_R) == KEY_DOWN) {
 		Vector2D pos = GetPosition();
-		Vector2D tilePos = Engine::GetInstance().map.get()->WorldToMap(pos.getX(),pos.getY());
+		Vector2D tilePos = Engine::GetInstance().map.get()->WorldToMap(pos.getX(), pos.getY());
 		pathfinding->ResetPath(tilePos);
 	}
 
@@ -107,19 +106,46 @@ bool Enemy::Update(float dt)
 		pathfinding->PropagateAStar(SQUARED);
 	}
 
-	// L08 TODO 4: Add a physics to an item - update the position of the object from the physics.  
+	timeSinceDirectionChange += dt;
+
+	
+	if (timeSinceDirectionChange >= directionChangeInterval) {
+		movementDirection *= -1; 
+		timeSinceDirectionChange = 0.0f; 
+	}
+
+	timeSinceLastJump += dt;
+
+	
+	if (timeSinceLastJump >= jumpInterval) {
+	
+		b2Vec2 jumpImpulse = b2Vec2(0.0f, jumpForce);
+		pbody->body->ApplyLinearImpulseToCenter(jumpImpulse, true);
+
+		
+		timeSinceLastJump = 0.0f;
+	}
+
+	
+	b2Vec2 bodyPos = pbody->body->GetTransform().p; 
+	bodyPos.x += PIXEL_TO_METERS(2.0f * movementDirection);
+	pbody->body->SetTransform(bodyPos, pbody->body->GetAngle()); 
+
+	
 	b2Transform pbodyPos = pbody->body->GetTransform();
 	position.setX(METERS_TO_PIXELS(pbodyPos.p.x) - texH / 2);
 	position.setY(METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2);
 
+	
 	Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY(), &currentAnimation->GetCurrentFrame());
 	currentAnimation->Update();
 
-	// Draw pathfinding 
+	
 	pathfinding->DrawPath();
 
 	return true;
 }
+
 
 bool Enemy::CleanUp()
 {

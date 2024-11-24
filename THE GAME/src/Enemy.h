@@ -44,4 +44,12 @@ private:
 	Animation idle;
 	PhysBody* pbody;
 	Pathfinding* pathfinding;
+
+	float timeSinceDirectionChange = 0.0f;
+	float directionChangeInterval = 4000.0f; 
+	int movementDirection = 1;
+
+	float timeSinceLastJump = 0.0f;    
+	float jumpInterval = 2000.0f;         
+	float jumpForce = -2.5f;
 };
