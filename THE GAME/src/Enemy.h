@@ -4,6 +4,7 @@
 #include "SDL2/SDL.h"
 #include "Animation.h"
 #include "Pathfinding.h"
+#include "Player.h"
 
 struct SDL_Texture;
 
@@ -32,6 +33,8 @@ public:
 
 	void ResetPath();
 
+	void CheckCollisionWithPlayer(Player* player);
+
 public:
 
 private:
@@ -43,13 +46,16 @@ private:
 	Animation* currentAnimation = nullptr;
 	Animation idle;
 	PhysBody* pbody;
+	PhysBody* pbody2;
 	Pathfinding* pathfinding;
 
 	float timeSinceDirectionChange = 0.0f;
-	float directionChangeInterval = 4000.0f; 
+	float directionChangeInterval = 4500.0f; 
 	int movementDirection = 1;
 
 	float timeSinceLastJump = 0.0f;    
 	float jumpInterval = 2000.0f;         
 	float jumpForce = -2.5f;
+
+	bool isDead = false;
 };

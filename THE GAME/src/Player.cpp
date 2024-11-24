@@ -171,3 +171,10 @@ Vector2D Player::GetPosition() {
 	Vector2D pos = Vector2D(METERS_TO_PIXELS(bodyPos.x), METERS_TO_PIXELS(bodyPos.y));
 	return pos;
 }
+
+void Player::Bounce()
+{
+	
+	b2Vec2 bounceImpulse = b2Vec2(0.0f, -15.0f); 
+	pbody->body->ApplyLinearImpulseToCenter(bounceImpulse, true);
+}

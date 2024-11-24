@@ -36,6 +36,8 @@ public:
 
 	Vector2D GetPosition();
 
+	void Bounce();
+
 public:
 
 	//Declare player parameters

@@ -38,6 +38,7 @@ bool Enemy::Start() {
 	//Add a physics to an item - initialize the physics body
 	pbody = Engine::GetInstance().physics.get()->CreateCircle((int)position.getX() + texH / 2, (int)position.getY() + texH / 2, texH / 2, bodyType::DYNAMIC);
 
+
 	//Assign collider type
 	pbody->ctype = ColliderType::ENEMY;
 
@@ -48,11 +49,20 @@ bool Enemy::Start() {
 	pathfinding = new Pathfinding();
 	ResetPath();
 
+
 	return true;
 }
 
 bool Enemy::Update(float dt)
 {
+
+	
+	Player* player = Engine::GetInstance().scene.get()->player;
+
+	if (player != nullptr) {
+		CheckCollisionWithPlayer(player);
+	}
+
 	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_R) == KEY_DOWN) {
 		Vector2D pos = GetPosition();
 		Vector2D tilePos = Engine::GetInstance().map.get()->WorldToMap(pos.getX(), pos.getY());
@@ -169,4 +179,33 @@ void Enemy::ResetPath() {
 	Vector2D pos = GetPosition();
 	Vector2D tilePos = Engine::GetInstance().map.get()->WorldToMap(pos.getX(), pos.getY());
 	pathfinding->ResetPath(tilePos);
+}
+
+void Enemy::CheckCollisionWithPlayer(Player* player)
+{
+	
+	Vector2D playerPos = player->GetPosition();
+	int playerWidth = player->texW;
+	int playerHeight = player->texH;
+
+	Vector2D enemyPos = this->GetPosition();
+	int enemyWidth = this->texW;
+	int enemyHeight = this->texH;
+
+	
+	bool isCollidingHorizontally = (playerPos.getX() + playerWidth > enemyPos.getX() &&
+		playerPos.getX() < enemyPos.getX() + enemyWidth);
+
+	
+	bool isCollidingVertically = (playerPos.getY() + playerHeight > enemyPos.getY() &&
+		playerPos.getY() + playerHeight - 10 < enemyPos.getY()); 
+
+	if (isCollidingHorizontally && isCollidingVertically) {
+		
+		this->isDead = true;
+		
+		//Engine::GetInstance().physics.get()->DeletePhysBody(pbody);
+		
+		player->Bounce();
+	}
 }
