@@ -3,6 +3,7 @@
 #include "Module.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "CheckPoint.h"
 #include <vector>
 
 struct SDL_Texture;
@@ -54,4 +55,6 @@ public:
 	//L03: TODO 3b: Declare a Player attribute
 	Player* player;
 	std::vector<Enemy*> enemyList;
+	std::vector<CheckPoint*> checkPointList;
+
 };

@@ -12,6 +12,7 @@
 #include "Map.h"
 #include "Item.h"
 #include "Enemy.h"
+#include "CheckPoint.h"
 
 Scene::Scene() : Module()
 {
@@ -46,6 +47,14 @@ bool Scene::Awake()
 		enemy->SetParameters(enemyNode);
 		enemyList.push_back(enemy);
 	}
+
+	for (pugi::xml_node CheckPointNode = configParameters.child("entities").child("items").child("checkpoint"); CheckPointNode; CheckPointNode = CheckPointNode.next_sibling("CheckPoint"))
+	{
+		CheckPoint* checkPoint = (CheckPoint*)Engine::GetInstance().entityManager->CreateEntity(EntityType::CHECKPOINT);
+		checkPoint->SetParameters(CheckPointNode);
+		
+	}
+
 
 	return ret;
 }
