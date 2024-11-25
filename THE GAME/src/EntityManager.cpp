@@ -79,6 +79,9 @@ Entity* EntityManager::CreateEntity(EntityType type)
 	case EntityType::ENEMY:
 		entity = new Enemy();
 		break;
+	case EntityType::CHECKPOINT:
+		entity = new CheckPoint();
+		break;
 	default:
 		break;
 	}
