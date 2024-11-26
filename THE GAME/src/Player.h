@@ -57,4 +57,5 @@ public:
 	Animation* currentAnimation = nullptr;
 	Animation idle;
 	Animation walk;
+	Animation right;
 };
