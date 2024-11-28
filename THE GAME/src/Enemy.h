@@ -57,5 +57,7 @@ private:
 	float jumpInterval = 2000.0f;         
 	float jumpForce = -2.5f;
 
+	int buscando = 0;
+
 	bool isDead = false;
 };
