@@ -6,6 +6,8 @@
 #include "Log.h"
 #include "Item.h"
 #include "Enemy.h"
+#include "CheckPoint.h"
+#include "Murcielago.h"
 
 EntityManager::EntityManager() : Module()
 {
@@ -81,6 +83,9 @@ Entity* EntityManager::CreateEntity(EntityType type)
 		break;
 	case EntityType::CHECKPOINT:
 		entity = new CheckPoint();
+		break;
+	case EntityType::ENEMYBFS:
+		entity = new EnemyInClass();
 		break;
 	default:
 		break;
