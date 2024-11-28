@@ -42,6 +42,11 @@ public:
 
 	void Shoot();
 
+	Direction GetDirection() const
+	{
+		return direction;
+	}
+
 	Vector2D GetPosition();
 
 	void Bounce();

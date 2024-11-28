@@ -170,7 +170,17 @@ void Scene::Shoot()
 	bullet->Start();
 	Vector2D Offset = { 65, 32 };
 
-	bullet->SetPosition(playerPos + Offset);
+	if (player->GetDirection() == Direction::RIGHT)
+	{
+		bullet->SetPosition(playerPos + Offset);
+	}
+	else 
+
+
+	{
+		bullet->leftBullet = true;
+		bullet->SetPosition(playerPos - Offset);
+	}
 	bulletList.push_back(bullet);
 }
 

@@ -23,8 +23,8 @@ bool Bullet::Start() {
 
 	//initilize textures
 	texture = Engine::GetInstance().textures.get()->Load(parameters.attribute("texture").as_string());
-	position.setX(parameters.attribute("x").as_int());
-	position.setY(parameters.attribute("y").as_int());
+	//position.setX(parameters.attribute("x").as_int());
+	//position.setY(parameters.attribute("y").as_int());
 	texW = parameters.attribute("w").as_int();
 	texH = parameters.attribute("h").as_int();
 
@@ -37,6 +37,8 @@ bool Bullet::Start() {
 
 	// L08 TODO 7: Assign collider type
 	pbody->ctype = ColliderType::ITEM;
+	pbody->body->SetGravityScale(0);
+	if (leftBullet) pbody->body->SetLinearVelocity(b2Vec2(PIXEL_TO_METERS(-2000.0f), 0)); else pbody->body->SetLinearVelocity(b2Vec2(PIXEL_TO_METERS(2000.0f), 0));
 
 	// Set the gravity of the body
 	if (!parameters.attribute("gravity").as_bool()) pbody->body->SetGravityScale(0);
@@ -56,10 +58,9 @@ bool Bullet::Update(float dt)
 	currentAnimation->Update();
 
 	
-	//SetPosition();
-	
 	return true;
 }
+
 
 bool Bullet::CleanUp()
 {

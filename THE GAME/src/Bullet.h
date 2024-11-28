@@ -18,6 +18,8 @@ public:
 
 	bool Start();
 
+	void SetVelocity(Vector2D newVelocity);
+
 	bool Update(float dt);
 
 	bool CleanUp();
@@ -35,6 +37,7 @@ public:
 public:
 
 	bool isPicked = false;
+	bool leftBullet = false;
 
 private:
 
@@ -44,8 +47,8 @@ private:
 	pugi::xml_node parameters;
 	Animation* currentAnimation = nullptr;
 	Animation idle;
-	float velocity = 2;
 
 	//L08 TODO 4: Add a physics to an item
 	PhysBody* pbody;
+	Vector2D velocity; 
 };

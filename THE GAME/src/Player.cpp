@@ -70,14 +70,14 @@ bool Player::Update(float dt)
 	// Move left
 	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 		velocity.x = -0.2 * 16;
-		direction = Direction::RIGHT;
+		direction = Direction::LEFT;
 		currentAnimation = &right;
 	}
 
 	// Move right
 	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 		velocity.x = 0.2 * 16;
-		direction = Direction::LEFT;
+		direction = Direction::RIGHT;
 
 		currentAnimation = &walk;
 	}
@@ -95,7 +95,7 @@ bool Player::Update(float dt)
 		velocity.y = pbody->body->GetLinearVelocity().y;
 	}
 
-	// Apply the velocity to the player
+	// Apply the velocity to the player	
 	pbody->body->SetLinearVelocity(velocity);
 
 	b2Transform pbodyPos = pbody->body->GetTransform();
