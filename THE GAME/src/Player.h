@@ -7,6 +7,12 @@
 
 struct SDL_Texture;
 
+enum class Direction
+{
+	LEFT,
+	RIGHT
+};
+
 class Player : public Entity
 {
 public:
@@ -33,6 +39,8 @@ public:
 	}
 
 	void SetPosition(Vector2D pos);
+
+	void Shoot();
 
 	Vector2D GetPosition();
 

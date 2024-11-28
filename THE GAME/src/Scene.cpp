@@ -45,7 +45,7 @@ bool Scene::Awake()
 	{
 		Enemy* enemy = (Enemy*)Engine::GetInstance().entityManager->CreateEntity(EntityType::ENEMY);
 		enemy->SetParameters(enemyNode);
-		enemyList.push_back(enemy);
+	 	enemyList.push_back(enemy);
 	}
 
 	for (pugi::xml_node CheckPointNode = configParameters.child("entities").child("items").child("checkpoint"); CheckPointNode; CheckPointNode = CheckPointNode.next_sibling("CheckPoint"))
@@ -55,6 +55,10 @@ bool Scene::Awake()
 		
 	}
 
+	for (pugi::xml_node bulletNode = configParameters.child("entities").child("items").child("bullet"); bulletNode; bulletNode = bulletNode.next_sibling("enemy"))
+	{
+		bulletParameters = bulletNode;
+	}
 
 	return ret;
 }
@@ -105,6 +109,11 @@ bool Scene::Update(float dt)
 
 	// L10 TODO 6: Implement a method that repositions the player in the map with a mouse click
 	
+	if (Engine::GetInstance().input.get()->GetKeyDown(SDL_SCANCODE_P) == KEY_DOWN)
+		Shoot();
+
+
+
 	//Get mouse position and obtain the map coordinate
 	Vector2D mousePos = Engine::GetInstance().input.get()->GetMousePosition();
 	Vector2D mouseTile = Engine::GetInstance().map.get()->WorldToMap(mousePos.getX() - Engine::GetInstance().render.get()->camera.x,
@@ -143,6 +152,19 @@ bool Scene::PostUpdate()
 		ret = false;
 
 	return ret;
+}
+
+void Scene::Shoot()
+{
+	Vector2D playerPos = player->GetPosition();
+
+	Bullet* bullet = (Bullet*)Engine::GetInstance().entityManager->CreateEntity(EntityType::BULLET);
+	bullet->SetParameters(bulletParameters);
+	bullet->Start();
+	Vector2D Offset = { 65, 32 };
+
+	bullet->SetPosition(playerPos + Offset);
+	bulletList.push_back(bullet);
 }
 
 // Called before quitting

@@ -69,6 +69,7 @@ bool Player::Update(float dt)
 	// Move left
 	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 		velocity.x = -0.2 * 16;
+
 		currentAnimation = &right;
 	}
 
@@ -102,7 +103,11 @@ bool Player::Update(float dt)
 	currentAnimation->Update();
 	return true;
 }
-
+void Player::Shoot()
+{
+	
+	
+}
 bool Player::CleanUp()
 {
 	LOG("Cleanup player");

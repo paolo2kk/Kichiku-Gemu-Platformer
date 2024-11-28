@@ -51,6 +51,12 @@ public:
 		return keyboard[id];
 	}
 
+	KeyState GetKeyDown(int id) const
+	{
+		return keyboard[id];
+
+	}
+
 	KeyState GetMouseButtonDown(int id) const
 	{
 		return mouseButtons[id - 1];

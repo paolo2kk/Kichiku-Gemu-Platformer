@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "CheckPoint.h"
+#include "Bullet.h"
 #include <vector>
 
 struct SDL_Texture;
@@ -38,6 +39,8 @@ public:
 	// Return the player position
 	Vector2D GetPlayerPosition();
 
+	void Shoot();
+
 	void WindowManipulation(float dt);
 
 public:
@@ -56,5 +59,6 @@ public:
 	Player* player;
 	std::vector<Enemy*> enemyList;
 	std::vector<CheckPoint*> checkPointList;
-
+	std::vector<Bullet*> bulletList;
+	pugi::xml_node bulletParameters;
 };
