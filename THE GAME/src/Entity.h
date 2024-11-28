@@ -8,9 +8,20 @@ enum class EntityType
 	PLAYER,
 	ITEM,
 	ENEMY,
+	ENEMYBFS,
 	UNKNOWN,
 	BULLET,
 	CHECKPOINT
+};
+
+enum class States
+{
+	IDLE,
+	WALKING_R,
+	WALKING_L,
+	JUMPING,
+	FALLING,
+	DEAD
 };
 
 class PhysBody;
