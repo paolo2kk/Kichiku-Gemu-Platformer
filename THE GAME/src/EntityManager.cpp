@@ -6,6 +6,7 @@
 #include "Log.h"
 #include "Item.h"
 #include "Enemy.h"
+#include "Murcielago.h"
 #include "Bullet.h"
 
 EntityManager::EntityManager() : Module()
@@ -85,6 +86,9 @@ Entity* EntityManager::CreateEntity(EntityType type)
 		break;
 	case EntityType::BULLET:
 		entity = new Bullet();
+		break;
+	case EntityType::ENEMYBFS:
+		entity = new EnemyInClass();
 		break;
 	default:
 		break;
