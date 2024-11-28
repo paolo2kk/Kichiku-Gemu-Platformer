@@ -86,7 +86,7 @@ bool Enemy::Update(float dt)
 	}*/
 
 	b2Vec2 velocity = b2Vec2(0, 0);
-	if (buscando <= 80)
+	if (buscando <= 20)
 	{
 		pathfinding->PropagateAStar(EUCLIDEAN);
 		buscando++;
@@ -110,7 +110,7 @@ bool Enemy::Update(float dt)
 		dir.normalized();
 
 
-		float velocidad = 0.03f;
+		float velocidad = 0.01f;
 		velocity = b2Vec2(dir.getX() * velocidad, 0);
 
 		pbody->body->SetLinearVelocity(velocity);
