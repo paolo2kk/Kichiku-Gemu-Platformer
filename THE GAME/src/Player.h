@@ -66,4 +66,5 @@ public:
 	Animation idle;
 	Animation walk;
 	Animation right;
+	Direction direction;
 };

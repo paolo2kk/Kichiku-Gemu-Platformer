@@ -12,6 +12,7 @@
 Player::Player() : Entity(EntityType::PLAYER)
 {
 	name = "Player";
+	direction = Direction::RIGHT;
 }
 
 Player::~Player() {
@@ -69,13 +70,15 @@ bool Player::Update(float dt)
 	// Move left
 	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 		velocity.x = -0.2 * 16;
-
+		direction = Direction::RIGHT;
 		currentAnimation = &right;
 	}
 
 	// Move right
 	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 		velocity.x = 0.2 * 16;
+		direction = Direction::LEFT;
+
 		currentAnimation = &walk;
 	}
 	
