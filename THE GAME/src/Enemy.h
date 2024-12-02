@@ -35,8 +35,13 @@ public:
 
 	void CheckCollisionWithPlayer(Player* player);
 
+	void OnCollision(PhysBody* physA, PhysBody* physB);
+
 public:
 
+	bool toDestroy = false;
+	PhysBody* pbody;
+	PhysBody* pbody2;
 private:
 
 	SDL_Texture* texture;
@@ -45,8 +50,7 @@ private:
 	pugi::xml_node parameters;
 	Animation* currentAnimation = nullptr;
 	Animation idle;
-	PhysBody* pbody;
-	PhysBody* pbody2;
+	
 	Pathfinding* pathfinding;
 
 	float timeSinceDirectionChange = 0.0f;

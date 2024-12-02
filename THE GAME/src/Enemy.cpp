@@ -43,6 +43,7 @@ bool Enemy::Start() {
 
 	//Assign collider type
 	pbody->ctype = ColliderType::ENEMY;
+	pbody->listener = this;
 
 	// Set the gravity of the body
 	if (!parameters.attribute("gravity").as_bool()) pbody->body->SetGravityScale(0);
@@ -199,3 +200,19 @@ void Enemy::CheckCollisionWithPlayer(Player* player)
 		player->Bounce();
 	}
 }
+
+void Enemy::OnCollision(PhysBody* physA, PhysBody* physB) {
+	switch (physB->ctype)
+	{
+	case ColliderType::BULLET:
+		LOG("Enemy hitted");
+		toDestroy = true;
+		break;
+	case ColliderType::PLAYER:
+		LOG("Player Hitted");
+		break;
+	default:
+		break;
+	}
+}
+

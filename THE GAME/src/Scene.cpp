@@ -147,6 +147,8 @@ bool Scene::Update(float dt)
 		enemyList[0]->ResetPath();
 	}
 
+	CheckEntitesErase();
+
 	return true;
 }
 
@@ -157,8 +159,65 @@ bool Scene::PostUpdate()
 
 	if(Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
+		LoadState();
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
+		SaveState();
 
 	return ret;
+}
+
+// L15 TODO 1: Implement the Load function
+void Scene::LoadState() {
+
+	pugi::xml_document loadFile;
+	pugi::xml_parse_result result = loadFile.load_file("config.xml");
+
+	if (result == NULL)
+	{
+		LOG("Could not load file. Pugi error: %s", result.description());
+		return;
+	}
+
+	pugi::xml_node sceneNode = loadFile.child("config").child("scene");
+
+	//Read XML and restore information
+
+	//Player position
+	Vector2D playerPos = Vector2D(sceneNode.child("entities").child("player").attribute("x").as_int(),
+		sceneNode.child("entities").child("player").attribute("y").as_int());
+	player->SetPosition(playerPos);
+
+	//enemies
+	// ...
+
+}
+
+// L15 TODO 2: Implement the Save function
+void Scene::SaveState() {
+
+	pugi::xml_document loadFile;
+	pugi::xml_parse_result result = loadFile.load_file("config.xml");
+
+	if (result == NULL)
+	{
+		LOG("Could not load file. Pugi error: %s", result.description());
+		return;
+	}
+
+	pugi::xml_node sceneNode = loadFile.child("config").child("scene");
+
+	//Save info to XML 
+
+	//Player position
+	sceneNode.child("entities").child("player").attribute("x").set_value(player->GetPosition().getX());
+	sceneNode.child("entities").child("player").attribute("y").set_value(player->GetPosition().getY());
+
+	//enemies
+	// ...
+
+	//Saves the modifications to the XML 
+	loadFile.save_file("config.xml");
 }
 
 void Scene::Shoot()
@@ -173,15 +232,31 @@ void Scene::Shoot()
 	if (player->GetDirection() == Direction::RIGHT)
 	{
 		bullet->SetPosition(playerPos + Offset);
-	}
+	}	
 	else 
-
-
 	{
 		bullet->leftBullet = true;
 		bullet->SetPosition(playerPos - Offset);
 	}
 	bulletList.push_back(bullet);
+}
+
+void Scene::CheckEntitesErase()
+{
+	for (Enemy* enemy : enemyList)
+	{
+		if (enemy->toDestroy == true)
+		{
+			Engine::GetInstance().entityManager->DestroyEntity(enemy);
+		}
+	}
+	for (Bullet* bullet : bulletList)
+	{
+		if (bullet->toDestroy == true)
+		{
+			Engine::GetInstance().entityManager->DestroyEntity(bullet);
+		}
+	}
 }
 
 // Called before quitting

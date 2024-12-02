@@ -71,7 +71,6 @@ public:
 	}
 
 	virtual void OnCollision(PhysBody* physA, PhysBody* physB) {
-
 	};
 
 	virtual void OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
@@ -88,4 +87,6 @@ public:
 	// want our Entity class, maybe it's not renderable...
 	Vector2D position;       
 	bool renderable = true;
+	bool toDestroy = false;
+
 };
