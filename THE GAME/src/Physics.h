@@ -86,6 +86,8 @@ public:
 
 	void DeletePhysBody(PhysBody* physBody);
 
+	bool IsPendingToDelete(PhysBody* physBody);
+
 public:
 
 	// Debug mode

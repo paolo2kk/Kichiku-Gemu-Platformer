@@ -216,14 +216,22 @@ void Enemy::Die()
 void Enemy::OnCollision(PhysBody* physA, PhysBody* physB) {
 	switch (physB->ctype)
 	{
+	case ColliderType::PLAYER:
+		LOG("Collided with player - DESTROY");
+		Engine::GetInstance().entityManager.get()->DestroyEntity(this);
+		break;
 	case ColliderType::BULLET:
-		LOG("Enemy hitted");
+		LOG("Collided with Bullet");
 		isDead = true;
 		break;
+	}
+}
+void Enemy::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
+{
+	switch (physB->ctype)
+	{
 	case ColliderType::PLAYER:
-		LOG("Player Hitted");
-		break;
-	default:
+		LOG("Collision player");
 		break;
 	}
 }
