@@ -8,6 +8,7 @@
 #include "Log.h"
 #include "Physics.h"
 #include "Map.h"
+#include "EntityManager.h"
 
 Enemy::Enemy() : Entity(EntityType::ENEMY)
 {
@@ -15,6 +16,7 @@ Enemy::Enemy() : Entity(EntityType::ENEMY)
 }
 
 Enemy::~Enemy() {
+	
 	delete pathfinding;
 }
 
@@ -56,89 +58,99 @@ bool Enemy::Start() {
 bool Enemy::Update(float dt)
 {
 
-	
+
 	Player* player = Engine::GetInstance().scene.get()->player;
 
 	if (player != nullptr) {
 		CheckCollisionWithPlayer(player);
 	}
 
+	if (isDead) {
+		Engine::GetInstance().entityManager.get()->DestroyEntity(this);
+		return false;
+	}
+
+
 
 	/*
 	timeSinceDirectionChange += dt;
 
-	
+
 	if (timeSinceDirectionChange >= directionChangeInterval) {
-		movementDirection *= -1; 
-		timeSinceDirectionChange = 0.0f; 
+		movementDirection *= -1;
+		timeSinceDirectionChange = 0.0f;
 	}
 
 	timeSinceLastJump += dt;
 
-	
+
 	if (timeSinceLastJump >= jumpInterval) {
-	
+
 		b2Vec2 jumpImpulse = b2Vec2(0.0f, jumpForce);
 		pbody->body->ApplyLinearImpulseToCenter(jumpImpulse, true);
 
-		
+
 		timeSinceLastJump = 0.0f;
 	}*/
 
-	b2Vec2 velocity = b2Vec2(0, 0);
-	if (buscando <= 20)
-	{
-		pathfinding->PropagateAStar(EUCLIDEAN);
-		buscando++;
+	if (!isDead) {
+
+		b2Vec2 velocity = b2Vec2(0, 0);
+		if (buscando <= 20)
+		{
+			pathfinding->PropagateAStar(EUCLIDEAN);
+			buscando++;
+		}
+		else
+		{
+			Vector2D pos = GetPosition();
+			Vector2D tilePos = Engine::GetInstance().map.get()->WorldToMap(pos.getX(), pos.getY());
+			pathfinding->ResetPath(tilePos);
+			buscando = 0;
+		}
+
+		Vector2D PosInMap = Engine::GetInstance().map->WorldToMap(position.getX(), position.getY());
+
+		//if pathfinding is done, move the next tile, make it slower
+		if (pathfinding->pathTiles.size() > 0)
+		{
+			Vector2D nextTile = pathfinding->pathTiles.front();
+			Vector2D nextPos = Engine::GetInstance().map->MapToWorld(nextTile.getX(), nextTile.getY());
+			Vector2D dir = nextPos - position;
+			dir.normalized();
+
+
+			float velocidad = 0.01f;
+			velocity = b2Vec2(dir.getX() * velocidad, 0);
+
+			pbody->body->SetLinearVelocity(velocity);
+		}
+
+
+		b2Vec2 bodyPos = pbody->body->GetTransform().p;
+		bodyPos.x += PIXEL_TO_METERS(2.0f * movementDirection);
+		pbody->body->SetTransform(bodyPos, pbody->body->GetAngle());
+
+
+		b2Transform pbodyPos = pbody->body->GetTransform();
+		position.setX(METERS_TO_PIXELS(pbodyPos.p.x) - texH / 2);
+		position.setY(METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2);
+
+
+		Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY(), &currentAnimation->GetCurrentFrame());
+		currentAnimation->Update();
+
+
+		pathfinding->DrawPath();
+
+		return true;
 	}
-	else
-	{
-		Vector2D pos = GetPosition();
-		Vector2D tilePos = Engine::GetInstance().map.get()->WorldToMap(pos.getX(), pos.getY());
-		pathfinding->ResetPath(tilePos);
-		buscando = 0;
-	}
-
-	Vector2D PosInMap = Engine::GetInstance().map->WorldToMap(position.getX(), position.getY());
-
-	//if pathfinding is done, move the next tile, make it slower
-	if (pathfinding->pathTiles.size() > 0)
-	{
-		Vector2D nextTile = pathfinding->pathTiles.front();
-		Vector2D nextPos = Engine::GetInstance().map->MapToWorld(nextTile.getX(), nextTile.getY());
-		Vector2D dir = nextPos - position;
-		dir.normalized();
-
-
-		float velocidad = 0.01f;
-		velocity = b2Vec2(dir.getX() * velocidad, 0);
-
-		pbody->body->SetLinearVelocity(velocity);
-	}
-
-	
-	b2Vec2 bodyPos = pbody->body->GetTransform().p; 
-	bodyPos.x += PIXEL_TO_METERS(2.0f * movementDirection);
-	pbody->body->SetTransform(bodyPos, pbody->body->GetAngle()); 
-
-	
-	b2Transform pbodyPos = pbody->body->GetTransform();
-	position.setX(METERS_TO_PIXELS(pbodyPos.p.x) - texH / 2);
-	position.setY(METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2);
-
-	
-	Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY(), &currentAnimation->GetCurrentFrame());
-	currentAnimation->Update();
-
-	
-	pathfinding->DrawPath();
-
-	return true;
 }
 
 
 bool Enemy::CleanUp()
 {
+	Engine::GetInstance().physics.get()->DeletePhysBody(pbody);
 	return true;
 }
 
@@ -183,8 +195,6 @@ void Enemy::CheckCollisionWithPlayer(Player* player)
 	if (isCollidingHorizontally && isCollidingVertically) {
 		
 		this->isDead = true;
-		
-		//Engine::GetInstance().physics.get()->DeletePhysBody(pbody);
 		
 		player->Bounce();
 	}

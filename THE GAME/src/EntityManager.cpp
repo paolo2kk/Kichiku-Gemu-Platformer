@@ -124,6 +124,10 @@ bool EntityManager::Update(float dt)
 	{
 		if (entity->active == false) continue;
 		ret = entity->Update(dt);
+		if (ret == false)
+		{
+			break;
+		}
 	}
-	return ret;
+	return true;
 }

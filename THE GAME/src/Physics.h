@@ -86,7 +86,7 @@ public:
 
 	void DeletePhysBody(PhysBody* physBody);
 
-private:
+public:
 
 	// Debug mode
 	bool debug;
