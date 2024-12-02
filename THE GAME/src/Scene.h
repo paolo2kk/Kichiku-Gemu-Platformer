@@ -41,6 +41,8 @@ public:
 
 	void Shoot();
 
+	void CheckEntitesErase();
+
 	void WindowManipulation(float dt);
 
 public:

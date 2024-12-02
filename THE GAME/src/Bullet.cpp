@@ -34,9 +34,10 @@ bool Bullet::Start() {
 	
 	// L08 TODO 4: Add a physics to an item - initialize the physics body
 	pbody = Engine::GetInstance().physics.get()->CreateCircle((int)position.getX() + texH / 2, (int)position.getY() + texH / 2, texH / 2, bodyType::DYNAMIC);
+	pbody->listener = this;
 
 	// L08 TODO 7: Assign collider type
-	pbody->ctype = ColliderType::ITEM;
+	pbody->ctype = ColliderType::BULLET;
 	pbody->body->SetGravityScale(0);
 	if (leftBullet) pbody->body->SetLinearVelocity(b2Vec2(PIXEL_TO_METERS(-2000.0f), 0)); else pbody->body->SetLinearVelocity(b2Vec2(PIXEL_TO_METERS(2000.0f), 0));
 
@@ -66,3 +67,9 @@ bool Bullet::CleanUp()
 {
 	return true;
 }
+
+void Bullet::OnCollision(PhysBody* physA, PhysBody* physB)
+{
+
+}
+

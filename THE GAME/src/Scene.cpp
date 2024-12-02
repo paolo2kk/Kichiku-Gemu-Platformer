@@ -147,6 +147,8 @@ bool Scene::Update(float dt)
 		enemyList[0]->ResetPath();
 	}
 
+	CheckEntitesErase();
+
 	return true;
 }
 
@@ -173,15 +175,31 @@ void Scene::Shoot()
 	if (player->GetDirection() == Direction::RIGHT)
 	{
 		bullet->SetPosition(playerPos + Offset);
-	}
+	}	
 	else 
-
-
 	{
 		bullet->leftBullet = true;
 		bullet->SetPosition(playerPos - Offset);
 	}
 	bulletList.push_back(bullet);
+}
+
+void Scene::CheckEntitesErase()
+{
+	for (Enemy* enemy : enemyList)
+	{
+		if (enemy->toDestroy == true)
+		{
+			Engine::GetInstance().entityManager->DestroyEntity(enemy);
+		}
+	}
+	for (Bullet* bullet : bulletList)
+	{
+		if (bullet->toDestroy == true)
+		{
+			Engine::GetInstance().entityManager->DestroyEntity(bullet);
+		}
+	}
 }
 
 // Called before quitting
