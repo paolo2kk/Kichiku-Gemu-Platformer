@@ -7,6 +7,7 @@
 #include "Scene.h"
 #include "Log.h"
 #include "Physics.h"
+#include "EntityManager.h"
 
 Bullet::Bullet() : Entity(EntityType::ITEM)
 {
@@ -65,11 +66,25 @@ bool Bullet::Update(float dt)
 
 bool Bullet::CleanUp()
 {
+	Engine::GetInstance().physics.get()->DeletePhysBody(pbody);
 	return true;
 }
 
-void Bullet::OnCollision(PhysBody* physA, PhysBody* physB)
-{
-
+void Bullet::OnCollision(PhysBody* physA, PhysBody* physB) {
+	switch (physB->ctype)
+	{
+	case ColliderType::PLAYER:
+		LOG("Collided with player - DESTROY");
+		Engine::GetInstance().entityManager.get()->DestroyEntity(this);
+		break;
+	}
 }
-
+void Bullet::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
+{
+	switch (physB->ctype)
+	{
+	case ColliderType::PLAYER:
+		LOG("Collision player");
+		break;
+	}
+}
