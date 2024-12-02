@@ -243,18 +243,18 @@ void Scene::Shoot()
 
 void Scene::CheckEntitesErase()
 {
-	for (Enemy* enemy : enemyList)
+	/*for (Enemy* enemy : enemyList)
 	{
 		if (enemy->toDestroy == true)
 		{
-			Engine::GetInstance().entityManager->DestroyEntity(enemy);
+			enemy->isDead = true;
 		}
-	}
+	}*/
 	for (Bullet* bullet : bulletList)
 	{
 		if (bullet->toDestroy == true)
 		{
-			Engine::GetInstance().entityManager->DestroyEntity(bullet);
+			//Engine::GetInstance().entityManager->DestroyEntity(bullet);
 		}
 	}
 }

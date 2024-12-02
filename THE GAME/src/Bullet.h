@@ -34,6 +34,13 @@ public:
 		pbody->body->SetTransform(b2Vec2(PIXEL_TO_METERS(newPosition.getX()), PIXEL_TO_METERS(newPosition.getY())), 0);
 	}
 
+	Vector2D GetPosition() {
+		b2Vec2 bodyPos = pbody->body->GetTransform().p;
+		Vector2D pos = Vector2D(METERS_TO_PIXELS(bodyPos.x), METERS_TO_PIXELS(bodyPos.y));
+		return pos;
+	}
+
+
 	void OnCollision(PhysBody* physA, PhysBody* physB);
 
 public:

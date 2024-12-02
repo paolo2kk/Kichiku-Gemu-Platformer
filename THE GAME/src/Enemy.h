@@ -5,6 +5,7 @@
 #include "Animation.h"
 #include "Pathfinding.h"
 #include "Player.h"
+#include "Bullet.h"
 
 struct SDL_Texture;
 
@@ -35,9 +36,12 @@ public:
 
 	void CheckCollisionWithPlayer(Player* player);
 
+	void Die();
+
 	void OnCollision(PhysBody* physA, PhysBody* physB);
 
 public:
+	bool isDead = false;
 
 	bool toDestroy = false;
 	PhysBody* pbody;
@@ -63,5 +67,4 @@ private:
 
 	int buscando = 0;
 
-	bool isDead = false;
 };

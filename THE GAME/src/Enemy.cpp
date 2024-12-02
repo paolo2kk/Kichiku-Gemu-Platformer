@@ -144,8 +144,10 @@ bool Enemy::Update(float dt)
 
 		pathfinding->DrawPath();
 
+
 		return true;
 	}
+	
 }
 
 
@@ -201,12 +203,22 @@ void Enemy::CheckCollisionWithPlayer(Player* player)
 	}
 }
 
+
+
+void Enemy::Die()
+{
+	if (toDestroy)
+	{
+		isDead = true;
+	}
+}
+
 void Enemy::OnCollision(PhysBody* physA, PhysBody* physB) {
 	switch (physB->ctype)
 	{
 	case ColliderType::BULLET:
 		LOG("Enemy hitted");
-		toDestroy = true;
+		isDead = true;
 		break;
 	case ColliderType::PLAYER:
 		LOG("Player Hitted");
