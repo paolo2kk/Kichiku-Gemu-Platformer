@@ -44,6 +44,7 @@ public:
 
 public:
 	bool isDead = false;
+	bool showPath = false;
 
 	bool toDestroy = false;
 	PhysBody* pbody;

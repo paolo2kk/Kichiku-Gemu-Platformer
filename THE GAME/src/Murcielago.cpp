@@ -80,7 +80,19 @@ bool EnemyInClass::Update(float dt)
 	Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY(), &currentAnimation->GetCurrentFrame());
 	currentAnimation->Update();
 	// Draw pathfinding 
-	pathfinding->DrawPath();
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+	{
+		if (showPath)
+		{
+			showPath = false;
+		}
+		else
+			showPath = true;
+	}
+	if (showPath)
+	{
+		pathfinding->DrawPath();
+	}
 	return true;
 }
 bool EnemyInClass::CleanUp()
