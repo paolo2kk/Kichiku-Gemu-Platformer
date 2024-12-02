@@ -141,8 +141,21 @@ bool Enemy::Update(float dt)
 		Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY(), &currentAnimation->GetCurrentFrame());
 		currentAnimation->Update();
 
-
-		pathfinding->DrawPath();
+		//haz que si pulsas F1 se muestre el pathfinding en el mapa y si esta activado y le das al F1 se desactive
+		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+		{
+			if (showPath)
+			{
+				showPath = false;
+			}
+			else
+			showPath = true;
+		}
+		if (showPath) 
+		{
+			pathfinding->DrawPath();
+		}
+		
 
 
 		return true;
