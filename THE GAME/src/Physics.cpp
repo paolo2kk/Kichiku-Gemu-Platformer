@@ -340,44 +340,40 @@ bool Physics::CleanUp()
 	return true;
 }
 
-// Callback function to collisions with Box2D
 void Physics::BeginContact(b2Contact* contact)
 {
-	// Call the OnCollision listener function to bodies A and B, passing as inputs our custom PhysBody classes
 	PhysBody* physA = (PhysBody*)contact->GetFixtureA()->GetBody()->GetUserData().pointer;
 	PhysBody* physB = (PhysBody*)contact->GetFixtureB()->GetBody()->GetUserData().pointer;
 
 	if (physA && physA->listener != NULL) {
-		if (physB) // Ensure physB is also valid
+		if (physB)
 		{
 			physA->listener->OnCollision(physA, physB);
 		}
 	}
 
 	if (physB && physB->listener != NULL) {
-		if(physA) // Ensure physA is also valid
+		if(physA)
 		{
 			physB->listener->OnCollision(physB, physA);
 		}
 	}
 }
 
-// Callback function to collisions with Box2D
 void Physics::EndContact(b2Contact* contact)
 {
-	// Call the OnCollision listener function to bodies A and B, passing as inputs our custom PhysBody classes
 	PhysBody* physA = (PhysBody*)contact->GetFixtureA()->GetBody()->GetUserData().pointer;
 	PhysBody* physB = (PhysBody*)contact->GetFixtureB()->GetBody()->GetUserData().pointer;
 
 	if (physA && physA->listener != NULL && !IsPendingToDelete(physA)) {
-		if (physB) // Ensure physB is also valid
+		if (physB)
 		{
 			physA->listener->OnCollisionEnd(physA, physB);
 		}
 	}
 
 	if (physB && physB->listener != NULL && !IsPendingToDelete(physB)) {
-		if (physA) // Ensure physA is also valid
+		if (physA)
 		{
 			physB->listener->OnCollisionEnd(physB, physA);
 		}

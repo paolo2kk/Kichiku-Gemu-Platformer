@@ -4,6 +4,8 @@
 #include "SDL2/SDL.h"
 #include "Animation.h"
 #include "Physics.h"
+#include "Player.h".
+
 
 struct SDL_Texture;
 
@@ -18,7 +20,8 @@ public:
 
 	bool Start();
 
-	void SetVelocity(Vector2D newVelocity);
+	void SetVelocity(Direction direction);
+
 
 	bool Update(float dt);
 

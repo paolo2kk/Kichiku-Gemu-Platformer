@@ -48,6 +48,19 @@ bool Bullet::Start() {
 	return true;
 }
 
+void Bullet::SetVelocity(Direction direction)
+{
+	switch (direction)
+	{
+	case Direction::LEFT:
+		pbody->body->SetLinearVelocity(b2Vec2(PIXEL_TO_METERS(-2000.0f), 0));
+		break;  
+	case Direction::RIGHT:
+		pbody->body->SetLinearVelocity(b2Vec2(PIXEL_TO_METERS(2000.0f), 0));
+		break;
+	}
+}
+
 bool Bullet::Update(float dt)
 {
 	// L08 TODO 4: Add a physics to an item - update the position of the object from the physics.  
@@ -75,6 +88,10 @@ void Bullet::OnCollision(PhysBody* physA, PhysBody* physB) {
 	{
 	case ColliderType::PLAYER:
 		LOG("Collided with player - DESTROY");
+		//Engine::GetInstance().entityManager.get()->DestroyEntity(this);
+		break;
+	
+	case ColliderType::PLATFORM:
 		Engine::GetInstance().entityManager.get()->DestroyEntity(this);
 		break;
 	}
@@ -85,6 +102,9 @@ void Bullet::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 	{
 	case ColliderType::PLAYER:
 		LOG("Collision player");
+		break;
+	case ColliderType::ENEMY:
+		Engine::GetInstance().entityManager.get()->DestroyEntity(this);
 		break;
 	}
 }

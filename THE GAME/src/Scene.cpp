@@ -227,16 +227,23 @@ void Scene::Shoot()
 	Bullet* bullet = (Bullet*)Engine::GetInstance().entityManager->CreateEntity(EntityType::BULLET);
 	bullet->SetParameters(bulletParameters);
 	bullet->Start();
-	Vector2D Offset = { 65, 32 };
+	Vector2D Offset = { 65, 16 };
+	Vector2D Offset2 = { -65, 16 };
 
 	if (player->GetDirection() == Direction::RIGHT)
 	{
+		std::cout << "Bullet right";
+		bullet->SetVelocity(Direction::RIGHT);
+
 		bullet->SetPosition(playerPos + Offset);
 	}	
-	else 
+	else if(player->GetDirection() == Direction::LEFT)
 	{
+		std::cout << "Bullet left";
+
 		bullet->leftBullet = true;
-		bullet->SetPosition(playerPos - Offset);
+		bullet->SetPosition(playerPos + Offset2);
+		bullet->SetVelocity(Direction::LEFT);
 	}
 	bulletList.push_back(bullet);
 }

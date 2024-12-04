@@ -231,7 +231,7 @@ void Enemy::OnCollision(PhysBody* physA, PhysBody* physB) {
 	{
 	case ColliderType::PLAYER:
 		LOG("Collided with player - DESTROY");
-		Engine::GetInstance().entityManager.get()->DestroyEntity(this);
+		//Engine::GetInstance().entityManager.get()->DestroyEntity(this);
 		break;
 	case ColliderType::BULLET:
 		LOG("Collided with Bullet");
