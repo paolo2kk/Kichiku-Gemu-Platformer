@@ -14,6 +14,8 @@
 #include "Enemy.h"
 #include "Murcielago.h"
 #include "CheckPoint.h"
+#include "GuiControl.h"
+#include "GuiManager.h"
 
 Scene::Scene() : Module()
 {
@@ -65,6 +67,9 @@ bool Scene::Awake()
 	{
 		bulletParameters = bulletNode;
 	}
+
+	SDL_Rect btPos = { 520, 350, 120,20 };
+	guiBt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "MyButton", btPos, this);
 
 	return ret;
 }

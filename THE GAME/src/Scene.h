@@ -6,6 +6,7 @@
 #include "CheckPoint.h"
 #include "Bullet.h"
 #include <vector>
+#include "GuiControlButton.h"
 
 struct SDL_Texture;
 
@@ -72,4 +73,6 @@ public:
 	std::vector<CheckPoint*> checkPointList;
 	std::vector<Bullet*> bulletList;
 	pugi::xml_node bulletParameters;
+	GuiControlButton* guiBt;
+
 };
