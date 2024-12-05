@@ -6,6 +6,7 @@
 #include "CheckPoint.h"
 #include "Bullet.h"
 #include <vector>
+#include "GuiControlButton.h"
 
 struct SDL_Texture;
 
@@ -77,4 +78,7 @@ public:
 
 	int WWidth;
 	int WHeight;
+
+	GuiControlButton* guiBt;
+
 };

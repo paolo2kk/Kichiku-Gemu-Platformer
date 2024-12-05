@@ -201,11 +201,11 @@ void Enemy::CheckCollisionWithPlayer(Player* player)
 	int enemyHeight = this->texH;
 
 	
-	bool isCollidingHorizontally = (playerPos.getX() + playerWidth > enemyPos.getX() &&
+	bool isCollidingHorizontally = (playerPos.getX() + playerWidth/2 > enemyPos.getX() &&
 		playerPos.getX() < enemyPos.getX() + enemyWidth);
 
 	
-	bool isCollidingVertically = (playerPos.getY() + playerHeight >= enemyPos.getY() &&
+	bool isCollidingVertically = (playerPos.getY() + playerHeight/2 >= enemyPos.getY() &&
                               playerPos.getY() < enemyPos.getY() + enemyHeight);
 
 

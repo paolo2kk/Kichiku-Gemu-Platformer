@@ -13,11 +13,12 @@
 #include "EntityManager.h"
 #include "Map.h"
 #include "Physics.h"
+#include "GuiManager.h"
 
 // Constructor
 Engine::Engine() {
 
-	LOG("Constructor Engine::Engine");
+    LOG("Constructor Engine::Engine");
 
     //Measure the amount of ms that takes to execute the App constructor and LOG the result
     Timer timer = Timer();
@@ -27,7 +28,7 @@ Engine::Engine() {
     frames = 0;
 
     // L4: TODO 1: Add the EntityManager Module to the Engine
-    
+
     // Modules
     window = std::make_shared<Window>();
     input = std::make_shared<Input>();
@@ -39,6 +40,7 @@ Engine::Engine() {
     scene = std::make_shared<Scene>();
     map = std::make_shared<Map>();
     entityManager = std::make_shared<EntityManager>();
+    guiManager = std::make_shared<GuiManager>();
 
     // Ordered for awake / Start / Update
     // Reverse order of CleanUp
@@ -51,6 +53,7 @@ Engine::Engine() {
     AddModule(std::static_pointer_cast<Module>(map));
     AddModule(std::static_pointer_cast<Module>(scene));
     AddModule(std::static_pointer_cast<Module>(entityManager));
+    AddModule(std::static_pointer_cast<Module>(guiManager));
 
     // Render last 
     AddModule(std::static_pointer_cast<Module>(render));
@@ -64,7 +67,7 @@ Engine& Engine::GetInstance() {
     return instance;
 }
 
-void Engine::AddModule(std::shared_ptr<Module> module){
+void Engine::AddModule(std::shared_ptr<Module> module) {
     module->Init();
     moduleList.push_back(module);
 }
@@ -89,10 +92,10 @@ bool Engine::Awake() {
     bool result = true;
     for (const auto& module : moduleList) {
         module.get()->LoadParameters(configFile.child("config").child(module.get()->name.c_str()));
-        result =  module.get()->Awake();
+        result = module.get()->Awake();
         if (!result) {
-			break;
-		}
+            break;
+        }
     }
 
     LOG("Timer App Awake(): %f", timer.ReadMSec());
@@ -212,7 +215,7 @@ void Engine::FinishUpdate()
     std::stringstream ss;
     ss << scene.get()->GetTilePosDebug()
         << gameTitle
-        << ": Av.FPS: " << std::fixed 
+        << ": Av.FPS: " << std::fixed
         << std::setprecision(2) << averageFps
         << " Last sec frames: " << framesPerSecond
         << " Last dt: " << std::fixed << std::setprecision(3) << dt
