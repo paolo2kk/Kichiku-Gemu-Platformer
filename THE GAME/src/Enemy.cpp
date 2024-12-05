@@ -121,7 +121,7 @@ bool Enemy::Update(float dt)
 			dir.normalized();
 
 
-			float velocidad = 0.01f;
+			float velocidad = 0.03f;
 			velocity = b2Vec2(dir.getX() * velocidad, 0);
 
 			pbody->body->SetLinearVelocity(velocity);

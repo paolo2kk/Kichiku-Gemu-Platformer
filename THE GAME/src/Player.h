@@ -57,13 +57,14 @@ public:
 	float speed = 5.0f;
 	SDL_Texture* texture = NULL;
 	int texW, texH;
-
+	float holdTime = 0.0f; // Tiempo que se mantiene presionada la tecla
+	float maxHoldTime = 1.0f;
 	//Audio fx
 	int pickCoinFxId;
 
 	// L08 TODO 5: Add physics to the player - declare a Physics body
 	PhysBody* pbody;
-	float jumpForce = 25; // The force to apply when jumping
+	float jumpForce = 7; // The force to apply when jumping
 	bool isJumping = false; // Flag to check if the player is currently jumping
 
 	pugi::xml_node parameters;
