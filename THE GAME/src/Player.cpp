@@ -34,8 +34,8 @@ bool Player::Start() {
 	texH = parameters.attribute("h").as_int();
 
 	//Load animations
-	idle.LoadAnimations(parameters.child("animations").child("idle"));
-	currentAnimation = &idle;
+	idleR.LoadAnimations(parameters.child("animations").child("idleR"));
+	currentAnimation = &idleR;
 	walk.LoadAnimations(parameters.child("animations").child("walk"));
 	right.LoadAnimations(parameters.child("animations").child("right"));
 
@@ -59,7 +59,7 @@ bool Player::Start() {
 
 bool Player::Update(float dt)
 {
-	currentAnimation = &idle;
+	currentAnimation = &idleR;
 	// L08 TODO 5: Add physics to the player - updated player position using physics
 	b2Vec2 velocity = b2Vec2(0, pbody->body->GetLinearVelocity().y);
 
