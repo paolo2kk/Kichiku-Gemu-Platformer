@@ -51,9 +51,8 @@ bool Scene::Awake()
 
 	for (pugi::xml_node CheckPointNode = configParameters.child("entities").child("items").child("checkpoint"); CheckPointNode; CheckPointNode = CheckPointNode.next_sibling("CheckPoint"))
 	{
-		CheckPoint* checkPoint = (CheckPoint*)Engine::GetInstance().entityManager->CreateEntity(EntityType::CHECKPOINT);
+		checkPoint = (CheckPoint*)Engine::GetInstance().entityManager->CreateEntity(EntityType::CHECKPOINT);
 		checkPoint->SetParameters(CheckPointNode);
-		
 	}
 
 	for (pugi::xml_node enemyNode1 = configParameters.child("entities").child("enemies").child("murcielago"); enemyNode1; enemyNode1 = enemyNode1.next_sibling("murcielago"))
@@ -85,6 +84,7 @@ bool Scene::Start()
 	Engine::GetInstance().render.get()->camera.x = 0;
 	Engine::GetInstance().render.get()->camera.y = 0;
 
+
 	return true;
 }
 
@@ -101,6 +101,8 @@ bool Scene::Update(float dt)
 	float camSpeed = 1;
 
 	WindowManipulation(dt);
+
+	SetCheckpoints();
 
 	if(Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 		Engine::GetInstance().render.get()->camera.y -= ceil(camSpeed * dt);
@@ -150,6 +152,20 @@ bool Scene::Update(float dt)
 	CheckEntitesErase();
 
 	return true;
+}
+
+void Scene::SetCheckpoints()
+{
+	if (!hasCheckpointsBeenSetted)
+	{
+		checkPoint->SetPosition(Vector2D(500, 500));
+	}
+	hasCheckpointsBeenSetted = true;
+
+	if (player->setCheckPoint)
+	{
+		SaveState();
+	}
 }
 
 // Called each loop iteration
@@ -210,10 +226,12 @@ void Scene::SaveState() {
 	//Save info to XML 
 
 	//Player position
-	sceneNode.child("entities").child("player").attribute("x").set_value(player->GetPosition().getX());
+	sceneNode.child("entities").child("player").attribute("x").set_value(player->GetPosition().getX() - player->texW/2);
 	sceneNode.child("entities").child("player").attribute("y").set_value(player->GetPosition().getY());
-
 	//enemies
+	sceneNode.child("entities").child("enemies").child("enemy").attribute("x").set_value(player->GetPosition().getX() - 32);
+	sceneNode.child("entities").child("enemies").child("enemy").attribute("x").set_value(player->GetPosition().getX());
+
 	// ...
 
 	//Saves the modifications to the XML 

@@ -38,7 +38,7 @@ bool Enemy::Start() {
 	currentAnimation = &idle;
 	
 	//Add a physics to an item - initialize the physics body
-	pbody = Engine::GetInstance().physics.get()->CreateCircle((int)position.getX() + texH / 2, (int)position.getY() + texH / 2, texH / 2, bodyType::DYNAMIC);
+	pbody = Engine::GetInstance().physics.get()->CreateRectangle((int)position.getX(), (int)position.getY(), texW - texW / 4, texH - texH / 5, bodyType::DYNAMIC);
 
 
 	//Assign collider type
@@ -121,7 +121,7 @@ bool Enemy::Update(float dt)
 			dir.normalized();
 
 
-			float velocidad = 0.01f;
+			float velocidad = 0.02f;
 			velocity = b2Vec2(dir.getX() * velocidad, 0);
 
 			pbody->body->SetLinearVelocity(velocity);
@@ -205,12 +205,13 @@ void Enemy::CheckCollisionWithPlayer(Player* player)
 		playerPos.getX() < enemyPos.getX() + enemyWidth);
 
 	
-	bool isCollidingVertically = (playerPos.getY() + playerHeight > enemyPos.getY() &&
-		playerPos.getY() + playerHeight - 10 < enemyPos.getY()); 
+	bool isCollidingVertically = (playerPos.getY() + playerHeight >= enemyPos.getY() &&
+                              playerPos.getY() < enemyPos.getY() + enemyHeight);
+
 
 	if (isCollidingHorizontally && isCollidingVertically) {
 		
-		this->isDead = true;
+	this->isDead = true;
 		
 		player->Bounce();
 	}
