@@ -134,6 +134,10 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 	case ColliderType::UNKNOWN:
 		LOG("Collision UNKNOWN");
 		break;
+	case ColliderType::CHECKPOINT:
+		LOG("CheckPoint collision ON");
+		setCheckPoint = true;
+		break;
 	default:
 		break;
 	}
@@ -151,6 +155,10 @@ void Player::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 		break;
 	case ColliderType::UNKNOWN:
 		LOG("End Collision UNKNOWN");
+		break;
+	case ColliderType::CHECKPOINT:
+		LOG("CheckPoint collision OFF");
+		setCheckPoint = false;
 		break;
 	default:
 		break;

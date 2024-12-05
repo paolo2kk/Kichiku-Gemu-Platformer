@@ -73,4 +73,6 @@ public:
 	Animation walk;
 	Animation right;
 	Direction direction;
+
+	bool setCheckPoint = false;
 };

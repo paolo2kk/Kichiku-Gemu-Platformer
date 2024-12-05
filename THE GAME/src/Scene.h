@@ -30,6 +30,8 @@ public:
 	// Called each loop iteration
 	bool Update(float dt);
 
+	void SetCheckpoints();
+
 	// Called before all Updates
 	bool PostUpdate();
 
@@ -61,7 +63,9 @@ public:
 	SDL_Texture* mouseTileTex = nullptr;
 	std::string tilePosDebug = "[0,0]";
 	bool once = false;
-
+	CheckPoint* checkPoint;
+	CheckPoint* checkPoint2;
+	bool hasCheckpointsBeenSetted = false;
 	//L03: TODO 3b: Declare a Player attribute
 	Player* player;
 	std::vector<Enemy*> enemyList;
