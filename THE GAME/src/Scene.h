@@ -30,6 +30,8 @@ public:
 	// Called each loop iteration
 	bool Update(float dt);
 
+	float Slower(float ogPos, float goalPos, float time);
+
 	void SetCheckpoints();
 
 	// Called before all Updates
@@ -72,4 +74,7 @@ public:
 	std::vector<CheckPoint*> checkPointList;
 	std::vector<Bullet*> bulletList;
 	pugi::xml_node bulletParameters;
+
+	int WWidth;
+	int WHeight;
 };

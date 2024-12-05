@@ -35,6 +35,11 @@ bool Map::Update(float dt)
 {
     bool ret = true;
 
+    Engine::GetInstance().render.get()->DrawTexture(BG1, -Engine::GetInstance().render.get()->camera.x * 0.4, -Engine::GetInstance().render.get()->camera.y * BGvely);
+    Engine::GetInstance().render.get()->DrawTexture(BG2, Engine::GetInstance().render.get()->camera.x * (BGvelx + 0.01), -Engine::GetInstance().render.get()->camera.y * BGvely);
+    Engine::GetInstance().render.get()->DrawTexture(BG3, Engine::GetInstance().render.get()->camera.x * (BGvelx + 0.03), -Engine::GetInstance().render.get()->camera.y * BGvely);
+    Engine::GetInstance().render.get()->DrawTexture(BG4, Engine::GetInstance().render.get()->camera.x * (BGvelx + 0.05), -Engine::GetInstance().render.get()->camera.y * BGvely);
+
     if (mapLoaded) {
 
         // L07 TODO 5: Prepare the loop to draw all tiles in a layer + DrawTexture()
@@ -135,6 +140,11 @@ bool Map::CleanUp()
 bool Map::Load(std::string path, std::string fileName)
 {
     bool ret = false;
+
+    BG1 = Engine::GetInstance().textures.get()->Load("Assets/Maps/1.png");
+    BG2 = Engine::GetInstance().textures.get()->Load("Assets/Maps/2.png");
+    BG3 = Engine::GetInstance().textures.get()->Load("Assets/Maps/3.png");
+    BG4 = Engine::GetInstance().textures.get()->Load("Assets/Maps/5.png");
 
     // Assigns the name of the map file and the path
     mapFileName = fileName;
@@ -256,6 +266,7 @@ bool Map::Load(std::string path, std::string fileName)
                 }
             }
         }
+		
 
         for (pugi::xml_node objectGroupNode = mapFileXML.child("map").child("objectgroup"); objectGroupNode != NULL; objectGroupNode = objectGroupNode.next_sibling("objectgroup")) {
 
