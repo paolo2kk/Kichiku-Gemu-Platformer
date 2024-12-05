@@ -35,7 +35,7 @@ bool Player::Start() {
 
 	//Load animations
 	idleR.LoadAnimations(parameters.child("animations").child("idleR"));
-	currentAnimation = &idleR;
+	currentAnimation = &idleR; 
 	walk.LoadAnimations(parameters.child("animations").child("walk"));
 	right.LoadAnimations(parameters.child("animations").child("right"));
 
