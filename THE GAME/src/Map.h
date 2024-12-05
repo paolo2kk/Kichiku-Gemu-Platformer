@@ -48,6 +48,9 @@ struct MapLayer
     std::vector<int> tiles;
     Properties properties;
 
+	float ParallaxSpeedX;
+	float ParallaxSpeedY;
+
     // L07: TODO 6: Short function to get the gid value of i,j
     int Get(int i, int j) const
     {
@@ -175,4 +178,11 @@ private:
     bool mapLoaded;
     // L06: DONE 1: Declare a variable data of the struct MapData
     MapData mapData;
+   
+    SDL_Texture* BG1;
+    SDL_Texture* BG2;
+    SDL_Texture* BG3;
+    SDL_Texture* BG4;
+    float BGvelx = -0.2;
+    float BGvely = 0.41;
 };

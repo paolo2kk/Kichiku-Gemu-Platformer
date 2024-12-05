@@ -6,7 +6,6 @@
 #include "CheckPoint.h"
 #include "Bullet.h"
 #include <vector>
-#include "GuiControlButton.h"
 
 struct SDL_Texture;
 
@@ -30,6 +29,8 @@ public:
 
 	// Called each loop iteration
 	bool Update(float dt);
+
+	float Slower(float ogPos, float goalPos, float time);
 
 	void SetCheckpoints();
 
@@ -73,6 +74,7 @@ public:
 	std::vector<CheckPoint*> checkPointList;
 	std::vector<Bullet*> bulletList;
 	pugi::xml_node bulletParameters;
-	GuiControlButton* guiBt;
 
+	int WWidth;
+	int WHeight;
 };

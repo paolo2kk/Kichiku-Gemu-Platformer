@@ -88,10 +88,14 @@ bool Scene::Start()
 	Engine::GetInstance().window.get()->GetWindowSize(w, h);
 	Engine::GetInstance().render.get()->camera.x = 0;
 	Engine::GetInstance().render.get()->camera.y = 0;
+	WWidth = Engine::GetInstance().window.get()->width;
+	WHeight = Engine::GetInstance().window.get()->height;
 
 
 	return true;
 }
+
+
 
 // Called each loop iteration
 bool Scene::PreUpdate()
@@ -99,11 +103,32 @@ bool Scene::PreUpdate()
 	return true;
 }
 
+float Scene::Slower(float ogPos, float goalPos, float time)
+{
+	float acceleration = goalPos - ogPos;
+	float speed = ogPos + time * acceleration;
+	return speed;
+}
+
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
 	//L03 TODO 3: Make the camera movement independent of framerate
 	float camSpeed = 1;
+
+	int mapLimitX = 7000;
+	int mapLimitY = 1184;
+
+	if (player->position.getY() > WHeight / (camSpeed * 2) &&
+		player->position.getY() < mapLimitY - WHeight / (camSpeed * 2))
+	{
+		Engine::GetInstance().render.get()->camera.y = (-player->position.getY() * camSpeed) + WHeight / 2;
+	}
+	if (player->position.getX() > WWidth / (camSpeed * 2) &&
+		player->position.getX() < mapLimitX - WWidth / (camSpeed * 2))
+	{
+		Engine::GetInstance().render.get()->camera.x = Slower(Engine::GetInstance().render.get()->camera.x, (-player->position.getX() * camSpeed) + WWidth / 2, 0.2f);
+	}
 
 	WindowManipulation(dt);
 
