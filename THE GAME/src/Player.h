@@ -68,7 +68,8 @@ public:
 
 	pugi::xml_node parameters;
 	Animation* currentAnimation = nullptr;
-	Animation idle;
+	Animation idleR;
+	Animation idleL;
 	Animation walk;
 	Animation right;
 	Direction direction;
