@@ -40,14 +40,14 @@ bool Player::Start() {
 	right.LoadAnimations(parameters.child("animations").child("right"));
 
 	// L08 TODO 5: Add physics to the player - initialize physics body
-	pbody = Engine::GetInstance().physics.get()->CreateRectangle((int)position.getX(), (int)position.getY(), texW - texW/4 , texH - texH/5, bodyType::DYNAMIC);
+	pbody = Engine::GetInstance().physics.get()->CreateRectangle((int)position.getX(), (int)position.getY(), texW - texW/1.5 , texH - texH/4.5, bodyType::DYNAMIC);
 
 	// L08 TODO 6: Assign player class (using "this") to the listener of the pbody. This makes the Physics module to call the OnCollision method
 	pbody->listener = this;
 	pbody->body->SetFixedRotation(true);
 	// L08 TODO 7: Assign collider type
 	pbody->ctype = ColliderType::PLAYER;
-	SetMass(2.0f);
+	SetMass(20);
 	// Set the gravity of the body
 	if (!parameters.attribute("gravity").as_bool()) pbody->body->SetGravityScale(0);
 
