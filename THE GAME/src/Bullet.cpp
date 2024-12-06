@@ -17,18 +17,17 @@ Bullet::Bullet() : Entity(EntityType::ITEM)
 Bullet::~Bullet() {}
 
 bool Bullet::Awake() {
+	
 	return true;
 }
 
 bool Bullet::Start() {
-
 	//initilize textures
 	texture = Engine::GetInstance().textures.get()->Load(parameters.attribute("texture").as_string());
 	//position.setX(parameters.attribute("x").as_int());
 	//position.setY(parameters.attribute("y").as_int());
 	texW = parameters.attribute("w").as_int();
 	texH = parameters.attribute("h").as_int();
-
 	//Load animations
 	idle.LoadAnimations(parameters.child("animations").child("idle"));
 	currentAnimation = &idle;
@@ -44,7 +43,7 @@ bool Bullet::Start() {
 
 	// Set the gravity of the body
 	if (!parameters.attribute("gravity").as_bool()) pbody->body->SetGravityScale(0);
-
+	timerToDie = new Timer();
 	return true;
 }
 
@@ -61,10 +60,11 @@ void Bullet::SetVelocity(Direction direction)
 	}
 }
 
-bool Bullet::Update(float dt)
-{
-	// L08 TODO 4: Add a physics to an item - update the position of the object from the physics.  
+bool Bullet::Update(float dt) {
+	// Decrement timer
 
+	std::cout << timerToDie;
+	// Update position
 	b2Transform pbodyPos = pbody->body->GetTransform();
 	position.setX(METERS_TO_PIXELS(pbodyPos.p.x) - texH / 2);
 	position.setY(METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2);
@@ -72,14 +72,15 @@ bool Bullet::Update(float dt)
 	Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY(), &currentAnimation->GetCurrentFrame());
 	currentAnimation->Update();
 
-	
+
+
 	return true;
 }
 
 
 bool Bullet::CleanUp()
 {
-	//Engine::GetInstance().physics.get()->DeletePhysBody(pbody);
+	Engine::GetInstance().physics.get()->DeletePhysBody(pbody);
 	return true;
 }
 

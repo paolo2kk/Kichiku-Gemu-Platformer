@@ -5,7 +5,7 @@
 #include "Animation.h"
 #include "Physics.h"
 #include "Player.h".
-
+#include "Timer.h"
 
 struct SDL_Texture;
 
@@ -61,8 +61,9 @@ private:
 	pugi::xml_node parameters;
 	Animation* currentAnimation = nullptr;
 	Animation idle;
-
 	//L08 TODO 4: Add a physics to an item
+
+	Timer* timerToDie;
 	PhysBody* pbody;
 	Vector2D velocity; 
 };

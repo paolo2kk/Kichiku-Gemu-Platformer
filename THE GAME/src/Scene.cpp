@@ -188,8 +188,6 @@ bool Scene::Update(float dt)
 		
 	}
 
-	CheckEntitesErase();
-
 	return true;
 }
 
@@ -304,25 +302,6 @@ void Scene::Shoot()
 	}
 	bulletList.push_back(bullet);
 }
-
-void Scene::CheckEntitesErase()
-{
-	/*for (Enemy* enemy : enemyList)
-	{
-		if (enemy->toDestroy == true)
-		{
-			enemy->isDead = true;
-		}
-	}*/
-	for (Bullet* bullet : bulletList)
-	{
-		if (bullet->toDestroy == true)
-		{
-			//Engine::GetInstance().entityManager->DestroyEntity(bullet);
-		}
-	}
-}
-
 // Called before quitting
 bool Scene::CleanUp()
 {
