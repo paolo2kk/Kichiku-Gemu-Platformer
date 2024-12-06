@@ -42,7 +42,6 @@ public:
 
 	void SetPosition(Vector2D pos);
 
-	void Shoot();
 
 	Direction GetDirection() const
 	{

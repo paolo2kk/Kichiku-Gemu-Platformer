@@ -360,25 +360,25 @@ void Physics::BeginContact(b2Contact* contact)
 	}
 }
 
-void Physics::EndContact(b2Contact* contact)
-{
-	PhysBody* physA = (PhysBody*)contact->GetFixtureA()->GetBody()->GetUserData().pointer;
-	PhysBody* physB = (PhysBody*)contact->GetFixtureB()->GetBody()->GetUserData().pointer;
-
-	if (physA && physA->listener != NULL && !IsPendingToDelete(physA)) {
-		if (physB)
-		{
-			physA->listener->OnCollisionEnd(physA, physB);
-		}
-	}
-
-	if (physB && physB->listener != NULL && !IsPendingToDelete(physB)) {
-		if (physA)
-		{
-			physB->listener->OnCollisionEnd(physB, physA);
-		}
-	}
-}
+//void Physics::EndContact(b2Contact* contact)
+//{
+//	PhysBody* physA = (PhysBody*)contact->GetFixtureA()->GetBody()->GetUserData().pointer;
+//	PhysBody* physB = (PhysBody*)contact->GetFixtureB()->GetBody()->GetUserData().pointer;
+//
+//	if (physA && physA->listener != NULL && !IsPendingToDelete(physA)) {
+//		if (physB)
+//		{
+//			physA->listener->OnCollisionEnd(physA, physB);
+//		}
+//	}
+//
+//	if (physB && physB->listener != NULL && !IsPendingToDelete(physB)) {
+//		if (physA)
+//		{
+//			physB->listener->OnCollisionEnd(physB, physA);
+//		}
+//	}
+//}
 
 void Physics::DeletePhysBody(PhysBody* physBody) {
 	bodiesToDelete.push_back(physBody);

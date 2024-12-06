@@ -183,6 +183,8 @@ private:
     SDL_Texture* BG2;
     SDL_Texture* BG3;
     SDL_Texture* BG4;
-    float BGvelx = -0.2;
-    float BGvely = 0.41;
+    float parallaxFactor1 = 0.95f;
+    float parallaxFactor2 = 0.90f;
+    float parallaxFactor3 = 0.85f;
+    float parallaxFactor4 = 0.80f;
 };

@@ -120,11 +120,7 @@ void Player::SetMass(float newMass) {
 		pbody->body->SetMassData(&massData);
 	}
 }
-void Player::Shoot()
-{
-	
-	
-}
+
 bool Player::CleanUp()
 {
 	LOG("Cleanup player");

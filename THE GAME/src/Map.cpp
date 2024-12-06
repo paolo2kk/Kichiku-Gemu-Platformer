@@ -35,11 +35,13 @@ bool Map::Update(float dt)
 {
     bool ret = true;
 
-    Engine::GetInstance().render.get()->DrawTexture(BG1, -Engine::GetInstance().render.get()->camera.x * 0.4, -Engine::GetInstance().render.get()->camera.y * BGvely);
-    Engine::GetInstance().render.get()->DrawTexture(BG2, Engine::GetInstance().render.get()->camera.x * (BGvelx + 0.01), -Engine::GetInstance().render.get()->camera.y * BGvely);
-    Engine::GetInstance().render.get()->DrawTexture(BG3, Engine::GetInstance().render.get()->camera.x * (BGvelx + 0.03), -Engine::GetInstance().render.get()->camera.y * BGvely);
-    Engine::GetInstance().render.get()->DrawTexture(BG4, Engine::GetInstance().render.get()->camera.x * (BGvelx + 0.05), -Engine::GetInstance().render.get()->camera.y * BGvely);
+    float cameraX = Engine::GetInstance().render.get()->camera.x;
+    float cameraY = Engine::GetInstance().render.get()->camera.y;
 
+    Engine::GetInstance().render.get()->DrawTexture(BG1, -cameraX * parallaxFactor1, -cameraY * parallaxFactor1);
+    Engine::GetInstance().render.get()->DrawTexture(BG2, -cameraX * parallaxFactor2, -cameraY * parallaxFactor2);
+    Engine::GetInstance().render.get()->DrawTexture(BG3, -cameraX * parallaxFactor3, -cameraY * parallaxFactor3);
+    Engine::GetInstance().render.get()->DrawTexture(BG4, -cameraX * parallaxFactor4, -cameraY * parallaxFactor4);
     if (mapLoaded) {
 
         // L07 TODO 5: Prepare the loop to draw all tiles in a layer + DrawTexture()
@@ -144,7 +146,7 @@ bool Map::Load(std::string path, std::string fileName)
     BG1 = Engine::GetInstance().textures.get()->Load("Assets/Maps/1.png");
     BG2 = Engine::GetInstance().textures.get()->Load("Assets/Maps/2.png");
     BG3 = Engine::GetInstance().textures.get()->Load("Assets/Maps/3.png");
-    BG4 = Engine::GetInstance().textures.get()->Load("Assets/Maps/5.png");
+    BG4 = Engine::GetInstance().textures.get()->Load("Assets/Maps/4.png");
 
     // Assigns the name of the map file and the path
     mapFileName = fileName;

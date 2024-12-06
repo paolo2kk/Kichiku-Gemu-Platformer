@@ -44,9 +44,9 @@ public:
 	}
 
 
-	void OnCollision(PhysBody* physA, PhysBody* physB);
+	virtual void OnCollision(PhysBody* physA, PhysBody* physB) override;
 
-	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
+	//virtual void OnCollisionEnd(PhysBody* physA, PhysBody* physB) override;
 
 public:
 

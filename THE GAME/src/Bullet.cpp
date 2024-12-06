@@ -79,7 +79,7 @@ bool Bullet::Update(float dt)
 
 bool Bullet::CleanUp()
 {
-	Engine::GetInstance().physics.get()->DeletePhysBody(pbody);
+	//Engine::GetInstance().physics.get()->DeletePhysBody(pbody);
 	return true;
 }
 
@@ -87,26 +87,28 @@ void Bullet::OnCollision(PhysBody* physA, PhysBody* physB) {
 	switch (physB->ctype)
 	{
 	case ColliderType::PLAYER:
-		LOG("Collided with player - DESTROY");
+		/*LOG("Collided with player - DESTROY");*/
 		//Engine::GetInstance().entityManager.get()->DestroyEntity(this);
 		break;
 	
 	case ColliderType::PLATFORM:
-		//Engine::GetInstance().entityManager.get()->DestroyEntity(this);
+		//Engine::GetInstance().physics.get()->DeletePhysBody(pbody);
+
+		/*Engine::GetInstance().entityManager.get()->DestroyEntity(this);*/
 	case ColliderType::ENEMY:
 		//Engine::GetInstance().entityManager.get()->DestroyEntity(this);
 		break;
 	}
 }
-void Bullet::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
-{
-	switch (physB->ctype)
-	{
-	case ColliderType::PLAYER:
-		LOG("Collision player");
-		break;
-	case ColliderType::ENEMY:
-		Engine::GetInstance().entityManager.get()->DestroyEntity(this);
-		break;
-	}
-}
+//void Bullet::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
+//{
+//	switch (physB->ctype)
+//	{
+//	case ColliderType::PLAYER:
+//		LOG("Collision player");
+//		break;
+//	case ColliderType::ENEMY:
+//		//Engine::GetInstance().entityManager.get()->DestroyEntity(this);
+//		break;
+//	}
+//}
