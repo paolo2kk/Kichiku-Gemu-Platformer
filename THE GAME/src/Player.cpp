@@ -47,6 +47,7 @@ bool Player::Start() {
 	pbody->body->SetFixedRotation(true);
 	// L08 TODO 7: Assign collider type
 	pbody->ctype = ColliderType::PLAYER;
+	pbody->body->IsBullet();
 	SetMass(20);
 	// Set the gravity of the body
 	if (!parameters.attribute("gravity").as_bool()) pbody->body->SetGravityScale(0);

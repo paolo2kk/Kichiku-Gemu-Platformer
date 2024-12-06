@@ -44,7 +44,7 @@ bool Scene::Awake()
 	}
 
 	// Create a enemy using the entity manager 
-	for (pugi::xml_node enemyNode = configParameters.child("entities").child("enemies").child("enemy"); enemyNode; enemyNode = enemyNode.next_sibling("enemy"))
+	for (pugi::xml_node enemyNode = configParameters.child("entities").child("enemies").child("enemy0"); enemyNode; enemyNode = enemyNode.next_sibling("enemy"))
 	{
 		Enemy* enemy = (Enemy*)Engine::GetInstance().entityManager->CreateEntity(EntityType::ENEMY);
 		enemy->SetParameters(enemyNode);
@@ -228,62 +228,81 @@ void Scene::LoadState() {
 	pugi::xml_document loadFile;
 	pugi::xml_parse_result result = loadFile.load_file("config.xml");
 
-	if (result == NULL)
-	{
+	if (!result) {
 		LOG("Could not load file. Pugi error: %s", result.description());
 		return;
 	}
 
 	pugi::xml_node sceneNode = loadFile.child("config").child("scene");
 
-	//Read XML and restore information
-
-	//Player position
-	Vector2D playerPos = Vector2D(sceneNode.child("entities").child("player").attribute("x").as_int(),
-		sceneNode.child("entities").child("player").attribute("y").as_int());
+	pugi::xml_node playerNode = sceneNode.child("entities").child("player");
+	Vector2D playerPos = Vector2D(
+		playerNode.attribute("x").as_int(),
+		playerNode.attribute("y").as_int()
+	);
 	player->SetPosition(playerPos);
-	
-	Vector2D enemyPos = Vector2D(sceneNode.child("entities").child("enemies").child("enemy").attribute("x").as_int(),
-		sceneNode.child("entities").child("enemies").child("enemy").attribute("y").as_int());
-	enemyList[0]->SetPosition(enemyPos);
-	//enemies
-	// ...
 
-}
+	pugi::xml_node enemiesNode = sceneNode.child("entities").child("enemies");
+	for (int i = 0; i < enemyList.size(); i++) {
+		std::string enemyNodeName = "enemy" + std::to_string(i);
 
-// L15 TODO 2: Implement the Save function
+		pugi::xml_node enemyNode = enemiesNode.child(enemyNodeName.c_str());
+		if (enemyNode) {
+			Vector2D enemyPos = Vector2D(
+				enemyNode.attribute("x").as_int(),
+				enemyNode.attribute("y").as_int()
+			);
+			enemyList[i]->SetPosition(enemyPos);
+		}
+		else {
+			LOG("Enemy node %s not found in config.xml", enemyNodeName.c_str());
+		}
+	}
+}// L15 TODO 2: Implement the Save function
 void Scene::SaveState() {
 
 	pugi::xml_document loadFile;
 	pugi::xml_parse_result result = loadFile.load_file("config.xml");
 
-	if (result == NULL)
-	{
+	if (!result) {
 		LOG("Could not load file. Pugi error: %s", result.description());
 		return;
 	}
 
 	pugi::xml_node sceneNode = loadFile.child("config").child("scene");
 
-	//Save info to XML 
-
-	//Player position
-	sceneNode.child("entities").child("player").attribute("x").set_value(player->GetPosition().getX() - player->texW/2);
-	sceneNode.child("entities").child("player").attribute("y").set_value(player->GetPosition().getY());
-	//enemies
-
-	for (int i = 0; i < enemyList.size(); i++)
-	{
-		sceneNode.child("entities").child("enemies").child("enemy").attribute("x").set_value(enemyList[i]->GetPosition().getX());
-		sceneNode.child("entities").child("enemies").child("enemy").attribute("y").set_value(enemyList[i]->GetPosition().getY());
+	pugi::xml_node playerNode = sceneNode.child("entities").child("player");
+	if (playerNode) {
+		playerNode.attribute("x").set_value(player->GetPosition().getX() - player->texW / 2);  
+		playerNode.attribute("y").set_value(player->GetPosition().getY());
 	}
-	
-	// ...
+	else {
+		playerNode = sceneNode.child("entities").append_child("player");
+		playerNode.append_attribute("x") = player->GetPosition().getX() - player->texW / 2;
+		playerNode.append_attribute("y") = player->GetPosition().getY();
+	}
 
-	//Saves the modifications to the XML 
-	loadFile.save_file("config.xml");
+	pugi::xml_node enemiesNode = sceneNode.child("entities").child("enemies");
+
+	for (int i = 0; i < enemyList.size(); i++) {
+		std::string enemyNodeName = "enemy" + std::to_string(i);
+
+		pugi::xml_node enemyNode = enemiesNode.child(enemyNodeName.c_str());
+		if (!enemyNode) {
+			enemyNode = enemiesNode.append_child(enemyNodeName.c_str());
+		}
+
+		enemyNode.append_attribute("x") = enemyList[i]->GetPosition().getX();
+		enemyNode.append_attribute("y") = enemyList[i]->GetPosition().getY();
+	}
+
+	if (!loadFile.save_file("config.xml")) {
+		LOG("Failed to save game state to file.");
+	}
+	else {
+		LOG("Game state saved successfully.");
+	}
 }
-
 void Scene::Shoot()
 {
 	Vector2D playerPos = player->GetPosition();
