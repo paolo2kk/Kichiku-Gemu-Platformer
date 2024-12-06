@@ -47,7 +47,7 @@ bool Player::Start() {
 	pbody->body->SetFixedRotation(true);
 	// L08 TODO 7: Assign collider type
 	pbody->ctype = ColliderType::PLAYER;
-
+	SetMass(2.0f);
 	// Set the gravity of the body
 	if (!parameters.attribute("gravity").as_bool()) pbody->body->SetGravityScale(0);
 
@@ -82,11 +82,17 @@ bool Player::Update(float dt)
 		currentAnimation = &walk;
 	}
 	
-	//Jump
-	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && isJumping == false) {
-		// Apply an initial upward force
-		pbody->body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpForce), true);
-		isJumping = true;
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
+		if (!isJumping) {
+			pbody->body->SetLinearVelocity(b2Vec2(velocity.x, 0)); 
+			pbody->body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpForce), true);
+			isJumping = true;
+		}
+		else if (canDJ) {
+			pbody->body->SetLinearVelocity(b2Vec2(velocity.x, 0)); 
+			pbody->body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpForce), true);
+			canDJ = false; 
+		}
 	}
 
 	// If the player is jumpling, we don't want to apply gravity, we use the current velocity prduced by the jump
@@ -105,6 +111,14 @@ bool Player::Update(float dt)
 	Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY(), &currentAnimation->GetCurrentFrame());
 	currentAnimation->Update();
 	return true;
+}
+void Player::SetMass(float newMass) {
+	if (pbody && pbody->body) {
+		b2MassData massData;
+		pbody->body->GetMassData(&massData);
+		massData.mass = newMass;
+		pbody->body->SetMassData(&massData);
+	}
 }
 void Player::Shoot()
 {
@@ -125,6 +139,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 	case ColliderType::PLATFORM:
 		LOG("Collision PLATFORM");
 		isJumping = false;
+		canDJ = true;
 		break;
 	case ColliderType::ITEM:
 		LOG("Collision ITEM");

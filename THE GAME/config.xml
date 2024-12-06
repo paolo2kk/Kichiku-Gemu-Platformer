@@ -17,7 +17,7 @@
 	<scene>
 		<map path="Assets/Maps/" name="MapTemplate.tmx" />
 		<entities>
-			<player x="442" y="464" w="64" h="64" texture="Assets/Textures/player/Idle.png" gravity="true">
+			<player x="432" y="502" w="64" h="64" texture="Assets/Textures/player/Idle.png" gravity="true">
 				<animations>
 					<idleR loop="true" speed="0.2">
 						<frame x="0" y="0" w="64" h="64" />
@@ -93,7 +93,7 @@
 				</bullet>
 			</items>
 			<enemies>
-				<enemy name="badguy" x="474" y="350" w="64" h="64" texture="Assets/Textures/enemy/Idle.png" gravity="true">
+				<enemy name="badguy" x="464" y="350" w="64" h="64" texture="Assets/Textures/enemy/Idle.png" gravity="true">
 					<animations>
 						<idle loop="true" speed="0.05">
 							<frame x="0" y="0" w="64" h="64" />

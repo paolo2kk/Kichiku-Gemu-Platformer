@@ -118,12 +118,8 @@ bool Scene::Update(float dt)
 
 	int mapLimitX = 7000;
 	int mapLimitY = 1184;
+	Engine::GetInstance().render.get()->camera.y = (-player->position.getY() * camSpeed) + WHeight / 2;
 
-	if (player->position.getY() > WHeight / (camSpeed * 2) &&
-		player->position.getY() < mapLimitY - WHeight / (camSpeed * 2))
-	{
-		Engine::GetInstance().render.get()->camera.y = (-player->position.getY() * camSpeed) + WHeight / 2;
-	}
 	if (player->position.getX() > WWidth / (camSpeed * 2) &&
 		player->position.getX() < mapLimitX - WWidth / (camSpeed * 2))
 	{
@@ -175,8 +171,8 @@ bool Scene::Update(float dt)
 
 	//If mouse button is pressed modify enemy position
 	if (Engine::GetInstance().input.get()->GetMouseButtonDown(1) == KEY_DOWN) {
-		enemyList[0]->SetPosition(Vector2D(highlightTile.getX(), highlightTile.getY()));
-		enemyList[0]->ResetPath();
+		player->SetPosition(Vector2D(highlightTile.getX(), highlightTile.getY()));
+		
 	}
 
 	CheckEntitesErase();

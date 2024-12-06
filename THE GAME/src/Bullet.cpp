@@ -94,7 +94,7 @@ void Bullet::OnCollision(PhysBody* physA, PhysBody* physB) {
 	case ColliderType::PLATFORM:
 		//Engine::GetInstance().entityManager.get()->DestroyEntity(this);
 	case ColliderType::ENEMY:
-		Engine::GetInstance().entityManager.get()->DestroyEntity(this);
+		//Engine::GetInstance().entityManager.get()->DestroyEntity(this);
 		break;
 	}
 }

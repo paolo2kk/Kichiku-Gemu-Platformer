@@ -27,6 +27,8 @@ public:
 
 	bool Update(float dt);
 
+	void SetMass(float newMass);
+
 	bool CleanUp();
 
 	// L08 TODO 6: Define OnCollision function for the player. 
@@ -64,7 +66,7 @@ public:
 
 	// L08 TODO 5: Add physics to the player - declare a Physics body
 	PhysBody* pbody;
-	float jumpForce = 7; // The force to apply when jumping
+	float jumpForce = 11; // The force to apply when jumping
 	bool isJumping = false; // Flag to check if the player is currently jumping
 
 	pugi::xml_node parameters;
@@ -75,5 +77,6 @@ public:
 	Animation right;
 	Direction direction;
 
+	bool canDJ = true;
 	bool setCheckPoint = false;
 };
