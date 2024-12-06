@@ -63,7 +63,6 @@ void Bullet::SetVelocity(Direction direction)
 bool Bullet::Update(float dt) {
 	// Decrement timer
 
-	std::cout << timerToDie;
 	// Update position
 	b2Transform pbodyPos = pbody->body->GetTransform();
 	position.setX(METERS_TO_PIXELS(pbodyPos.p.x) - texH / 2);

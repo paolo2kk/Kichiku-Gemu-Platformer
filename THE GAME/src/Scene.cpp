@@ -202,6 +202,8 @@ void Scene::SetCheckpoints()
 	if (player->setCheckPoint)
 	{
 		SaveState();
+
+
 	}
 }
 
@@ -240,7 +242,10 @@ void Scene::LoadState() {
 	Vector2D playerPos = Vector2D(sceneNode.child("entities").child("player").attribute("x").as_int(),
 		sceneNode.child("entities").child("player").attribute("y").as_int());
 	player->SetPosition(playerPos);
-
+	
+	Vector2D enemyPos = Vector2D(sceneNode.child("entities").child("enemies").child("enemy").attribute("x").as_int(),
+		sceneNode.child("entities").child("enemies").child("enemy").attribute("y").as_int());
+	enemyList[0]->SetPosition(enemyPos);
 	//enemies
 	// ...
 
@@ -266,9 +271,13 @@ void Scene::SaveState() {
 	sceneNode.child("entities").child("player").attribute("x").set_value(player->GetPosition().getX() - player->texW/2);
 	sceneNode.child("entities").child("player").attribute("y").set_value(player->GetPosition().getY());
 	//enemies
-	sceneNode.child("entities").child("enemies").child("enemy").attribute("x").set_value(player->GetPosition().getX() - 32);
-	sceneNode.child("entities").child("enemies").child("enemy").attribute("x").set_value(player->GetPosition().getX());
 
+	for (int i = 0; i < enemyList.size(); i++)
+	{
+		sceneNode.child("entities").child("enemies").child("enemy").attribute("x").set_value(enemyList[i]->GetPosition().getX());
+		sceneNode.child("entities").child("enemies").child("enemy").attribute("y").set_value(enemyList[i]->GetPosition().getY());
+	}
+	
 	// ...
 
 	//Saves the modifications to the XML 

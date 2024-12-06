@@ -282,6 +282,7 @@ bool Map::Load(std::string path, std::string fileName)
 
             std::string objectLayerName = objectGroupNode.attribute("name").as_string();
 
+            ColliderType colliderType = ColliderType::PLATFORM;
 
 
             for (pugi::xml_node objectNode = objectGroupNode.child("object"); objectNode != NULL; objectNode = objectNode.next_sibling("object")) {
@@ -298,7 +299,7 @@ bool Map::Load(std::string path, std::string fileName)
                     bodyType::STATIC
                 );
 
-                platform->ctype = ColliderType::PLATFORM;
+                platform->ctype = colliderType;
             }
         }
         ret = true;

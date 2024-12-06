@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="95" height="30" tilewidth="64" tileheight="64" infinite="0" nextlayerid="18" nextobjectid="178">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="95" height="30" tilewidth="64" tileheight="64" infinite="0" nextlayerid="18" nextobjectid="184">
  <tileset firstgid="1" name="tmw_desert_spacing" tilewidth="32" tileheight="32" spacing="1" margin="1" tilecount="48" columns="8">
   <image source="tmw_desert_spacing.png" width="265" height="199"/>
   <tile id="30">
@@ -1867,7 +1867,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="238"/>
+   <tile gid="240"/>
    <tile gid="236"/>
    <tile gid="236"/>
    <tile gid="236"/>
@@ -1962,7 +1962,7 @@
    <tile/>
    <tile/>
    <tile gid="240"/>
-   <tile gid="238"/>
+   <tile gid="236"/>
    <tile/>
    <tile/>
    <tile/>
@@ -5298,10 +5298,10 @@
    <tile gid="240"/>
    <tile/>
    <tile/>
+   <tile gid="240"/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="240"/>
    <tile/>
    <tile/>
    <tile/>
@@ -5393,10 +5393,10 @@
    <tile gid="236"/>
    <tile gid="240"/>
    <tile/>
+   <tile gid="236"/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="240"/>
+   <tile gid="236"/>
    <tile/>
    <tile/>
    <tile/>
@@ -5490,7 +5490,7 @@
    <tile/>
    <tile/>
    <tile gid="240"/>
-   <tile/>
+   <tile gid="236"/>
    <tile/>
    <tile/>
    <tile/>
@@ -8738,6 +8738,7 @@
   <object id="125" x="1088.98" y="1270.23" width="61.6667" height="9"/>
   <object id="126" x="832.258" y="1206.59" width="254.758" height="9"/>
   <object id="127" x="1280.92" y="1270.75" width="61.6667" height="9"/>
+  <object id="182" x="1280.92" y="1270.75" width="61.6667" height="9"/>
   <object id="128" x="1408.42" y="1142.25" width="190.917" height="9"/>
   <object id="129" x="1601.17" y="1206.25" width="61.6667" height="9"/>
   <object id="130" x="1728.42" y="1142.5" width="190.417" height="9"/>
@@ -8770,6 +8771,10 @@
   <object id="170" x="5090" y="1113" width="29" height="167"/>
   <object id="171" x="5481" y="1113" width="22" height="166"/>
   <object id="172" x="0" y="128" width="64" height="64"/>
+  <object id="179" x="1601" y="1590" width="61.6667" height="9"/>
+  <object id="180" x="1729" y="1654" width="61.6667" height="9"/>
+  <object id="181" x="1793" y="1590" width="61.6667" height="9"/>
+  <object id="183" x="1345" y="1207" width="61.6667" height="9"/>
  </objectgroup>
  <objectgroup id="12" name="Platforms"/>
  <layer id="7" name="Navigation" width="95" height="30" visible="0">
