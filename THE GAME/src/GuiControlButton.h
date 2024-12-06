@@ -13,11 +13,14 @@ public:
 
 	// Called each loop iteration
 	bool Update(float dt);
-
+	bool isLayout = false;
 private:
 
 	bool canClick = true;
+	bool isLayoutSet = false;
 	bool drawBasic = false;
+	SDL_Texture* layoutUI;
+	
 };
 
 #pragma once

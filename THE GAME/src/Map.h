@@ -178,7 +178,8 @@ private:
     bool mapLoaded;
     // L06: DONE 1: Declare a variable data of the struct MapData
     MapData mapData;
-   
+    SDL_Texture* BG;
+
     SDL_Texture* BG1;
     SDL_Texture* BG2;
     SDL_Texture* BG3;
@@ -187,4 +188,5 @@ private:
     float parallaxFactor2 = 0.90f;
     float parallaxFactor3 = 0.85f;
     float parallaxFactor4 = 0.80f;
+
 };

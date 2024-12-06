@@ -78,7 +78,10 @@ public:
 
 	int WWidth;
 	int WHeight;
+	float offsetX = 350;
+	float offsetY = 450;
 
 	GuiControlButton* guiBt;
+	GuiControlButton* layout;
 
 };

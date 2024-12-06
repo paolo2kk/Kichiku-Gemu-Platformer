@@ -76,6 +76,7 @@ public:
 
 	// Create basic physics objects
 	PhysBody* CreateRectangle(int x, int y, int width, int height, bodyType type);
+	PhysBody* CreateTriangle(int x, int y, b2Vec2 v1, b2Vec2 v2, b2Vec2 v3, bodyType type);
 	PhysBody* CreateCircle(int x, int y, int radious, bodyType type);
 	PhysBody* CreateRectangleSensor(int x, int y, int width, int height, bodyType type);
 	PhysBody* CreateChain(int x, int y, int* points, int size, bodyType type);

@@ -92,7 +92,12 @@ bool Render::CleanUp()
 
 void Render::SetBackgroundColor(SDL_Color color)
 {
-	background = color;
+	SDL_Color colorBG;
+	colorBG.a = 255;
+	colorBG.r = 162;
+	colorBG.g = 211;
+	colorBG.b = 243;
+	background = colorBG;
 }
 
 void Render::SetViewPort(const SDL_Rect& rect)

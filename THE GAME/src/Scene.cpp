@@ -68,8 +68,13 @@ bool Scene::Awake()
 		bulletParameters = bulletNode;
 	}
 
+
 	SDL_Rect btPos = { 520, 350, 120,20 };
-	guiBt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "MyButton", btPos, this);
+
+	//guiBt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "MyButton", btPos, this);
+	SDL_Rect layoutBounds = { 0, 0, WWidth, WHeight }; 
+	layout = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "Layout", layoutBounds, this);
+	layout->isLayout = true; // Mark as layout
 
 	return ret;
 }
@@ -119,12 +124,20 @@ bool Scene::Update(float dt)
 	int mapLimitX = 7000;
 	int mapLimitY = 1184;
 	Engine::GetInstance().render.get()->camera.y = (-player->position.getY() * camSpeed) + WHeight / 2;
+	layout->bounds.x = -Engine::GetInstance().render->camera.x; 
+	layout->bounds.y = -Engine::GetInstance().render->camera.y; 
+	layout->bounds.w = WWidth;                                  
+	layout->bounds.h = WHeight;                                 
 
-	if (player->position.getX() > WWidth / (camSpeed * 2) &&
+	/*if (player->position.getX() > WWidth / (camSpeed * 2) &&
 		player->position.getX() < mapLimitX - WWidth / (camSpeed * 2))
-	{
-		Engine::GetInstance().render.get()->camera.x = Slower(Engine::GetInstance().render.get()->camera.x, (-player->position.getX() * camSpeed) + WWidth / 2, 0.2f);
-	}
+	{*/
+	Engine::GetInstance().render.get()->camera.x =
+		Slower(Engine::GetInstance().render.get()->camera.x, (-player->position.getX() * camSpeed) + WWidth / 2 - offsetX, 0.2f);
+
+	Engine::GetInstance().render.get()->camera.y =
+		Slower(Engine::GetInstance().render.get()->camera.y, (-player->position.getY() * camSpeed) + WHeight / 2 - offsetY, 0.2f);	
+	/*}*/
 
 	WindowManipulation(dt);
 

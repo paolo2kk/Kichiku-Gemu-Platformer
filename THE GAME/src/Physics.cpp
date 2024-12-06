@@ -94,7 +94,39 @@ PhysBody* Physics::CreateRectangle(int x, int y, int width, int height, bodyType
 
 	return pbody;
 }
+PhysBody* Physics::CreateTriangle(int x, int y, b2Vec2 v1, b2Vec2 v2, b2Vec2 v3, bodyType type)
+{
+	b2BodyDef body;
 
+	if (type == DYNAMIC) body.type = b2_dynamicBody;
+	if (type == STATIC) body.type = b2_staticBody;
+	if (type == KINEMATIC) body.type = b2_kinematicBody;
+
+	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
+
+	b2Body* b = world->CreateBody(&body);
+
+	b2Vec2 vertices[3];
+	vertices[0] = { PIXEL_TO_METERS(v1.x), PIXEL_TO_METERS(v1.y) };
+	vertices[1] = { PIXEL_TO_METERS(v2.x), PIXEL_TO_METERS(v2.y) };
+	vertices[2] = { PIXEL_TO_METERS(v3.x), PIXEL_TO_METERS(v3.y) };
+
+	b2PolygonShape triangleShape;
+	triangleShape.Set(vertices, 3);
+
+	b2FixtureDef fixture;
+	fixture.shape = &triangleShape;
+	fixture.density = 1.0f; 
+	b->ResetMassData();
+
+	b->CreateFixture(&fixture);
+
+	PhysBody* pbody = new PhysBody();
+	pbody->body = b;
+	b->GetUserData().pointer = (uintptr_t)pbody;
+
+	return pbody;
+}
 PhysBody* Physics::CreateCircle(int x, int y, int radious, bodyType type)
 {
 	// Create BODY at position x,y
