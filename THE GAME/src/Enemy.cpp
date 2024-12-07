@@ -52,96 +52,74 @@ bool Enemy::Start() {
 	pathfinding = new Pathfinding();
 	ResetPath();
 
+	showPath = true;
+
 
 	return true;
 }
 
 bool Enemy::Update(float dt)
 {
-
-
+	
 	Player* player = Engine::GetInstance().scene.get()->player;
-
-	if (player != nullptr) {
-		CheckCollisionWithPlayer(player);
-	}
 
 	if (isDead) {
 		Engine::GetInstance().entityManager.get()->DestroyEntity(this);
 		return false;
 	}
 
-
-
-	/*
-	timeSinceDirectionChange += dt;
-
-
-	if (timeSinceDirectionChange >= directionChangeInterval) {
-		movementDirection *= -1;
-		timeSinceDirectionChange = 0.0f;
-	}
-
-	timeSinceLastJump += dt;
-
-
-	if (timeSinceLastJump >= jumpInterval) {
-
-		b2Vec2 jumpImpulse = b2Vec2(0.0f, jumpForce);
-		pbody->body->ApplyLinearImpulseToCenter(jumpImpulse, true);
-
-
-		timeSinceLastJump = 0.0f;
-	}*/
-
+	
 	if (!isDead) {
+		
+		Vector2D playerPos = player->GetPosition();
+		Vector2D enemyPos = GetPosition();
 
-		b2Vec2 velocity = b2Vec2(0, 0);
-		if (buscando <= 20)
-		{
-			pathfinding->PropagateAStar(EUCLIDEAN);
-			buscando++;
+		float distanceX = abs(playerPos.getX() - enemyPos.getX());
+		float distanceY = abs(playerPos.getY() - enemyPos.getY());
+
+		
+		const int blockSize = 32; 
+		float maxDistance = 10 * blockSize; 
+
+		if (distanceX <= maxDistance && distanceY <= maxDistance) {
+			
+			if (buscando <= 20) {
+				pathfinding->PropagateAStar(EUCLIDEAN);
+				buscando++;
+			}
+			else {
+				Vector2D tilePos = Engine::GetInstance().map.get()->WorldToMap(enemyPos.getX(), enemyPos.getY());
+				pathfinding->ResetPath(tilePos);
+				buscando = 0;
+			}
+
+			
+			if (pathfinding->pathTiles.size() > 0) {
+				Vector2D nextTile = pathfinding->pathTiles.front();
+				Vector2D nextPos = Engine::GetInstance().map->MapToWorld(nextTile.getX(), nextTile.getY());
+				Vector2D dir = nextPos - enemyPos;
+				dir.normalized();
+
+				float velocidad = 0.03f; 
+				b2Vec2 velocity = b2Vec2(dir.getX() * velocidad, 0);
+
+				pbody->body->SetLinearVelocity(velocity);
+			}
+			else {
+				pbody->body->SetLinearVelocity(b2Vec2(0, 0));
+			}
 		}
-		else
-		{
-			Vector2D pos = GetPosition();
-			Vector2D tilePos = Engine::GetInstance().map.get()->WorldToMap(pos.getX(), pos.getY());
-			pathfinding->ResetPath(tilePos);
-			buscando = 0;
+		else {
+			pbody->body->SetLinearVelocity(b2Vec2(0, 0));
 		}
-
-		Vector2D PosInMap = Engine::GetInstance().map->WorldToMap(position.getX(), position.getY());
-
-		//if pathfinding is done, move the next tile, make it slower
-		if (pathfinding->pathTiles.size() > 0)
-		{
-			Vector2D nextTile = pathfinding->pathTiles.front();
-			Vector2D nextPos = Engine::GetInstance().map->MapToWorld(nextTile.getX(), nextTile.getY());
-			Vector2D dir = nextPos - position;
-			dir.normalized();
-
-
-			float velocidad = 0.03f;
-			velocity = b2Vec2(dir.getX() * velocidad, 0);
-
-			pbody->body->SetLinearVelocity(velocity);
-		}
-
-
-		b2Vec2 bodyPos = pbody->body->GetTransform().p;
-		bodyPos.x += PIXEL_TO_METERS(2.0f * movementDirection);
-		pbody->body->SetTransform(bodyPos, pbody->body->GetAngle());
-
 
 		b2Transform pbodyPos = pbody->body->GetTransform();
 		position.setX(METERS_TO_PIXELS(pbodyPos.p.x) - texH / 2);
 		position.setY(METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2);
 
-
 		Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY(), &currentAnimation->GetCurrentFrame());
 		currentAnimation->Update();
 
-		//haz que si pulsas F1 se muestre el pathfinding en el mapa y si esta activado y le das al F1 se desactive
 		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		{
 			if (showPath)
@@ -149,19 +127,17 @@ bool Enemy::Update(float dt)
 				showPath = false;
 			}
 			else
-			showPath = true;
+				showPath = true;
 		}
-		if (showPath) 
+		if (showPath)
 		{
 			pathfinding->DrawPath();
 		}
-		
-
-
-		return true;
 	}
-	
+
+	return true;
 }
+
 
 
 bool Enemy::CleanUp()
@@ -189,7 +165,7 @@ void Enemy::ResetPath() {
 	pathfinding->ResetPath(tilePos);
 }
 
-void Enemy::CheckCollisionWithPlayer(Player* player)
+/*void Enemy::CheckCollisionWithPlayer(Player* player)
 {
 	
 	Vector2D playerPos = player->GetPosition();
@@ -201,7 +177,7 @@ void Enemy::CheckCollisionWithPlayer(Player* player)
 	int enemyHeight = this->texH;
 
 	
-	bool isCollidingHorizontally = (playerPos.getX() + playerWidth/2 > enemyPos.getX() &&
+	bool isCollidingHorizontally = (playerPos.getX() + playerWidth > enemyPos.getX() &&
 		playerPos.getX() < enemyPos.getX() + enemyWidth);
 
 	
@@ -216,7 +192,7 @@ void Enemy::CheckCollisionWithPlayer(Player* player)
 		player->Bounce();
 	}
 }
-
+*/
 
 
 void Enemy::Die()
@@ -228,15 +204,28 @@ void Enemy::Die()
 }
 
 void Enemy::OnCollision(PhysBody* physA, PhysBody* physB) {
-	switch (physB->ctype)
-	{
+	switch (physB->ctype) {
 	case ColliderType::PLAYER:
-		LOG("Collided with player - DESTROY");
-		//Engine::GetInstance().entityManager.get()->DestroyEntity(this);
+	{
+		Player* player = dynamic_cast<Player*>(physB->listener);
+		if (player != nullptr) {
+			Vector2D playerPos = player->GetPosition();
+			Vector2D enemyPos = GetPosition();
+
+			if (playerPos.getY() + player->texH / 2 <= enemyPos.getY()) {
+				LOG("Player is on top of the enemy. Enemy will be destroyed.");
+				this->isDead = true;
+				player->Bounce();   
+			}
+		}
 		break;
+	}
 	case ColliderType::BULLET:
 		LOG("Collided with Bullet");
 		Engine::GetInstance().entityManager.get()->DestroyEntity(this);
+		break;
+
+	default:
 		break;
 	}
 }

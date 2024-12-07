@@ -43,57 +43,65 @@ bool EnemyInClass::Start() {
 }
 bool EnemyInClass::Update(float dt)
 {
-	b2Vec2 velocity = b2Vec2(0, 0);
-	if (buscando <= 20)
-	{
-		pathfinding->PropagateAStar(EUCLIDEAN);
-		buscando++;
-	}
-	else
-	{
-		Vector2D pos = GetPosition();
-		Vector2D tilePos = Engine::GetInstance().map.get()->WorldToMap(pos.getX(), pos.getY());
-		pathfinding->ResetPath(tilePos);
-		buscando = 0;
-	}
+    Player* player = Engine::GetInstance().scene.get()->player;
 
-	Vector2D PosInMap = Engine::GetInstance().map->WorldToMap(position.getX(), position.getY());
+    if (!player) return true;
 
-	//if pathfinding is done, move the next tile, make it slower
-	if (pathfinding->pathTiles.size() > 0)
-	{
-		Vector2D nextTile = pathfinding->pathTiles.front();
-		Vector2D nextPos = Engine::GetInstance().map->MapToWorld(nextTile.getX(), nextTile.getY());
-		Vector2D dir = nextPos - position;
-		dir.normalized();
+    Vector2D playerPos = player->GetPosition();
+    Vector2D enemyPos = GetPosition();
 
-		
-		float velocidad = 0.02f; 
-		velocity = b2Vec2(dir.getX() * velocidad, dir.getY() * velocidad);
+    float distanceX = abs(playerPos.getX() - enemyPos.getX());
+    float distanceY = abs(playerPos.getY() - enemyPos.getY());
 
-		pbody->body->SetLinearVelocity(velocity);
-	}
-	// L08 TODO 4: Add a physics to an item - update the position of the object from the physics.  
-	b2Transform pbodyPos = pbody->body->GetTransform();
-	position.setX(METERS_TO_PIXELS(pbodyPos.p.x) - texH / 2);
-	position.setY(METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2);
-	Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY(), &currentAnimation->GetCurrentFrame());
-	currentAnimation->Update();
-	// Draw pathfinding 
-	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
-	{
-		if (showPath)
-		{
-			showPath = false;
-		}
-		else
-			showPath = true;
-	}
-	if (showPath)
-	{
-		pathfinding->DrawPath();
-	}
-	return true;
+    const int blockSize = 32; 
+    float maxDistance = 10 * blockSize; 
+
+    if (distanceX <= maxDistance && distanceY <= maxDistance) {
+        if (buscando <= 20) {
+            pathfinding->PropagateAStar(EUCLIDEAN);
+            buscando++;
+        }
+        else {
+            Vector2D tilePos = Engine::GetInstance().map.get()->WorldToMap(enemyPos.getX(), enemyPos.getY());
+            pathfinding->ResetPath(tilePos);
+            buscando = 0;
+        }
+
+        if (pathfinding->pathTiles.size() > 0) {
+            Vector2D nextTile = pathfinding->pathTiles.front();
+            Vector2D nextPos = Engine::GetInstance().map->MapToWorld(nextTile.getX(), nextTile.getY());
+            Vector2D dir = nextPos - enemyPos;
+            dir.normalized();
+
+            float velocidad = 0.02f; 
+            b2Vec2 velocity = b2Vec2(dir.getX() * velocidad, dir.getY() * velocidad);
+
+            pbody->body->SetLinearVelocity(velocity);
+        }
+        else {
+            pbody->body->SetLinearVelocity(b2Vec2(0, 0));
+        }
+    }
+    else {
+        pbody->body->SetLinearVelocity(b2Vec2(0, 0));
+    }
+
+    b2Transform pbodyPos = pbody->body->GetTransform();
+    position.setX(METERS_TO_PIXELS(pbodyPos.p.x) - texH / 2);
+    position.setY(METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2);
+
+    Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY(), &currentAnimation->GetCurrentFrame());
+    currentAnimation->Update();
+
+    // Control para mostrar el pathfinding en el mapa con F1
+    if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) {
+        showPath = !showPath;
+    }
+    if (showPath) {
+        pathfinding->DrawPath();
+    }
+
+    return true;
 }
 bool EnemyInClass::CleanUp()
 {
