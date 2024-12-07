@@ -282,8 +282,17 @@ bool Map::Load(std::string path, std::string fileName)
 
             std::string objectLayerName = objectGroupNode.attribute("name").as_string();
 
-            ColliderType colliderType = ColliderType::PLATFORM;
+            ColliderType colliderType = ColliderType::PLATFORM;  
 
+            for (pugi::xml_node propertyNode = objectGroupNode.child("properties").child("property"); propertyNode != NULL; propertyNode = propertyNode.next_sibling("property")) {
+                std::string propertyName = propertyNode.attribute("name").as_string();
+                std::string propertyValue = propertyNode.attribute("value").as_string();
+
+                if (propertyName == "type" && propertyValue == "triangle") {
+                    colliderType = ColliderType::UNKNOWN;  
+                    break; 
+                }
+            }
 
             for (pugi::xml_node objectNode = objectGroupNode.child("object"); objectNode != NULL; objectNode = objectNode.next_sibling("object")) {
                 Vector2D position;
@@ -292,18 +301,56 @@ bool Map::Load(std::string path, std::string fileName)
                 float width = objectNode.attribute("width").as_float();
                 float height = objectNode.attribute("height").as_float();
 
-                PhysBody* platform = Engine::GetInstance().physics->CreateRectangle(
-                    position.getX() + width / 2,
-                    position.getY() + height / 2,
-                    width, height,
-                    bodyType::STATIC
-                );
+                if (colliderType == ColliderType::UNKNOWN) {
+                    std::string polylinePoints = objectNode.child("polyline").attribute("points").as_string();
 
-                platform->ctype = colliderType;
+                    float objectX = position.getX(); 
+                    float objectY = position.getY(); 
+
+                    size_t start = 0;
+                    size_t end = polylinePoints.find(" ");
+                    std::vector<b2Vec2> vertices;
+
+                    while (end != std::string::npos) {
+                        std::string point = polylinePoints.substr(start, end - start);
+                        size_t commaPos = point.find(",");
+                        float x = std::stof(point.substr(0, commaPos));  
+                        float y = std::stof(point.substr(commaPos + 1)); 
+
+                        vertices.push_back(b2Vec2(objectX + x, objectY + y));
+
+                        start = end + 1;
+                        end = polylinePoints.find(" ", start);
+                    }
+
+                    if (vertices.size() == 3) {
+                        b2Vec2 v1 = vertices[0]; 
+                        b2Vec2 v2 = vertices[1]; 
+                        b2Vec2 v3 = vertices[2]; 
+
+                        PhysBody* triangle = Engine::GetInstance().physics->CreateTriangle(
+                            0,
+                            0,
+                            v1, v2, v3, bodyType::STATIC
+                        );
+
+                        triangle->ctype = ColliderType::UNKNOWN;  
+                    }
+                }
+                else {
+                    PhysBody* platform = Engine::GetInstance().physics->CreateRectangle(
+                        position.getX() + width / 2,
+                        position.getY() + height / 2,
+                        width, height,
+                        bodyType::STATIC
+                    );
+
+                    platform->ctype = colliderType;
+                }
             }
         }
         ret = true;
-
+        
         // L06: TODO 5: LOG all the data loaded iterate all tilesetsand LOG everything
         if (ret == true)
         {

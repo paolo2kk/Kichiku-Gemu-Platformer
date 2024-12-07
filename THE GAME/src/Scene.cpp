@@ -187,7 +187,6 @@ bool Scene::Update(float dt)
 		player->SetPosition(Vector2D(highlightTile.getX(), highlightTile.getY()));
 		
 	}
-
 	return true;
 }
 
@@ -310,8 +309,8 @@ void Scene::Shoot()
 	Bullet* bullet = (Bullet*)Engine::GetInstance().entityManager->CreateEntity(EntityType::BULLET);
 	bullet->SetParameters(bulletParameters);
 	bullet->Start();
-	Vector2D Offset = { 65, 16 };
-	Vector2D Offset2 = { -65, 16 };
+	Vector2D Offset = { 65, 0 };
+	Vector2D Offset2 = { -65, 0 };
 
 	if (player->GetDirection() == Direction::RIGHT)
 	{

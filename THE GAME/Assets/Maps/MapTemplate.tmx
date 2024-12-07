@@ -8705,6 +8705,7 @@
  <objectgroup id="17" name="TriangleColliders">
   <properties>
    <property name="Draw" type="bool" value="true"/>
+   <property name="type" value="triangle"/>
   </properties>
   <object id="152" x="0" y="256">
    <polyline points="0,0 0,-64 63,-32 0,0"/>
@@ -8722,6 +8723,7 @@
  <objectgroup id="8" name="Floor">
   <properties>
    <property name="Draw" type="bool" value="false"/>
+   <property name="type" value="rectangle"/>
   </properties>
   <object id="103" x="256" y="1014.5" width="317.5" height="7.5"/>
   <object id="112" x="704.333" y="1078.33" width="61.6667" height="9"/>
@@ -8776,7 +8778,11 @@
   <object id="181" x="1793" y="1590" width="61.6667" height="9"/>
   <object id="183" x="1345" y="1207" width="61.6667" height="9"/>
  </objectgroup>
- <objectgroup id="12" name="Platforms"/>
+ <objectgroup id="12" name="Platforms">
+  <properties>
+   <property name="type" value="rectangle"/>
+  </properties>
+ </objectgroup>
  <layer id="7" name="Navigation" width="95" height="30" visible="0">
   <properties>
    <property name="Draw" type="bool" value="false"/>
