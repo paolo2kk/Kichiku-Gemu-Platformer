@@ -334,7 +334,7 @@ bool Map::Load(std::string path, std::string fileName)
                             v1, v2, v3, bodyType::STATIC
                         );
 
-                        triangle->ctype = ColliderType::UNKNOWN;  
+                        triangle->ctype = ColliderType::UNKNOWN;
                     }
                 }
                 else {
