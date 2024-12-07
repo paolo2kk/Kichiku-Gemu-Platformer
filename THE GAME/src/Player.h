@@ -62,6 +62,11 @@ public:
 	float maxHoldTime = 1.0f;
 	//Audio fx
 	int pickCoinFxId;
+	int jumpFxId;     
+	int stepFxId;     
+	int shootFxId;   
+	
+
 
 	// L08 TODO 5: Add physics to the player - declare a Physics body
 	PhysBody* pbody;
@@ -78,4 +83,5 @@ public:
 
 	bool canDJ = true;
 	bool setCheckPoint = false;
+	bool isWalking = false;
 };

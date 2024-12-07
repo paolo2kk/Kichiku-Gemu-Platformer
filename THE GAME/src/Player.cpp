@@ -13,6 +13,7 @@ Player::Player() : Entity(EntityType::PLAYER)
 {
 	name = "Player";
 	direction = Direction::RIGHT;
+	isWalking = false;
 }
 
 Player::~Player() {
@@ -55,6 +56,10 @@ bool Player::Start() {
 
 	//initialize audio effect
 	pickCoinFxId = Engine::GetInstance().audio.get()->LoadFx("Assets/Audio/Fx/retro-video-game-coin-pickup-38299.ogg");
+	jumpFxId = Engine::GetInstance().audio.get()->LoadFx("Assets/Audio/Fx/jump.wav");
+	stepFxId = Engine::GetInstance().audio.get()->LoadFx("Assets/Audio/Fx/step.ogg");
+	shootFxId = Engine::GetInstance().audio.get()->LoadFx("Assets/Audio/Fx/shoot.ogg");
+	
 
 	return true;
 }
@@ -74,34 +79,55 @@ bool Player::Update(float dt)
 		velocity.x = -0.2 * 16;
 		direction = Direction::LEFT;
 		currentAnimation = &right;
+		if (!isWalking) {
+			Engine::GetInstance().audio.get()->PlayFx(stepFxId);
+			isWalking = true;
+		}
 	}
 
 	// Move right
 	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 		velocity.x = 0.2 * 16;      
 		direction = Direction::RIGHT;
-
 		currentAnimation = &walk;
+		if (!isWalking) {
+			Engine::GetInstance().audio.get()->PlayFx(stepFxId);
+			isWalking = true;
+		}
 	}
 	
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) != KEY_REPEAT &&
+		Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_D) != KEY_REPEAT) {
+		isWalking = false;
+	}
+
 	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
 		if (!isJumping) {
 			pbody->body->SetLinearVelocity(b2Vec2(velocity.x, 0)); 
 			pbody->body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpForce), true);
+			Engine::GetInstance().audio.get()->PlayFx(jumpFxId);
 			isJumping = true;
 		}
 		else if (canDJ) {
 			pbody->body->SetLinearVelocity(b2Vec2(velocity.x, 0)); 
 			pbody->body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpForce), true);
+			Engine::GetInstance().audio.get()->PlayFx(jumpFxId);
 			canDJ = false; 
 		}
 	}
+
+
 
 	// If the player is jumpling, we don't want to apply gravity, we use the current velocity prduced by the jump
 	if(isJumping == true)
 	{
 		velocity.y = pbody->body->GetLinearVelocity().y;
 	}
+
+	// Shoot
+	if (Engine::GetInstance().input.get()->GetKeyDown(SDL_SCANCODE_P) == KEY_DOWN) {
+		Engine::GetInstance().audio.get()->PlayFx(shootFxId);
+	}  
 
 	// Apply the velocity to the player	
 	pbody->body->SetLinearVelocity(velocity);
