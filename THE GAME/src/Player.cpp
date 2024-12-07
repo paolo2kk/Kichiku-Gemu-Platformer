@@ -38,6 +38,7 @@ bool Player::Start() {
 	currentAnimation = &idleR; 
 	walk.LoadAnimations(parameters.child("animations").child("walk"));
 	right.LoadAnimations(parameters.child("animations").child("right"));
+	idleL.LoadAnimations(parameters.child("animations").child("idleL"));
 
 	// L08 TODO 5: Add physics to the player - initialize physics body
 	pbody = Engine::GetInstance().physics.get()->CreateRectangle((int)position.getX(), (int)position.getY(), texW - texW/1.5 , texH - texH/4.5, bodyType::DYNAMIC);
@@ -60,7 +61,7 @@ bool Player::Start() {
 
 bool Player::Update(float dt)
 {
-	currentAnimation = &idleR;
+	currentAnimation = (direction == Direction::LEFT) ? &idleL : &idleR;
 	// L08 TODO 5: Add physics to the player - updated player position using physics
 	b2Vec2 velocity = b2Vec2(0, pbody->body->GetLinearVelocity().y);
 
