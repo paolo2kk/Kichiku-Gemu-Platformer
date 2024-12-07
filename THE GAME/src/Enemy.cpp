@@ -64,6 +64,7 @@ bool Enemy::Update(float dt)
 	Player* player = Engine::GetInstance().scene.get()->player;
 
 	if (isDead) {
+		Engine::GetInstance().scene.get()->enemyList.erase(std::remove(Engine::GetInstance().scene.get()->enemyList.begin(), Engine::GetInstance().scene.get()->enemyList.end(), this), Engine::GetInstance().scene.get()->enemyList.end());
 		Engine::GetInstance().entityManager.get()->DestroyEntity(this);
 		return false;
 	}
