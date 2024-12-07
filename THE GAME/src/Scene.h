@@ -54,6 +54,7 @@ public:
 
 	void WindowManipulation(float dt);
 
+
 public:
 	// Get tilePosDebug value
 	std::string GetTilePosDebug() {
