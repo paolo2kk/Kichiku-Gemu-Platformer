@@ -65,12 +65,14 @@ bool Scene::Awake()
 		enemy1->SetParameters(enemyNode1);
 	}
 
-	for (pugi::xml_node enemyNode1 = configParameters.child("entities").child("enemies").child("murcielago"); enemyNode1; enemyNode1 = enemyNode1.next_sibling("murcielago"))
+	for (pugi::xml_node enemyNode1 = configParameters.child("entities").child("enemies").child("spring1"); enemyNode1; enemyNode1 = enemyNode1.next_sibling("spring1"))
 	{
-		Spring* springEnemy1 = (Spring*)Engine::GetInstance().entityManager->CreateEntity(EntityType::ENEMYBFS);
+		Spring* springEnemy1 = (Spring*)Engine::GetInstance().entityManager->CreateEntity(EntityType::SPRINGENEMY);
 		springEnemy1->SetParameters(enemyNode1);
-	}
 
+		springEnemyList.push_back(springEnemy1);
+	}
+	
 
 	for (pugi::xml_node bulletNode = configParameters.child("entities").child("items").child("bullet"); bulletNode; bulletNode = bulletNode.next_sibling("enemy"))
 	{
@@ -152,6 +154,8 @@ bool Scene::Update(float dt)
 
 	WindowManipulation(dt);
 
+	SpringEnemyThings();
+
 	SetCheckpoints();
 
 	if(Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
@@ -199,6 +203,14 @@ bool Scene::Update(float dt)
 		
 	}
 	return true;
+}
+
+void Scene::SpringEnemyThings()
+{
+	for (Spring* spring : springEnemyList)
+	{
+		if (player->GetDirection() == Direction::RIGHT)	spring->movementDirection = 1; else spring->movementDirection = -1;
+	}
 }
 
 void Scene::SetCheckpoints()

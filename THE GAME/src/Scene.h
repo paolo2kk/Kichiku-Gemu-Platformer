@@ -32,6 +32,8 @@ public:
 	// Called each loop iteration
 	bool Update(float dt);
 
+	void SpringEnemyThings();
+
 	float Slower(float ogPos, float goalPos, float time);
 
 	void SetCheckpoints();

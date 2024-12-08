@@ -3,6 +3,7 @@
 #include "SDL2/SDL.h"
 #include "Animation.h"
 #include "Pathfinding.h"
+
 struct SDL_Texture;
 class Spring : public Entity
 {
@@ -23,9 +24,15 @@ public:
 	void OnCollision(PhysBody* physA, PhysBody* physB);
 
 	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
+	int movementDirection = -1;
 
 public:
 private:
+
+	float timeSinceLastJump = 0;
+	int jumpForce = 100;
+	int movementDirectionCoefficient = 50;
+
 	SDL_Texture* texture;
 	const char* texturePath;
 	int texW, texH;
@@ -36,10 +43,9 @@ private:
 	Pathfinding* pathfinding;
 
 	int buscando = 0;
-	bool showPath = true;
+	bool showPath = false;
 
 	bool isDead = false;
-	
 	States stat = States::WALKING_R;
 
 };
