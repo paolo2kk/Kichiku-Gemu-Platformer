@@ -12,6 +12,7 @@ enum class EntityType
 	UNKNOWN,
 	BULLET,
 	SPRINGENEMY,
+	BOO,
 	CHECKPOINT
 };
 

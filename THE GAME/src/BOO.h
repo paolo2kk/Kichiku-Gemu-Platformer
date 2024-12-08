@@ -3,13 +3,13 @@
 #include "SDL2/SDL.h"
 #include "Animation.h"
 #include "Pathfinding.h"
-
+#include "Player.h"
 struct SDL_Texture;
-class Spring : public Entity
+class BOO : public Entity
 {
 public:
-	Spring();
-	virtual ~Spring();
+	BOO();
+	virtual ~BOO();
 	bool Awake();
 	bool Start();
 	bool Update(float dt);
@@ -24,30 +24,29 @@ public:
 	void OnCollision(PhysBody* physA, PhysBody* physB);
 
 	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
-	int movementDirection = -1;
 
 public:
 private:
-
-	float timeSinceLastJump = 0;
-	int jumpForce = 100;
-	int movementDirectionCoefficient = 50;
-
 	SDL_Texture* texture;
 	const char* texturePath;
 	int texW, texH;
 	pugi::xml_node parameters;
 	Animation* currentAnimation = nullptr;
-	Animation idle;
+	Animation idleL;
+	Animation idleR;
+	Animation scaredR;
+	Animation scaredL;
+
 	PhysBody* pbody;
 	Pathfinding* pathfinding;
 
 	int buscando = 0;
-	bool showPath = false;
-	float jumpForceMax = 10.0f; 
-	float jumpTimeFactor = 1.0f; 
-	float progressionFactor = 0.0f;
+	bool showPath = true;
+	bool lookingPlayer = false;
 	bool isDead = false;
+	
+
+	Direction lookDirection;
 	States stat = States::WALKING_R;
 
 };

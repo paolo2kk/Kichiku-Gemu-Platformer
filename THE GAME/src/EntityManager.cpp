@@ -9,6 +9,7 @@
 #include "Murcielago.h"
 #include "Bullet.h"
 #include "Spring.h"
+#include "BOO.h"
 
 EntityManager::EntityManager() : Module()
 {
@@ -93,6 +94,9 @@ Entity* EntityManager::CreateEntity(EntityType type)
 		break;
 	case EntityType::SPRINGENEMY:
 		entity = new Spring();
+		break;
+	case EntityType::BOO:
+		entity = new BOO();
 		break;
 	default:
 		break;

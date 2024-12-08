@@ -1,4 +1,4 @@
-#include "Spring.h"
+#include "BOO.h"
 #include "Engine.h"
 #include "Textures.h"
 #include "Audio.h"
@@ -9,18 +9,16 @@
 #include "Physics.h"
 #include "Map.h"
 #include "EntityManager.h"
-
-Spring::Spring() : Entity(EntityType::ENEMYBFS)
+BOO::BOO() : Entity(EntityType::ENEMYBFS)
 {
 }
-Spring::~Spring() {
+BOO::~BOO() {
 	delete pathfinding;
 }
-bool Spring::Awake() {
+bool BOO::Awake() {
 	return true;
 }
-bool Spring::Start() {
-	timeSinceLastJump = 0;
+bool BOO::Start() {
 	//initilize textures
 	texture = Engine::GetInstance().textures.get()->Load(parameters.attribute("texture").as_string());
 	position.setX(parameters.attribute("x").as_int());
@@ -28,16 +26,18 @@ bool Spring::Start() {
 	texW = parameters.attribute("w").as_int();
 	texH = parameters.attribute("h").as_int();
 	//Load animations
-	idle.LoadAnimations(parameters.child("animations").child("idle"));
-	currentAnimation = &idle;
+	idleL.LoadAnimations(parameters.child("animations").child("idleL"));
+	idleR.LoadAnimations(parameters.child("animations").child("idleR"));
+	scaredL.LoadAnimations(parameters.child("animations").child("scaredL"));
+	scaredR.LoadAnimations(parameters.child("animations").child("scaredR"));
+	lookDirection = Direction::LEFT;
+	currentAnimation = &idleL;
 
 	//Add a physics to an item - initialize the physics body
 	pbody = Engine::GetInstance().physics.get()->CreateCircle((int)position.getX() + texH / 2, (int)position.getY() + texH / 2, texH / 2, bodyType::DYNAMIC);
 	//Assign collider type
 	pbody->ctype = ColliderType::ENEMYBFS;
-	pbody->listener = this;
-	pbody->body->IsBullet();
-	pbody->body->SetFixedRotation(true);
+	pbody->body->SetGravityScale(0);
 	// Set the gravity of the body
 	if (!parameters.attribute("gravity").as_bool()) pbody->body->SetGravityScale(0);
 	// Initialize pathfinding
@@ -45,18 +45,16 @@ bool Spring::Start() {
 	Vector2D pos = GetPosition();
 	Vector2D tilePos = Engine::GetInstance().map.get()->WorldToMap(pos.getX(), pos.getY());
 	pathfinding->ResetPath(tilePos);
-	pbody->body->SetGravityScale(10);
+
 	showPath = true;
 
 	return true;
 }
-bool Spring::Update(float dt)
+bool BOO::Update(float dt)
 {
     Player* player = Engine::GetInstance().scene.get()->player;
 
     if (!player) return true;
-
-	timeSinceLastJump += dt/1000;
 
     Vector2D playerPos = player->GetPosition();
     Vector2D enemyPos = GetPosition();
@@ -77,33 +75,48 @@ bool Spring::Update(float dt)
             pathfinding->ResetPath(tilePos);
             buscando = 0;
         }
-
+		if (player->GetPosition().getX() >= this->GetPosition().getX()) lookDirection = Direction::RIGHT; else lookDirection = Direction::LEFT;
+		
         if (pathfinding->pathTiles.size() > 0) {
+			
             Vector2D nextTile = pathfinding->pathTiles.front();
             Vector2D nextPos = Engine::GetInstance().map->MapToWorld(nextTile.getX(), nextTile.getY());
             Vector2D dir = nextPos - enemyPos;
             dir.normalized();
 
-			if (timeSinceLastJump >= 4) {
-				LOG("SpringEnemy Jumping");
-				b2Vec2 jumpImpulse = b2Vec2(movementDirectionCoefficient*movementDirection, -jumpForce);
-				pbody->body->ApplyLinearImpulseToCenter(jumpImpulse, true);
-			
-				timeSinceLastJump = 0.0f;
+			if (player->GetDirection() == lookDirection)
+			{
+				float velocidad = 0.02f;
+				b2Vec2 velocity = b2Vec2(dir.getX() * velocidad, dir.getY() * velocidad);
+				pbody->body->SetLinearVelocity(velocity);
 
-			}            /*float velocityMovement = 0;
-            b2Vec2 velocity = b2Vec2(dir.getX() * velocityMovement, dir.getY() * velocityMovement);
+			}
+			else {
+				pbody->body->SetLinearVelocity(b2Vec2(0, 0));
 
-            pbody->body->SetLinearVelocity(velocity);*/
+				switch (lookDirection)
+				{
+				case Direction::LEFT:
+					
+					currentAnimation = &idleL;
+
+					break;
+				case Direction::RIGHT:
+
+					currentAnimation = &idleR;
+
+					break;
+				}
+			}
+           
+
         }
-        else {
-            pbody->body->SetLinearVelocity(b2Vec2(0, 0));
-        }
+        
     }
     else {
         pbody->body->SetLinearVelocity(b2Vec2(0, 0));
     }
-	
+
     b2Transform pbodyPos = pbody->body->GetTransform();
     position.setX(METERS_TO_PIXELS(pbodyPos.p.x) - texH / 2);
     position.setY(METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2);
@@ -127,29 +140,28 @@ bool Spring::Update(float dt)
 
     return true;
 }
-
-bool Spring::CleanUp()
+bool BOO::CleanUp()
 {
 	Engine::GetInstance().physics.get()->DeletePhysBody(pbody);
 	return true;
 }
-void Spring::SetPosition(Vector2D pos) {
+void BOO::SetPosition(Vector2D pos) {
 	pos.setX(pos.getX() + texW / 2);
 	pos.setY(pos.getY() + texH / 2);
 	b2Vec2 bodyPos = b2Vec2(PIXEL_TO_METERS(pos.getX()), PIXEL_TO_METERS(pos.getY()));
 	pbody->body->SetTransform(bodyPos, 0);
 }
-Vector2D Spring::GetPosition() {
+Vector2D BOO::GetPosition() {
 	b2Vec2 bodyPos = pbody->body->GetTransform().p;
 	Vector2D pos = Vector2D(METERS_TO_PIXELS(bodyPos.x), METERS_TO_PIXELS(bodyPos.y));
 	return pos;
 }
-void Spring::ResetPath() {
+void BOO::ResetPath() {
 	Vector2D pos = GetPosition();
 	Vector2D tilePos = Engine::GetInstance().map.get()->WorldToMap(pos.getX(), pos.getY());
 	pathfinding->ResetPath(tilePos);
 }
-void Spring::OnCollision(PhysBody* physA, PhysBody* physB) {
+void BOO::OnCollision(PhysBody* physA, PhysBody* physB) {
 	switch (physB->ctype) {
 	case ColliderType::PLAYER:
 	{
@@ -165,7 +177,7 @@ void Spring::OnCollision(PhysBody* physA, PhysBody* physB) {
 		break;
 	}
 }
-void Spring::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
+void BOO::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 {
 	switch (physB->ctype)
 	{

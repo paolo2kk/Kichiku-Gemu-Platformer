@@ -17,6 +17,7 @@
 #include "GuiControl.h"
 #include "GuiManager.h"
 #include "Spring.h"
+#include "BOO.h"
 
 Scene::Scene() : Module()
 {
@@ -65,10 +66,18 @@ bool Scene::Awake()
 		enemy1->SetParameters(enemyNode1);
 	}
 
-	for (pugi::xml_node enemyNode1 = configParameters.child("entities").child("enemies").child("spring1"); enemyNode1; enemyNode1 = enemyNode1.next_sibling("spring1"))
+	for (pugi::xml_node enemyNode2 = configParameters.child("entities").child("enemies").child("BOO1"); enemyNode2; enemyNode2 = enemyNode2.next_sibling("BOO1"))
+	{
+		BOO* enemy1 = (BOO*)Engine::GetInstance().entityManager->CreateEntity(EntityType::BOO);
+		enemy1->SetParameters(enemyNode2);
+
+		booEnemyList.push_back(enemy1);
+	}
+
+	for (pugi::xml_node enemyNode3 = configParameters.child("entities").child("enemies").child("spring1"); enemyNode3; enemyNode3 = enemyNode3.next_sibling("spring1"))
 	{
 		Spring* springEnemy1 = (Spring*)Engine::GetInstance().entityManager->CreateEntity(EntityType::SPRINGENEMY);
-		springEnemy1->SetParameters(enemyNode1);
+		springEnemy1->SetParameters(enemyNode3);
 
 		springEnemyList.push_back(springEnemy1);
 	}
