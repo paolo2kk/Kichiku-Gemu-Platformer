@@ -8,6 +8,7 @@
 #include "Enemy.h"
 #include "Murcielago.h"
 #include "Bullet.h"
+#include "Spring.h"
 
 EntityManager::EntityManager() : Module()
 {
@@ -89,6 +90,9 @@ Entity* EntityManager::CreateEntity(EntityType type)
 		break;
 	case EntityType::ENEMYBFS:
 		entity = new EnemyInClass();
+		break;
+	case EntityType::SPRINGENEMY:
+		entity = new Spring();
 		break;
 	default:
 		break;

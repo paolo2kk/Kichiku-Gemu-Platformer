@@ -16,6 +16,7 @@
 #include "CheckPoint.h"
 #include "GuiControl.h"
 #include "GuiManager.h"
+#include "Spring.h"
 
 Scene::Scene() : Module()
 {
@@ -63,6 +64,13 @@ bool Scene::Awake()
 		EnemyInClass* enemy1 = (EnemyInClass*)Engine::GetInstance().entityManager->CreateEntity(EntityType::ENEMYBFS);
 		enemy1->SetParameters(enemyNode1);
 	}
+
+	for (pugi::xml_node enemyNode1 = configParameters.child("entities").child("enemies").child("murcielago"); enemyNode1; enemyNode1 = enemyNode1.next_sibling("murcielago"))
+	{
+		Spring* springEnemy1 = (Spring*)Engine::GetInstance().entityManager->CreateEntity(EntityType::ENEMYBFS);
+		springEnemy1->SetParameters(enemyNode1);
+	}
+
 
 	for (pugi::xml_node bulletNode = configParameters.child("entities").child("items").child("bullet"); bulletNode; bulletNode = bulletNode.next_sibling("enemy"))
 	{
