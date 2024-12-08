@@ -20,6 +20,10 @@ public:
 	Vector2D GetPosition();
 	void ResetPath();
 
+	void OnCollision(PhysBody* physA, PhysBody* physB);
+
+	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
+
 public:
 private:
 	SDL_Texture* texture;
@@ -33,6 +37,8 @@ private:
 
 	int buscando = 0;
 	bool showPath = true;
+
+	bool isDead = false;
 	
 	States stat = States::WALKING_R;
 

@@ -8,6 +8,7 @@
 #include "Log.h"
 #include "Physics.h"
 #include "Map.h"
+#include "EntityManager.h"
 EnemyInClass::EnemyInClass() : Entity(EntityType::ENEMYBFS)
 {
 }
@@ -114,6 +115,7 @@ bool EnemyInClass::Update(float dt)
 }
 bool EnemyInClass::CleanUp()
 {
+	Engine::GetInstance().physics.get()->DeletePhysBody(pbody);
 	return true;
 }
 void EnemyInClass::SetPosition(Vector2D pos) {
@@ -131,4 +133,29 @@ void EnemyInClass::ResetPath() {
 	Vector2D pos = GetPosition();
 	Vector2D tilePos = Engine::GetInstance().map.get()->WorldToMap(pos.getX(), pos.getY());
 	pathfinding->ResetPath(tilePos);
+}
+void EnemyInClass::OnCollision(PhysBody* physA, PhysBody* physB) {
+	switch (physB->ctype) {
+	case ColliderType::PLAYER:
+	{
+		
+		break;
+	}
+	case ColliderType::BULLET:
+		LOG("Collided with Bullet");
+		Engine::GetInstance().entityManager.get()->DestroyEntity(this);
+		break;
+
+	default:
+		break;
+	}
+}
+void EnemyInClass::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
+{
+	switch (physB->ctype)
+	{
+	case ColliderType::PLAYER:
+		LOG("Collision player");
+		break;
+	}
 }
