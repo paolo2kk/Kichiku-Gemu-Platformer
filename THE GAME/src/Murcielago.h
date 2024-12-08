@@ -32,7 +32,7 @@ private:
 	Pathfinding* pathfinding;
 
 	int buscando = 0;
-	bool showPath = false;
+	bool showPath = true;
 	
 	States stat = States::WALKING_R;
 

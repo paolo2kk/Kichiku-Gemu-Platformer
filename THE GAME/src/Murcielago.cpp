@@ -39,6 +39,9 @@ bool EnemyInClass::Start() {
 	Vector2D pos = GetPosition();
 	Vector2D tilePos = Engine::GetInstance().map.get()->WorldToMap(pos.getX(), pos.getY());
 	pathfinding->ResetPath(tilePos);
+
+	showPath = true;
+
 	return true;
 }
 bool EnemyInClass::Update(float dt)
@@ -54,11 +57,11 @@ bool EnemyInClass::Update(float dt)
     float distanceY = abs(playerPos.getY() - enemyPos.getY());
 
     const int blockSize = 32; 
-    float maxDistance = 10 * blockSize; 
+    float maxDistance = 25 * blockSize; 
 
     if (distanceX <= maxDistance && distanceY <= maxDistance) {
-        if (buscando <= 20) {
-            pathfinding->PropagateAStar(EUCLIDEAN);
+        if (buscando <= 40) {
+            pathfinding->PropagateAStar(MANHATTAN);
             buscando++;
         }
         else {
@@ -93,13 +96,19 @@ bool EnemyInClass::Update(float dt)
     Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY(), &currentAnimation->GetCurrentFrame());
     currentAnimation->Update();
 
-    // Control para mostrar el pathfinding en el mapa con F1
-    if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) {
-        showPath = !showPath;
-    }
-    if (showPath) {
-        pathfinding->DrawPath();
-    }
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+	{
+		if (showPath)
+		{
+			showPath = false;
+		}
+		else
+			showPath = true;
+	}
+	if (showPath)
+	{
+		pathfinding->DrawPath();
+	}
 
     return true;
 }
