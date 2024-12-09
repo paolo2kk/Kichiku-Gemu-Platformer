@@ -17,7 +17,7 @@
 	<scene>
 		<map path="Assets/Maps/" name="MapTemplate.tmx" />
 		<entities>
-			<player x="-32" y="103" w="64" h="64" texture="Assets/Textures/player/Idle.png" gravity="true">
+			<player x="4346" y="1535" w="64" h="64" texture="Assets/Textures/player/Idle.png" gravity="true">
 				<animations>
 					<idleR loop="true" speed="0.2">
 						<frame x="0" y="0" w="64" h="64" />
@@ -94,7 +94,7 @@
 				</bullet>
 			</items>
 			<enemies>
-				<enemy0 name="badguy" x="1000" y="1000" w="64" h="64" texture="Assets/Textures/enemy/Idle.png" gravity="true" x="1032" y="1032">
+				<enemy0 name="badguy" x="4872" y="1384" w="64" h="64" texture="Assets/Textures/enemy/Idle.png" gravity="true">
 					<animations>
 						<idle loop="true" speed="0.05">
 							<frame x="0" y="0" w="64" h="64" />
@@ -134,7 +134,7 @@
 						</idle>
 					</animations>
 				</enemy1>
-				<murcielago name="murcielago" x="500" y="350" w="48" h="48" texture="Assets/Textures/enemy/Idle.png" gravity="true">
+				<murcielago0 name="murcielago" x="4364" y="100" w="48" h="48" texture="Assets/Textures/enemy/Idle.png" gravity="true">
 					<animations>
 						<idle loop="true" speed="0.5">
 							<frame x="0" y="128" w="48" h="48" />
@@ -143,8 +143,8 @@
 							<frame x="144" y="128" w="48" h="48" />
 						</idle>
 					</animations>
-				</murcielago>
-				<BOO1 name="boo1" x="4600" y="850" w="32" h="32" texture="Assets/Textures/enemy/BOO.png" gravity="true">
+				</murcielago0>
+				<BOO0 name="boo1" x="4469" y="976" w="32" h="32" texture="Assets/Textures/enemy/BOO.png" gravity="true">
 					<animations>
 						<idleR loop="true" speed="0.5">
 							<frame x="0" y="0" w="32" h="32" />
@@ -159,14 +159,15 @@
 							<frame x="96" y="0" w="32" h="32" />
 						</scaredL>
 					</animations>
-				</BOO1>
-				<spring0 name="spring1" x="4600" y="967" w="64" h="64" texture="Assets/Textures/spring.png" gravity="true" x="4632" y="999">
+				</BOO0>
+				<spring0 name="spring1" x="4476" y="1434" w="64" h="64" texture="Assets/Textures/spring.png" gravity="true">
 					<animations>
 						<idle loop="true" speed="0.5">
 							<frame x="0" y="0" w="64" h="64" />
 						</idle>
 					</animations>
 				</spring0>
+				<BOO0 />
 			</enemies>
 		</entities>
 	</scene>
