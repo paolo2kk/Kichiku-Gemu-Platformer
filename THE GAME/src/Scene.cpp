@@ -73,7 +73,7 @@ bool Scene::Awake()
 		batEnemyList.push_back(enemy1);
 	}
 
-	for (pugi::xml_node enemyNode2 = configParameters.child("entities").child("enemies").child("murcielago0"); enemyNode2; enemyNode2 = enemyNode2.next_sibling("murcielago0"))
+	for (pugi::xml_node enemyNode2 = configParameters.child("entities").child("enemies").child("murcielago1"); enemyNode2; enemyNode2 = enemyNode2.next_sibling("murcielago1"))
 	{
 		EnemyInClass* enemy1 = (EnemyInClass*)Engine::GetInstance().entityManager->CreateEntity(EntityType::ENEMYBFS);
 		enemy1->SetParameters(enemyNode2);
@@ -87,7 +87,7 @@ bool Scene::Awake()
 
 		booEnemyList.push_back(enemy1);
 	}
-	for (pugi::xml_node enemyNodeBOO = configParameters.child("entities").child("enemies").child("BOO0"); enemyNodeBOO; enemyNodeBOO = enemyNodeBOO.next_sibling("BOO0"))
+	for (pugi::xml_node enemyNodeBOO = configParameters.child("entities").child("enemies").child("BOO1"); enemyNodeBOO; enemyNodeBOO = enemyNodeBOO.next_sibling("BOO1"))
 	{
 		BOO* enemy2 = (BOO*)Engine::GetInstance().entityManager->CreateEntity(EntityType::BOO);
 		enemy2->SetParameters(enemyNodeBOO);

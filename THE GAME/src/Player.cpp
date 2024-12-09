@@ -207,6 +207,17 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		isDead = true;
 		}
 		break;
+	case ColliderType::ENEMY:
+		if (!godMode) {
+			isDead = true;
+		}
+		break;
+	case ColliderType::ENEMYBFS:
+		if (!godMode) {
+			isDead = true;
+		}
+		break;
+
 	default:
 		break;
 	}
