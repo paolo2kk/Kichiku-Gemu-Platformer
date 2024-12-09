@@ -44,6 +44,8 @@ bool EnemyInClass::Start() {
 
 	showPath = false;
 
+	murcielagodieFxId = Engine::GetInstance().audio.get()->LoadFx("Assets/Audio/Fx/enemydie.ogg");
+
 	return true;
 }
 bool EnemyInClass::Update(float dt)

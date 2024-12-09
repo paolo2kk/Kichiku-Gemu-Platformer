@@ -180,6 +180,14 @@ void Enemy::OnCollision(PhysBody* physA, PhysBody* physB) {
 				this->isDead = true;
 				player->Bounce();   
 			}
+			else {
+				if (!player->godMode && !player->isDead) {
+					Engine::GetInstance().audio.get()->PlayFx(player->playerdieFxId);
+					player->currentAnimation = &player->dead;
+					player->currentAnimation->Reset();
+					player->isDead = true;
+				}
+			}
 		}
 		break;
 	}
