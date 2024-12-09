@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Module.h"
+#include "Physics.h"
 #include <list>
 #include <vector>
 #include <map>
@@ -138,6 +139,8 @@ public:
 
     // Load new map
     bool Load(std::string path, std::string mapFileName);
+
+    b2Vec2 ApplyIsometricTransformation(b2Vec2 v);
 
     // L07: TODO 8: Create a method that translates x,y coordinates from map positions to world positions
     Vector2D MapToWorld(int x, int y) const;

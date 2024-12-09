@@ -31,9 +31,9 @@ public:
 public:
 private:
 
-	float timeSinceLastJump = 0;
-	int jumpForce = 100;
-	int movementDirectionCoefficient = 50;
+	float timeSinceLastJump = 0.0f;
+	int jumpForce = 300;
+	int movementDirectionCoefficient = 75;
 
 	SDL_Texture* texture;
 	const char* texturePath;

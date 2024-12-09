@@ -324,9 +324,16 @@ bool Map::Load(std::string path, std::string fileName)
                     }
 
                     if (vertices.size() == 3) {
-                        b2Vec2 v1 = vertices[0]; 
-                        b2Vec2 v2 = vertices[1]; 
-                        b2Vec2 v3 = vertices[2]; 
+                        b2Vec2 v1 = vertices[0];
+                        b2Vec2 v2 = vertices[1];
+                        b2Vec2 v3 = vertices[2];
+
+                        if (mapData.orientation == MapOrientation::ISOMETRIC) {
+
+                            v1 = ApplyIsometricTransformation(v1);
+                            v2 = ApplyIsometricTransformation(v2);
+                            v3 = ApplyIsometricTransformation(v3);
+                        }
 
                         PhysBody* triangle = Engine::GetInstance().physics->CreateTriangle(
                             0,
@@ -385,6 +392,15 @@ bool Map::Load(std::string path, std::string fileName)
     mapLoaded = ret;
     return ret;
 }
+b2Vec2 Map::ApplyIsometricTransformation(b2Vec2 v) {
+
+    float temp = v.x;
+    v.x = -v.y;
+    v.y = temp;
+
+    return v;
+}
+
 void Map::UpdateAnimatedTiles(float dt) {
     static int elapsedTime = 0;
     elapsedTime += static_cast<int>(dt) * 10;
