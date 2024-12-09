@@ -65,6 +65,9 @@ public:
 	int pickCoinFxId;
 	int jumpFxId;     
 	int stepFxId;     
+	int shootFxId;   
+
+	float respawnTimer = 0;
 	
 
 
@@ -79,6 +82,7 @@ public:
 	Animation idleL;
 	Animation walk;
 	Animation right;
+	Animation dead;
 	Direction direction;
 
 	bool isDead = false;
