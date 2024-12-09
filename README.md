@@ -16,6 +16,8 @@ This game is part of the Intellectual Property: I Wanna Be The President! Is a s
 
 Expect to find triggering encounters such as having to perfectly align jumps or invisible walls, because this game is part of the troll games genre.
 
+Github Link: https://github.com/paolo2kk/Kichiku-Gemu-Platformer
+
 ## Game Controls   
 ### Player
     * W -> Move up
