@@ -17,7 +17,7 @@
 	<scene>
 		<map path="Assets/Maps/" name="MapTemplate.tmx" />
 		<entities>
-			<player x="525" y="112" w="64" h="64" texture="Assets/Textures/player/Idle.png" gravity="true">
+			<player x="455" y="135" w="64" h="64" texture="Assets/Textures/player/Idle.png" gravity="true">
 				<animations>
 					<idleR loop="true" speed="0.02">
 						<frame x="0" y="0" w="64" h="64" />
@@ -82,20 +82,27 @@
 				</animations>
 			</player>
 			<items>
-				<item name="coin" x="200" y="672" w="32" h="32" texture="Assets/Textures/goldCoin.png" gravity="true">
+				<item name="coin" x="200" y="672" w="64" h="64" texture="Assets/Textures/goldCoin.png" gravity="true">
 					<animations>
 						<idle loop="true" speed="0.05">
-							<frame x="0" y="0" w="32" h="32" />
+							<frame x="0" y="0" w="64" h="64" />
 						</idle>
 					</animations>
 				</item>
-				<checkpoint name="checkpoint" x="10" y="10" w="32" h="32" texture="Assets/Textures/goldCoin.png" gravity="true">
+				<checkpoint name="checkpoint" x="576" y="1728" w="64" h="64" texture="Assets/Textures/checkpoint.png" gravity="true">
 					<animations>
 						<idle loop="true" speed="0.05">
-							<frame x="0" y="0" w="32" h="32" />
+							<frame x="0" y="0" w="64" h="64" />
 						</idle>
 					</animations>
 				</checkpoint>
+				<checkpoint2 name="checkpoint2" x="2112" y="1088" w="64" h="64" texture="Assets/Textures/checkpoint.png" gravity="true">
+					<animations>
+						<idle loop="true" speed="0.05">
+							<frame x="0" y="0" w="64" h="64" />
+						</idle>
+					</animations>
+				</checkpoint2>
 				<bullet name="bullet" x="10" y="10" w="32" h="32" texture="Assets/Textures/bolinga.png" gravity="true">
 					<animations>
 						<idle loop="true" speed="0.5">
@@ -126,7 +133,7 @@
 						</idle>
 					</animations>
 				</enemy0>
-				<enemy1 name="badguy" x="593" y="1717" w="64" h="64" texture="Assets/Textures/enemy/Idle.png" gravity="true">
+				<enemy1 name="badguy" x="574" y="1717" w="64" h="64" texture="Assets/Textures/enemy/Idle.png" gravity="true">
 					<animations>
 						<idle loop="true" speed="0.05">
 							<frame x="0" y="0" w="64" h="64" />
@@ -146,7 +153,7 @@
 						</idle>
 					</animations>
 				</enemy1>
-				<murcielago0 name="murcielago" x="4310" y="1198" w="48" h="48" texture="Assets/Textures/enemy/Idle.png" gravity="true">
+				<murcielago0 name="murcielago" x="4342" y="1422" w="48" h="48" texture="Assets/Textures/enemy/Idle.png" gravity="true">
 					<animations>
 						<idle loop="true" speed="0.05">
 							<frame x="0" y="128" w="48" h="48" />
@@ -156,7 +163,7 @@
 						</idle>
 					</animations>
 				</murcielago0>
-				<murcielago1 name="murcielago" x="1325" y="1411" w="48" h="48" texture="Assets/Textures/enemy/Idle.png" gravity="true">
+				<murcielago1 name="murcielago" x="1363" y="1501" w="48" h="48" texture="Assets/Textures/enemy/Idle.png" gravity="true">
 					<animations>
 						<idle loop="true" speed="0.05">
 							<frame x="0" y="128" w="48" h="48" />

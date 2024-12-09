@@ -9026,7 +9026,7 @@
   <properties>
    <property name="type" value="rectangle"/>
   </properties>
-  <object id="296" x="192" y="192" width="64" height="577"/>
+  <object id="296" x="192" y="192.545" width="64" height="576.455"/>
  </objectgroup>
  <layer id="7" name="Navigation" width="95" height="30" visible="0">
   <properties>
