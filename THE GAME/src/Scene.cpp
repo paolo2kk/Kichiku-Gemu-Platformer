@@ -211,6 +211,14 @@ bool Scene::Update(float dt)
 		player->SetPosition(Vector2D(highlightTile.getX(), highlightTile.getY()));
 		
 	}
+	
+	if (player->isDead)
+	{
+		LoadState();
+		player->isDead = false;
+
+	}
+
 	return true;
 }
 
@@ -233,8 +241,6 @@ void Scene::SetCheckpoints()
 	if (player->setCheckPoint)
 	{
 		SaveState();
-
-
 	}
 }
 
@@ -304,8 +310,8 @@ void Scene::SaveState() {
 
 	pugi::xml_node playerNode = sceneNode.child("entities").child("player");
 	if (playerNode) {
-		playerNode.attribute("x").set_value(player->GetPosition().getX() - player->texW / 2);  
-		playerNode.attribute("y").set_value(player->GetPosition().getY()- player->texH/2);
+		playerNode.attribute("x").set_value(player->GetPosition().getX());  
+		playerNode.attribute("y").set_value(player->GetPosition().getY());
 	}
 	else {
 		playerNode = sceneNode.child("entities").append_child("player");
@@ -325,6 +331,18 @@ void Scene::SaveState() {
 
 		enemyNode.append_attribute("x") = enemyList[i]->GetPosition().getX();
 		enemyNode.append_attribute("y") = enemyList[i]->GetPosition().getY();
+	}
+
+	for (int i = 0; i < springEnemyList.size(); i++) {
+		std::string enemyNodeName = "spring" + std::to_string(i);
+
+		pugi::xml_node enemyNode = enemiesNode.child(enemyNodeName.c_str());
+		if (!enemyNode) {
+			enemyNode = enemiesNode.append_child(enemyNodeName.c_str());
+		}
+
+		enemyNode.append_attribute("x") = springEnemyList[i]->GetPosition().getX();
+		enemyNode.append_attribute("y") = springEnemyList[i]->GetPosition().getY();
 	}
 
 	if (!loadFile.save_file("config.xml")) {
@@ -350,7 +368,7 @@ void Scene::Shoot()
 		bullet->SetVelocity(Direction::RIGHT);
 
 		bullet->SetPosition(playerPos + Offset);
-	}	
+	}
 	else if(player->GetDirection() == Direction::LEFT)
 	{
 		std::cout << "Bullet left";
