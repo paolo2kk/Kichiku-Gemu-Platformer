@@ -156,6 +156,10 @@ bool Player::Update(float dt)
 		&currentAnimation->GetCurrentFrame());
 	currentAnimation->Update(dt);
 
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) {
+		godMode = !godMode;
+	}
+
 	return true;
 }
 
@@ -208,12 +212,6 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		}
 		break;
 	case ColliderType::ENEMY:
-		if (!godMode && !isDead) {
-			Engine::GetInstance().audio.get()->PlayFx(playerdieFxId);
-			currentAnimation = &dead;
-			currentAnimation->Reset();
-			isDead = true;
-		}
 		break;
 	case ColliderType::ENEMYBFS:
 		if (!godMode && !isDead) {
