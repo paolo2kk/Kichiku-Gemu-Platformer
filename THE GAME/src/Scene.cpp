@@ -87,13 +87,7 @@ bool Scene::Awake()
 
 		booEnemyList.push_back(enemy1);
 	}
-	for (pugi::xml_node enemyNodeBOO = configParameters.child("entities").child("enemies").child("BOO1"); enemyNodeBOO; enemyNodeBOO = enemyNodeBOO.next_sibling("BOO1"))
-	{
-		BOO* enemy2 = (BOO*)Engine::GetInstance().entityManager->CreateEntity(EntityType::BOO);
-		enemy2->SetParameters(enemyNodeBOO);
-
-		booEnemyList.push_back(enemy2);
-	}
+	
 
 	for (pugi::xml_node enemyNode3 = configParameters.child("entities").child("enemies").child("spring0"); enemyNode3; enemyNode3 = enemyNode3.next_sibling("spring0"))
 	{

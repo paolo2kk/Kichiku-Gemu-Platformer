@@ -17,7 +17,7 @@
 	<scene>
 		<map path="Assets/Maps/" name="MapTemplate.tmx" />
 		<entities>
-			<player x="36" y="0" w="64" h="64" texture="Assets/Textures/player/Idle.png" gravity="true">
+			<player x="525" y="112" w="64" h="64" texture="Assets/Textures/player/Idle.png" gravity="true">
 				<animations>
 					<idleR loop="true" speed="0.02">
 						<frame x="0" y="0" w="64" h="64" />
@@ -146,7 +146,7 @@
 						</idle>
 					</animations>
 				</enemy1>
-				<murcielago0 name="murcielago" x="4262" y="1150" w="48" h="48" texture="Assets/Textures/enemy/Idle.png" gravity="true">
+				<murcielago0 name="murcielago" x="4310" y="1198" w="48" h="48" texture="Assets/Textures/enemy/Idle.png" gravity="true">
 					<animations>
 						<idle loop="true" speed="0.05">
 							<frame x="0" y="128" w="48" h="48" />
@@ -156,7 +156,7 @@
 						</idle>
 					</animations>
 				</murcielago0>
-				<murcielago1 name="murcielago" x="1278" y="1363" w="48" h="48" texture="Assets/Textures/enemy/Idle.png" gravity="true">
+				<murcielago1 name="murcielago" x="1325" y="1411" w="48" h="48" texture="Assets/Textures/enemy/Idle.png" gravity="true">
 					<animations>
 						<idle loop="true" speed="0.05">
 							<frame x="0" y="128" w="48" h="48" />
@@ -166,7 +166,7 @@
 						</idle>
 					</animations>
 				</murcielago1>
-				<BOO0 name="boo1" x="4038" y="888" w="32" h="32" texture="Assets/Textures/enemy/BOO.png" gravity="true">
+				<BOO0 name="boo0" x="4038" y="888" w="32" h="32" texture="Assets/Textures/enemy/BOO.png" gravity="true">
 					<animations>
 						<idleR loop="true" speed="0.05">
 							<frame x="0" y="0" w="32" h="32" />
@@ -182,23 +182,6 @@
 						</scaredL>
 					</animations>
 				</BOO0>
-				<BOO1 name="boo1" x="-16" y="-16" w="32" h="32" texture="Assets/Textures/enemy/BOO.png" gravity="true">
-					<animations>
-						<idleR loop="true" speed="0.05">
-							<frame x="0" y="0" w="32" h="32" />
-						</idleR>
-						<idleL loop="true" speed="0.05">
-							<frame x="32" y="0" w="32" h="32" />
-						</idleL>
-						<scaredR>
-							loop="true" speed="0.05"&gt;
-							<frame x="64" y="0" w="32" h="32" />
-						</scaredR>
-						<scaredL loop="true" speed="0.05">
-							<frame x="96" y="0" w="32" h="32" />
-						</scaredL>
-					</animations>
-				</BOO1>
 				<spring0 name="spring1" x="2111" y="1088" w="64" h="64" texture="Assets/Textures/spring.png" gravity="true">
 					<animations>
 						<idle loop="true" speed="0.05">
