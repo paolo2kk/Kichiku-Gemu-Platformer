@@ -68,7 +68,7 @@ bool Player::Start() {
 
 bool Player::Update(float dt)
 {
-	if (walksoundTimer.ReadMSec() > 200) 
+	if (walksoundTimer.ReadMSec() > 200)	
 	{
 		isWalking = false; 
 		walksoundTimer.ResetTimer(); 
