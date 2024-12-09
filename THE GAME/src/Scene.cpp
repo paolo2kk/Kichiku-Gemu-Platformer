@@ -65,6 +65,12 @@ bool Scene::Awake()
 		checkPoint = (CheckPoint*)Engine::GetInstance().entityManager->CreateEntity(EntityType::CHECKPOINT);
 		checkPoint->SetParameters(CheckPointNode);
 	}
+	for (pugi::xml_node CheckPointNode = configParameters.child("entities").child("items").child("checkpoint2"); CheckPointNode; CheckPointNode = CheckPointNode.next_sibling("checkpoint"))
+	{
+		checkPoint = (CheckPoint*)Engine::GetInstance().entityManager->CreateEntity(EntityType::CHECKPOINT);
+		checkPoint->SetParameters(CheckPointNode);
+	}
+
 
 	for (pugi::xml_node enemyNode1 = configParameters.child("entities").child("enemies").child("murcielago0"); enemyNode1; enemyNode1 = enemyNode1.next_sibling("murcielago0"))
 	{
@@ -264,7 +270,7 @@ void Scene::SetCheckpoints()
 {
 	if (!hasCheckpointsBeenSetted)
 	{
-		checkPoint->SetPosition(Vector2D(500, 500));
+		checkPoint->SetPosition(Vector2D(2112, 1088));
 	}
 	hasCheckpointsBeenSetted = true;
 
