@@ -126,6 +126,7 @@ bool Scene::Start()
 	
 	//L06 TODO 3: Call the function to load the map. 
 	Engine::GetInstance().map->Load(configParameters.child("map").attribute("path").as_string(), configParameters.child("map").attribute("name").as_string());
+	shootFxId = Engine::GetInstance().audio.get()->LoadFx("Assets/Audio/Fx/shoot.ogg");
 
 	// Texture to highligh mouse position 
 	mouseTileTex = Engine::GetInstance().textures.get()->Load("Assets/Maps/MapMetadata.png");
@@ -204,7 +205,7 @@ bool Scene::Update(float dt)
 
 	// L10 TODO 6: Implement a method that repositions the player in the map with a mouse click
 
-	if (Engine::GetInstance().input.get()->GetKeyDown(SDL_SCANCODE_P) == KEY_DOWN && shootingTimer >= 3)
+	if (Engine::GetInstance().input.get()->GetKeyDown(SDL_SCANCODE_P) == KEY_DOWN && shootingTimer >= 2)
 		Shoot();
 
 
@@ -312,7 +313,7 @@ void Scene::LoadState() {
 				enemyNode.attribute("x").as_int(),
 				enemyNode.attribute("y").as_int()
 			);
-			enemyList[i]->SetPosition(enemyPos);
+			if(!enemyList[i]->imDead) enemyList[i]->SetPosition(enemyPos);
 		}
 		else {
 			LOG("Enemy node %s not found in config.xml", enemyNodeName.c_str());
@@ -329,7 +330,7 @@ void Scene::LoadState() {
 				enemyNode.attribute("x").as_int(),
 				enemyNode.attribute("y").as_int()
 			);
-			springEnemyList[i]->SetPosition(enemyPos);
+			if (!springEnemyList[i]->imDead) springEnemyList[i]->SetPosition(enemyPos);
 		}
 		else {
 			LOG("Enemy node %s not found in config.xml", enemyNodeName.c_str());
@@ -346,7 +347,7 @@ void Scene::LoadState() {
 				enemyNode.attribute("x").as_int(),
 				enemyNode.attribute("y").as_int()
 			);
-			booEnemyList[i]->SetPosition(enemyPos);
+			if (!booEnemyList[i]->imDead) booEnemyList[i]->SetPosition(enemyPos);
 		}
 		else {
 			LOG("Enemy node %s not found in config.xml", enemyNodeName.c_str());
@@ -362,7 +363,7 @@ void Scene::LoadState() {
 				enemyNode.attribute("x").as_int(),
 				enemyNode.attribute("y").as_int()
 			);
-			batEnemyList[i]->SetPosition(enemyPos);
+			if (!batEnemyList[i]->imDead) batEnemyList[i]->SetPosition(enemyPos);
 		}
 		else {
 			LOG("Enemy node %s not found in config.xml", enemyNodeName.c_str());
@@ -401,9 +402,12 @@ void Scene::SaveState() {
 		if (!enemyNode) {
 			enemyNode = enemiesNode.append_child(enemyNodeName.c_str());
 		}
-
-		enemyNode.attribute("x").set_value(enemyList[i]->GetPosition().getX() - player->texW / 2);
-		enemyNode.attribute("y").set_value(enemyList[i]->GetPosition().getY() - player->texH / 2);
+		if (!enemyList[i]->imDead)
+		{
+			enemyNode.attribute("x").set_value(enemyList[i]->GetPosition().getX() - player->texW / 2);
+			enemyNode.attribute("y").set_value(enemyList[i]->GetPosition().getY() - player->texH / 2);
+		}
+		
 	}
 
 
@@ -416,9 +420,11 @@ void Scene::SaveState() {
 		if (!enemyNode) {
 			enemyNode = springEnemiesNode.append_child(enemyNodeName.c_str());
 		}
-
-		enemyNode.attribute("x").set_value(springEnemyList[i]->GetPosition().getX() - player->texW / 2);
-		enemyNode.attribute("y").set_value(springEnemyList[i]->GetPosition().getY() - player->texH / 2);
+		if (!springEnemyList[i]->imDead)
+		{
+			enemyNode.attribute("x").set_value(springEnemyList[i]->GetPosition().getX() - player->texW / 2);
+			enemyNode.attribute("y").set_value(springEnemyList[i]->GetPosition().getY() - player->texH / 2);
+		}
 	}
 
 	pugi::xml_node booEnemiesNode = sceneNode.child("entities").child("enemies");
@@ -431,10 +437,13 @@ void Scene::SaveState() {
 			enemyNode = booEnemiesNode.append_child(enemyNodeName.c_str());
 		}
 
-		enemyNode.attribute("x").set_value(booEnemyList[i]->GetPosition().getX() - player->texW / 4);
-		enemyNode.attribute("y").set_value(booEnemyList[i]->GetPosition().getY() - player->texH / 4);
-	}
+		if (!booEnemyList[i]->imDead)
+		{
+			enemyNode.attribute("x").set_value(booEnemyList[i]->GetPosition().getX() - player->texW / 4);
+			enemyNode.attribute("y").set_value(booEnemyList[i]->GetPosition().getY() - player->texH / 4);
 
+		}
+	}
 	pugi::xml_node batEnemiesNode = sceneNode.child("entities").child("enemies");
 
 	for (int i = 0; i < batEnemyList.size(); i++) {
@@ -445,8 +454,11 @@ void Scene::SaveState() {
 			enemyNode = batEnemiesNode.append_child(enemyNodeName.c_str());
 		}
 
-		enemyNode.attribute("x").set_value(batEnemyList[i]->GetPosition().getX() - player->texW / 4);
-		enemyNode.attribute("y").set_value(batEnemyList[i]->GetPosition().getY() - player->texH / 4);
+		if (!batEnemyList[i]->imDead)
+		{
+			enemyNode.attribute("x").set_value(batEnemyList[i]->GetPosition().getX() - player->texW / 4);
+			enemyNode.attribute("y").set_value(batEnemyList[i]->GetPosition().getY() - player->texH / 4);
+		}
 	}
 
 
@@ -466,6 +478,7 @@ void Scene::Shoot()
 	bullet->Start();
 	Vector2D Offset = { 65, 0 };
 	Vector2D Offset2 = { -65, 0 };
+	Engine::GetInstance().audio.get()->PlayFx(shootFxId);
 
 	if (player->GetDirection() == Direction::RIGHT)
 	{

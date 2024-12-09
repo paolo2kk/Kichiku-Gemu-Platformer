@@ -87,6 +87,7 @@ public:
 	int WHeight;
 	float offsetX = 350;
 	float offsetY = 450;
+	int shootFxId;
 
 	GuiControlButton* guiBt;
 	GuiControlButton* layout;

@@ -59,7 +59,6 @@ bool Player::Start() {
 	pickCoinFxId = Engine::GetInstance().audio.get()->LoadFx("Assets/Audio/Fx/retro-video-game-coin-pickup-38299.ogg");
 	jumpFxId = Engine::GetInstance().audio.get()->LoadFx("Assets/Audio/Fx/jump.wav");
 	stepFxId = Engine::GetInstance().audio.get()->LoadFx("Assets/Audio/Fx/step.ogg");
-	shootFxId = Engine::GetInstance().audio.get()->LoadFx("Assets/Audio/Fx/shoot.ogg");
 	
 	godMode = false;
 
@@ -133,11 +132,6 @@ bool Player::Update(float dt)
 	{
 		velocity.y = pbody->body->GetLinearVelocity().y;
 	}
-
-	// Shoot
-	if (Engine::GetInstance().input.get()->GetKeyDown(SDL_SCANCODE_P) == KEY_DOWN) {
-		Engine::GetInstance().audio.get()->PlayFx(shootFxId);
-	}  
 
 	// Apply the velocity to the player	
 	pbody->body->SetLinearVelocity(velocity);

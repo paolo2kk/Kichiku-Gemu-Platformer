@@ -65,7 +65,6 @@ public:
 	int pickCoinFxId;
 	int jumpFxId;     
 	int stepFxId;     
-	int shootFxId;   
 	
 
 
