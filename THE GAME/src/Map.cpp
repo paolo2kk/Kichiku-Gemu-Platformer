@@ -289,7 +289,7 @@ bool Map::Load(std::string path, std::string fileName)
                 std::string propertyValue = propertyNode.attribute("value").as_string();
 
                 if (propertyName == "type" && propertyValue == "triangle") {
-                    colliderType = ColliderType::UNKNOWN;  
+                    colliderType = ColliderType::KILLER;  
                     break; 
                 }
             }
@@ -301,7 +301,7 @@ bool Map::Load(std::string path, std::string fileName)
                 float width = objectNode.attribute("width").as_float();
                 float height = objectNode.attribute("height").as_float();
 
-                if (colliderType == ColliderType::UNKNOWN) {
+                if (colliderType == ColliderType::KILLER) {
                     std::string polylinePoints = objectNode.child("polygon").attribute("points").as_string();
 
                     float objectX = position.getX(); 
@@ -341,7 +341,7 @@ bool Map::Load(std::string path, std::string fileName)
                             v1, v2, v3, bodyType::STATIC
                         );
 
-                        triangle->ctype = ColliderType::UNKNOWN;
+                        triangle->ctype = ColliderType::KILLER;
                     }
                 }
                 else {

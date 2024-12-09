@@ -1,4 +1,4 @@
-#include "Player.h"
+ #include "Player.h"
 #include "Engine.h"
 #include "Textures.h"
 #include "Audio.h"
@@ -176,6 +176,9 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 	case ColliderType::CHECKPOINT:
 		LOG("CheckPoint collision ON");
 		setCheckPoint = true;
+		break;
+	case ColliderType::KILLER:
+		LOG("Player Killed");
 		break;
 	default:
 		break;
