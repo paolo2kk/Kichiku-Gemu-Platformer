@@ -250,6 +250,6 @@ Vector2D Player::GetPosition() {
 void Player::Bounce()
 {
 	
-	b2Vec2 bounceImpulse = b2Vec2(0.0f, -15.0f); 
+	b2Vec2 bounceImpulse = b2Vec2(0.0f, -120.0f); 
 	pbody->body->ApplyLinearImpulseToCenter(bounceImpulse, true);
 }
