@@ -175,6 +175,7 @@ void Enemy::OnCollision(PhysBody* physA, PhysBody* physB) {
 			Vector2D enemyPos = GetPosition();
 
 			if (playerPos.getY() + player->texH / 2 <= enemyPos.getY()) {
+				Engine::GetInstance().audio.get()->PlayFx(enemydieFxId);
 				LOG("Player is on top of the enemy. Enemy will be destroyed.");
 				this->isDead = true;
 				player->Bounce();   
@@ -184,6 +185,7 @@ void Enemy::OnCollision(PhysBody* physA, PhysBody* physB) {
 	}
 	case ColliderType::BULLET:
 		LOG("Collided with Bullet");
+		Engine::GetInstance().audio.get()->PlayFx(enemydieFxId);
 		imDead = true;
 
 		Engine::GetInstance().entityManager.get()->DestroyEntity(this);

@@ -25,6 +25,7 @@ public:
 	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
 
 public:
+	int murcielagodieFxId;
 private:
 	SDL_Texture* texture;
 	const char* texturePath;

@@ -201,7 +201,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 	case ColliderType::KILLER:
 		LOG("Player Killed");
 		if (!godMode && !isDead){
-
+			Engine::GetInstance().audio.get()->PlayFx(playerdieFxId);
 		currentAnimation = &dead;
 		currentAnimation->Reset();
 		isDead = true;
@@ -209,7 +209,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		break;
 	case ColliderType::ENEMY:
 		if (!godMode && !isDead) {
-
+			Engine::GetInstance().audio.get()->PlayFx(playerdieFxId);
 			currentAnimation = &dead;
 			currentAnimation->Reset();
 			isDead = true;
@@ -217,6 +217,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		break;
 	case ColliderType::ENEMYBFS:
 		if (!godMode && !isDead) {
+			Engine::GetInstance().audio.get()->PlayFx(playerdieFxId);
 			currentAnimation = &dead;
 			currentAnimation->Reset();
 			isDead = true;

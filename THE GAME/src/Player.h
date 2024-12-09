@@ -66,7 +66,7 @@ public:
 	int jumpFxId;     
 	int stepFxId;     
 	int shootFxId;   
-
+	int playerdieFxId;
 	float respawnTimer = 0;
 	
 
