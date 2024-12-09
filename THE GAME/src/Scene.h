@@ -93,6 +93,6 @@ public:
 	GuiControlButton* layout;
 
 	float shootingTimer = 0;
-	
+	bool help = false;
 
 };

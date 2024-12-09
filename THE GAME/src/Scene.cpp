@@ -156,6 +156,22 @@ float Scene::Slower(float ogPos, float goalPos, float time)
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_H) == KEY_DOWN)
+	{
+		if (help == false)
+		{
+			help = true;
+		}
+		else
+		{
+			help = false;
+		}
+	}
+
+	if (help == true)
+	{
+		Engine::GetInstance().render.get()->DrawTexture(Engine::GetInstance().textures.get()->Load("Assets/UI/help.png"), 250, 130, NULL, 0.0f);
+	}
 	//L03 TODO 3: Make the camera movement independent of framerate
 	float camSpeed = 1;
 
