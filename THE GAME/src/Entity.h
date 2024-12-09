@@ -84,7 +84,7 @@ public:
 	std::string name;
 	EntityType type;
 	bool active = true;
-
+	bool imDead = false;
 	// Possible properties, it depends on how generic we
 	// want our Entity class, maybe it's not renderable...
 	Vector2D position;       

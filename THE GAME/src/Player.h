@@ -66,7 +66,9 @@ public:
 	int jumpFxId;     
 	int stepFxId;     
 	int shootFxId;   
-	int playerdieFxId;
+
+	float respawnTimer = 0;
+	
 
 
 	// L08 TODO 5: Add physics to the player - declare a Physics body
@@ -80,6 +82,7 @@ public:
 	Animation idleL;
 	Animation walk;
 	Animation right;
+	Animation dead;
 	Direction direction;
 
 	bool isDead = false;

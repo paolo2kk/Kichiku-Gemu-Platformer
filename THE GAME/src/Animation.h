@@ -29,19 +29,28 @@ public:
 	}
 
 	bool HasFinished() {
-		return !loop && !pingpong && loopCount > 0;
+		return !loop && !pingpong && loopCount > 0 && currentFrame >= totalFrames;
 	}
 
 	void Update(float dt) {
 		currentFrame += speed * dt; 
-		if (currentFrame >= totalFrames) {
-			currentFrame = (loop || pingpong) ? 0.0f : totalFrames - 1;
-			++loopCount;
 
-			if (pingpong)
+		if (currentFrame >= totalFrames) {
+			if (loop) {
+				currentFrame = 0.0f;
+				++loopCount;
+			}
+			else if (pingpong) {
+				currentFrame = totalFrames - 1;
 				pingpongDirection = -pingpongDirection;
+			}
+			else {
+				currentFrame = totalFrames - 1; 
+				++loopCount;
+			}
 		}
 	}
+
 
 	const SDL_Rect& GetCurrentFrame() const {
 		int actualFrame = static_cast<int>(currentFrame);

@@ -184,6 +184,8 @@ void Enemy::OnCollision(PhysBody* physA, PhysBody* physB) {
 	}
 	case ColliderType::BULLET:
 		LOG("Collided with Bullet");
+		imDead = true;
+
 		Engine::GetInstance().entityManager.get()->DestroyEntity(this);
 		break;
 
