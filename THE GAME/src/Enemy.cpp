@@ -60,7 +60,6 @@ bool Enemy::Start() {
 
 bool Enemy::Update(float dt)
 {
-	
 	Player* player = Engine::GetInstance().scene.get()->player;
 
 	if (isDead) {
@@ -69,21 +68,17 @@ bool Enemy::Update(float dt)
 		return false;
 	}
 
-	
 	if (!isDead) {
-		
 		Vector2D playerPos = player->GetPosition();
 		Vector2D enemyPos = GetPosition();
 
 		float distanceX = abs(playerPos.getX() - enemyPos.getX());
 		float distanceY = abs(playerPos.getY() - enemyPos.getY());
 
-		
-		const int blockSize = 32; 
-		float maxDistance = 10 * blockSize; 
+		const int blockSize = 32;
+		float maxDistance = 10 * blockSize;
 
 		if (distanceX <= maxDistance && distanceY <= maxDistance) {
-			
 			if (buscando <= 20) {
 				pathfinding->PropagateAStar(EUCLIDEAN);
 				buscando++;
@@ -94,15 +89,17 @@ bool Enemy::Update(float dt)
 				buscando = 0;
 			}
 
-			
 			if (pathfinding->pathTiles.size() > 0) {
 				Vector2D nextTile = pathfinding->pathTiles.front();
 				Vector2D nextPos = Engine::GetInstance().map->MapToWorld(nextTile.getX(), nextTile.getY());
 				Vector2D dir = nextPos - enemyPos;
+
+				
+				dir.setY(0); 
 				dir.normalized();
 
-				float velocidad = 0.03f; 
-				b2Vec2 velocity = b2Vec2(dir.getX() * velocidad, 0);
+				float velocidad = 0.03f;
+				b2Vec2 velocity = b2Vec2(dir.getX() * velocidad, 0);  
 
 				pbody->body->SetLinearVelocity(velocity);
 			}
@@ -121,17 +118,10 @@ bool Enemy::Update(float dt)
 		Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY(), &currentAnimation->GetCurrentFrame());
 		currentAnimation->Update();
 
-		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
-		{
-			if (showPath)
-			{
-				showPath = false;
-			}
-			else
-				showPath = true;
+		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) {
+			showPath = !showPath;
 		}
-		if (showPath)
-		{
+		if (showPath) {
 			pathfinding->DrawPath();
 		}
 	}
@@ -165,36 +155,6 @@ void Enemy::ResetPath() {
 	Vector2D tilePos = Engine::GetInstance().map.get()->WorldToMap(pos.getX(), pos.getY());
 	pathfinding->ResetPath(tilePos);
 }
-
-/*void Enemy::CheckCollisionWithPlayer(Player* player)
-{
-	
-	Vector2D playerPos = player->GetPosition();
-	int playerWidth = player->texW;
-	int playerHeight = player->texH;
-
-	Vector2D enemyPos = this->GetPosition();
-	int enemyWidth = this->texW;
-	int enemyHeight = this->texH;
-
-	
-	bool isCollidingHorizontally = (playerPos.getX() + playerWidth > enemyPos.getX() &&
-		playerPos.getX() < enemyPos.getX() + enemyWidth);
-
-	
-	bool isCollidingVertically = (playerPos.getY() + playerHeight/2 >= enemyPos.getY() &&
-                              playerPos.getY() < enemyPos.getY() + enemyHeight);
-
-
-	if (isCollidingHorizontally && isCollidingVertically) {
-		
-	this->isDead = true;
-		
-		player->Bounce();
-	}
-}
-*/
-
 
 void Enemy::Die()
 {
