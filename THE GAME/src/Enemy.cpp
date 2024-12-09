@@ -53,7 +53,7 @@ bool Enemy::Start() {
 	ResetPath();
 
 	showPath = false;
-
+	enemydieFxId = Engine::GetInstance().audio.get()->LoadFx("Assets/Audio/Fx/enemydie.ogg");
 
 	return true;
 }
@@ -161,6 +161,7 @@ void Enemy::Die()
 	if (toDestroy)
 	{
 		isDead = true;
+		
 	}
 }
 

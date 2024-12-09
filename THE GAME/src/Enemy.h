@@ -45,7 +45,7 @@ public:
 public:
 	bool isDead = false;
 	bool showPath = false;
-
+	int enemydieFxId;
 	bool toDestroy = false;
 	PhysBody* pbody;
 	PhysBody* pbody2;

@@ -66,7 +66,7 @@ public:
 	int jumpFxId;     
 	int stepFxId;     
 	int shootFxId;   
-	
+	int playerdieFxId;
 
 
 	// L08 TODO 5: Add physics to the player - declare a Physics body
