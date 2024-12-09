@@ -33,6 +33,7 @@ bool EnemyInClass::Start() {
 	pbody = Engine::GetInstance().physics.get()->CreateCircle((int)position.getX() + texH / 2, (int)position.getY() + texH / 2, texH / 2, bodyType::DYNAMIC);
 	//Assign collider type
 	pbody->ctype = ColliderType::ENEMYBFS;
+	pbody->listener = this;
 	// Set the gravity of the body
 	if (!parameters.attribute("gravity").as_bool()) pbody->body->SetGravityScale(0);
 	// Initialize pathfinding
