@@ -200,6 +200,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		break;
 	case ColliderType::CHECKPOINT:
 		LOG("CheckPoint collision ON");
+		Engine::GetInstance().audio.get()->PlayFx(pickCoinFxId);
 		setCheckPoint = true;
 		break;
 	case ColliderType::KILLER:
