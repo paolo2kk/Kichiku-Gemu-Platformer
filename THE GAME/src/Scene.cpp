@@ -295,6 +295,23 @@ void Scene::LoadState() {
 			LOG("Enemy node %s not found in config.xml", enemyNodeName.c_str());
 		}
 	}
+
+	pugi::xml_node springEnemyNode = sceneNode.child("entities").child("enemies");
+	for (int i = 0; i < enemyList.size(); i++) {
+		std::string enemyNodeName = "spring" + std::to_string(i);
+
+		pugi::xml_node enemyNode = springEnemyNode.child(enemyNodeName.c_str());
+		if (enemyNode) {
+			Vector2D enemyPos = Vector2D(
+				enemyNode.attribute("x").as_int(),
+				enemyNode.attribute("y").as_int()
+			);
+			springEnemyList[i]->SetPosition(enemyPos);
+		}
+		else {
+			LOG("Enemy node %s not found in config.xml", enemyNodeName.c_str());
+		}
+	}
 }// L15 TODO 2: Implement the Save function
 void Scene::SaveState() {
 
@@ -329,22 +346,40 @@ void Scene::SaveState() {
 			enemyNode = enemiesNode.append_child(enemyNodeName.c_str());
 		}
 
-		enemyNode.append_attribute("x") = enemyList[i]->GetPosition().getX();
-		enemyNode.append_attribute("y") = enemyList[i]->GetPosition().getY();
+		enemyNode.attribute("x").set_value(enemyList[i]->GetPosition().getX());
+		enemyNode.attribute("y").set_value(enemyList[i]->GetPosition().getY());
 	}
 
 
-	for (int i = 0; i < springEnemyList.size(); i++) {
+	pugi::xml_node springEnemiesNode = sceneNode.child("entities").child("enemies");
+
+	for (int i = 0; i < enemyList.size(); i++) {
 		std::string enemyNodeName = "spring" + std::to_string(i);
 
-		pugi::xml_node enemyNode = enemiesNode.child(enemyNodeName.c_str());
+		pugi::xml_node enemyNode = springEnemiesNode.child(enemyNodeName.c_str());
 		if (!enemyNode) {
-			enemyNode = enemiesNode.append_child(enemyNodeName.c_str());
+			enemyNode = springEnemiesNode.append_child(enemyNodeName.c_str());
 		}
 
-		enemyNode.append_attribute("x") = springEnemyList[i]->GetPosition().getX();
-		enemyNode.append_attribute("y") = springEnemyList[i]->GetPosition().getY();
+		enemyNode.attribute("x").set_value(springEnemyList[i]->GetPosition().getX());
+		enemyNode.attribute("y").set_value(springEnemyList[i]->GetPosition().getY());
 	}
+
+	pugi::xml_node booEnemiesNode = sceneNode.child("entities").child("enemies");
+
+	for (int i = 0; i < enemyList.size(); i++) {
+		std::string enemyNodeName = "BOO" + std::to_string(i);
+
+		pugi::xml_node enemyNode = booEnemiesNode.child(enemyNodeName.c_str());
+		if (!enemyNode) {
+			enemyNode = booEnemiesNode.append_child(enemyNodeName.c_str());
+		}
+
+		enemyNode.attribute("x").set_value(booEnemyList[i]->GetPosition().getX());
+		enemyNode.attribute("y").set_value(booEnemyList[i]->GetPosition().getY());
+	}
+
+
 
 	if (!loadFile.save_file("config.xml")) {
 		LOG("Failed to save game state to file.");

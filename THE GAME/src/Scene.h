@@ -9,6 +9,7 @@
 #include "GuiControlButton.h"
 #include "Spring.h"
 #include "BOO.h"
+#include "Murcielago.h"
 
 struct SDL_Texture;
 
@@ -81,6 +82,7 @@ public:
 	pugi::xml_node bulletParameters;
 	std::vector<Spring*> springEnemyList;
 	std::vector<BOO*> booEnemyList;
+	std::vector<EnemyInClass*> batEnemyList;
 
 	int WWidth;
 	int WHeight;
