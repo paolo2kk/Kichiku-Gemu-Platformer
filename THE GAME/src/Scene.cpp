@@ -237,8 +237,20 @@ bool Scene::Update(float dt)
 	}
 	if (player->isDead)
 	{
-		LoadState();
-		player->isDead = false;
+		//make a cooldwon for the player to respawn
+		player->respawnTimer += dt / 1000;
+		if (player->respawnTimer >= 2)
+		{
+			LoadState();
+			player->isDead = false;
+			player->isJumping = false;
+			player->canDJ = true;
+			player->currentAnimation = &player->idleR;
+			player->respawnTimer = 0;
+		}
+
+
+		
 
 	}
 

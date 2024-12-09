@@ -67,7 +67,7 @@
 						<frame x="512" y="192" w="64" h="64" />
 						<frame x="576" y="192" w="64" h="64" />
 					</right>
-					<dead loop="true" speed="0.02">
+					<dead loop="false" speed="0.01">
 						<frame x="0" y="256" w="64" h="64" />
 						<frame x="64" y="256" w="64" h="64" />
 						<frame x="128" y="256" w="64" h="64" />

@@ -41,6 +41,7 @@ bool Player::Start() {
 	walk.LoadAnimations(parameters.child("animations").child("walk"));
 	right.LoadAnimations(parameters.child("animations").child("right"));
 	idleL.LoadAnimations(parameters.child("animations").child("idleL"));
+	dead.LoadAnimations(parameters.child("animations").child("dead"));
 
 	// L08 TODO 5: Add physics to the player - initialize physics body
 	pbody = Engine::GetInstance().physics.get()->CreateRectangle((int)position.getX(), (int)position.getY(), texW - texW/1.5 , texH - texH/4.5, bodyType::DYNAMIC);
@@ -68,44 +69,57 @@ bool Player::Start() {
 
 bool Player::Update(float dt)
 {
-	if (walksoundTimer.ReadMSec() > 200)	
-	{
-		isWalking = false; 
-		walksoundTimer.ResetTimer(); 
+	
+	if (isDead) {
+		
+		if (!currentAnimation->HasFinished()) {
+			currentAnimation->Update(dt);
+		}
+
+		Engine::GetInstance().render.get()->DrawTexture(texture,
+			(int)position.getX(),
+			(int)position.getY(),
+			&currentAnimation->GetCurrentFrame());
+
+		return true; 
 	}
+
+	if (walksoundTimer.ReadMSec() > 200) {
+		isWalking = false;
+		walksoundTimer.ResetTimer();
+	}
+
 
 	currentAnimation = (direction == Direction::LEFT) ? &idleL : &idleR;
-	// L08 TODO 5: Add physics to the player - updated player position using physics
+
 	b2Vec2 velocity = b2Vec2(0, pbody->body->GetLinearVelocity().y);
 
-	if (!parameters.attribute("gravity").as_bool()) {
-		velocity = b2Vec2(0,0);
-	}
-
-	// Move left
-	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-		velocity.x = -0.2 * 16;
-		direction = Direction::LEFT;
-		currentAnimation = &right;
-		if (!isWalking && !isJumping) {
-			Engine::GetInstance().audio.get()->PlayFx(stepFxId);
-			walksoundTimer.Start();
-			isWalking = true;
-		}
-	}
-
-	// Move right
-	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-		velocity.x = 0.2 * 16;      
-		direction = Direction::RIGHT;
-		currentAnimation = &walk;
-		if (!isWalking && !isJumping) {
-			Engine::GetInstance().audio.get()->PlayFx(stepFxId);
-			walksoundTimer.Start();
-			isWalking = true;
-		}
-	}
 	
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+		velocity.x = -0.2f * 16.0f;
+		direction = Direction::LEFT;
+		currentAnimation = &right; 
+
+		if (!isWalking && !isJumping) {
+			Engine::GetInstance().audio.get()->PlayFx(stepFxId);
+			walksoundTimer.Start();
+			isWalking = true;
+		}
+	}
+
+	
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+		velocity.x = 0.2f * 16.0f;
+		direction = Direction::RIGHT;
+		currentAnimation = &walk; 
+
+		if (!isWalking && !isJumping) {
+			Engine::GetInstance().audio.get()->PlayFx(stepFxId);
+			walksoundTimer.Start();
+			isWalking = true;
+		}
+	}
+
 	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) != KEY_REPEAT &&
 		Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_D) != KEY_REPEAT) {
 		isWalking = false;
@@ -113,56 +127,41 @@ bool Player::Update(float dt)
 
 	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
 		if (!isJumping) {
-			pbody->body->SetLinearVelocity(b2Vec2(velocity.x, 0)); 
+			pbody->body->SetLinearVelocity(b2Vec2(velocity.x, 0));
 			pbody->body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpForce), true);
 			Engine::GetInstance().audio.get()->PlayFx(jumpFxId);
 			isJumping = true;
 		}
 		else if (canDJ) {
-			pbody->body->SetLinearVelocity(b2Vec2(velocity.x, 0)); 
+			pbody->body->SetLinearVelocity(b2Vec2(velocity.x, 0));
 			pbody->body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpForce), true);
 			Engine::GetInstance().audio.get()->PlayFx(jumpFxId);
-			canDJ = false; 
+			canDJ = false;
 		}
 	}
 
-
-
-	// If the player is jumpling, we don't want to apply gravity, we use the current velocity prduced by the jump
-	if(isJumping == true)
-	{
+	if (isJumping) {
 		velocity.y = pbody->body->GetLinearVelocity().y;
 	}
 
-	// Shoot
-	if (Engine::GetInstance().input.get()->GetKeyDown(SDL_SCANCODE_P) == KEY_DOWN) {
-		Engine::GetInstance().audio.get()->PlayFx(shootFxId);
-	}  
-
-	// Apply the velocity to the player	
 	pbody->body->SetLinearVelocity(velocity);
 
 	b2Transform pbodyPos = pbody->body->GetTransform();
 	position.setX(METERS_TO_PIXELS(pbodyPos.p.x) - texW / 2);
 	position.setY(METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2 - texH / 11);
 
-	Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY(), &currentAnimation->GetCurrentFrame());
+	Engine::GetInstance().render.get()->DrawTexture(texture,
+		(int)position.getX(),
+		(int)position.getY(),
+		&currentAnimation->GetCurrentFrame());
 	currentAnimation->Update(dt);
-
-	//Debug
-
-	if (Engine::GetInstance().input.get()->GetKeyDown(SDL_SCANCODE_F10) == KEY_DOWN)
-	{
-		if (godMode)
-		{
-			godMode = false;
-		}
-		else
-			godMode = true;
-	}
 
 	return true;
 }
+
+
+
+
 void Player::SetMass(float newMass) {
 	if (pbody && pbody->body) {
 		b2MassData massData;
@@ -179,7 +178,6 @@ bool Player::CleanUp()
 	return true;
 }
 
-// L08 TODO 6: Define OnCollision function for the player. 
 void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 	switch (physB->ctype)
 	{
@@ -202,18 +200,25 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		break;
 	case ColliderType::KILLER:
 		LOG("Player Killed");
-		//godMode
-		if (!godMode){
+		if (!godMode && !isDead){
+
+		currentAnimation = &dead;
+		currentAnimation->Reset();
 		isDead = true;
 		}
 		break;
 	case ColliderType::ENEMY:
-		if (!godMode) {
+		if (!godMode && !isDead) {
+
+			currentAnimation = &dead;
+			currentAnimation->Reset();
 			isDead = true;
 		}
 		break;
 	case ColliderType::ENEMYBFS:
-		if (!godMode) {
+		if (!godMode && !isDead) {
+			currentAnimation = &dead;
+			currentAnimation->Reset();
 			isDead = true;
 		}
 		break;
