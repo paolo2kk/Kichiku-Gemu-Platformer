@@ -61,7 +61,7 @@ bool Player::Start() {
 	jumpFxId = Engine::GetInstance().audio.get()->LoadFx("Assets/Audio/Fx/jump.wav");
 	stepFxId = Engine::GetInstance().audio.get()->LoadFx("Assets/Audio/Fx/step.ogg");
 	shootFxId = Engine::GetInstance().audio.get()->LoadFx("Assets/Audio/Fx/shoot.ogg");
-	
+	playerdieFxId = Engine::GetInstance().audio.get()->LoadFx("Assets/Audio/Fx/playerdie.ogg");
 	godMode = false;
 
 	return true;
