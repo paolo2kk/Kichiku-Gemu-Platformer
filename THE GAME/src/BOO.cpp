@@ -46,7 +46,6 @@ bool BOO::Start() {
 	Vector2D tilePos = Engine::GetInstance().map.get()->WorldToMap(pos.getX(), pos.getY());
 	pathfinding->ResetPath(tilePos);
 
-	showPath = true;
 
 	return true;
 }
@@ -66,7 +65,7 @@ bool BOO::Update(float dt)
     float maxDistance = 25 * blockSize; 
 
     if (distanceX <= maxDistance && distanceY <= maxDistance) {
-        if (buscando <= 40) {
+        if (buscando <= 40) { 
             pathfinding->PropagateAStar(MANHATTAN);
             buscando++;
         }

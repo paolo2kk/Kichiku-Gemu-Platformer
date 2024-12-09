@@ -45,7 +45,6 @@ bool Spring::Start() {
 	Vector2D pos = GetPosition();
 	Vector2D tilePos = Engine::GetInstance().map.get()->WorldToMap(pos.getX(), pos.getY());
 	pathfinding->ResetPath(tilePos);
-	showPath = true;
 
 	return true;
 }

@@ -118,7 +118,7 @@ bool Scene::Start()
 	WWidth = Engine::GetInstance().window.get()->width;
 	WHeight = Engine::GetInstance().window.get()->height;
 
-	Engine::GetInstance().audio.get()->PlayMusic("Assets/Audio/Music/background.wav", 1.0f);
+	Engine::GetInstance().audio.get()->PlayMusic("Assets/Audio/Music/peak_music_but_fast.ogg", 1.0f);
 
 	return true;
 }
