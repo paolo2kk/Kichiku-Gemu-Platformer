@@ -107,7 +107,7 @@ public:
 private:
 
 	// Delta time
-	float dt;
+	float dt = 0.016;
 	//Frames since startup
 	int frames;
 

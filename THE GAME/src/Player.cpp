@@ -147,11 +147,11 @@ bool Player::Update(float dt)
 	position.setY(METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2 - texH / 11);
 
 	Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY(), &currentAnimation->GetCurrentFrame());
-	currentAnimation->Update();
+	currentAnimation->Update(dt);
 
 	//Debug
 
-	if (Engine::GetInstance().input.get()->GetKeyDown(SDL_SCANCODE_G) == KEY_DOWN)
+	if (Engine::GetInstance().input.get()->GetKeyDown(SDL_SCANCODE_F10) == KEY_DOWN)
 	{
 		if (godMode)
 		{
