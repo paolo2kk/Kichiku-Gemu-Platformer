@@ -305,12 +305,12 @@ void Scene::SaveState() {
 	pugi::xml_node playerNode = sceneNode.child("entities").child("player");
 	if (playerNode) {
 		playerNode.attribute("x").set_value(player->GetPosition().getX() - player->texW / 2);  
-		playerNode.attribute("y").set_value(player->GetPosition().getY());
+		playerNode.attribute("y").set_value(player->GetPosition().getY()- player->texH/2);
 	}
 	else {
 		playerNode = sceneNode.child("entities").append_child("player");
 		playerNode.append_attribute("x") = player->GetPosition().getX() - player->texW / 2;
-		playerNode.append_attribute("y") = player->GetPosition().getY();
+		playerNode.append_attribute("y") = player->GetPosition().getY() - player->texH / 2;
 	}
 
 	pugi::xml_node enemiesNode = sceneNode.child("entities").child("enemies");
