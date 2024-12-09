@@ -17,7 +17,7 @@
 	<scene>
 		<map path="Assets/Maps/" name="MapTemplate.tmx" />
 		<entities>
-			<player x="4718" y="1030" w="64" h="64" texture="Assets/Textures/player/Idle.png" gravity="true">
+			<player x="-32" y="103" w="64" h="64" texture="Assets/Textures/player/Idle.png" gravity="true">
 				<animations>
 					<idleR loop="true" speed="0.2">
 						<frame x="0" y="0" w="64" h="64" />
@@ -94,7 +94,7 @@
 				</bullet>
 			</items>
 			<enemies>
-				<enemy0 name="badguy" x="1000" y="1000" w="64" h="64" texture="Assets/Textures/enemy/Idle.png" gravity="true" x="1000" y="1000" x="1000" y="1000" x="1000" y="1000" x="1032" y="1032" x="1000" y="1046" x="1032" y="1032" x="1032" y="1032" x="1032" y="1032" x="1032" y="1032" x="1032" y="1032" x="1032" y="1032" x="1032" y="1032" x="1032" y="1032" x="1032" y="1032" x="1032" y="1032" x="1032" y="1032" x="1032" y="1032" x="1032" y="1032" x="1032" y="1032" x="1032" y="1032" x="1032" y="1032" x="1032" y="1032" x="1032" y="1032" x="1032" y="1032" x="1032" y="1032" x="1032" y="1032" x="972" y="1041" x="999" y="1046" x="999" y="1046" x="993" y="1046" x="1000" y="1046" x="1032" y="1032" x="1032" y="1032" x="1032" y="1032" x="1032" y="1032" x="975" y="1046" x="1032" y="1032" x="1032" y="1032" x="1032" y="1032" x="1032" y="1032" x="1032" y="1032" x="1032" y="1032" x="1032" y="1032" x="1032" y="1032">
+				<enemy0 name="badguy" x="1000" y="1000" w="64" h="64" texture="Assets/Textures/enemy/Idle.png" gravity="true" x="1032" y="1032">
 					<animations>
 						<idle loop="true" speed="0.05">
 							<frame x="0" y="0" w="64" h="64" />
@@ -160,14 +160,13 @@
 						</scaredL>
 					</animations>
 				</BOO1>
-				<spring1 name="spring1" x="4600" y="967" w="64" h="64" texture="Assets/Textures/spring.png" gravity="true">
+				<spring0 name="spring1" x="4600" y="967" w="64" h="64" texture="Assets/Textures/spring.png" gravity="true" x="4632" y="999">
 					<animations>
 						<idle loop="true" speed="0.5">
 							<frame x="0" y="0" w="64" h="64" />
 						</idle>
 					</animations>
-				</spring1>
-				<spring0 x="4600" y="967" x="4600" y="967" x="4600" y="967" x="4600" y="967" x="4632" y="999" x="4632" y="1012" x="4632" y="1020" x="4632" y="1023" x="4632" y="1023" x="4632" y="1023" x="4632" y="1023" x="4632" y="1023" x="4632" y="1023" x="4632" y="1023" x="4632" y="1023" x="4632" y="1023" x="4632" y="1023" x="4632" y="1023" x="4632" y="1023" x="4632" y="1023" x="4632" y="1023" x="4632" y="1023" x="4632" y="1023" x="4632" y="1023" x="4632" y="1023" x="4632" y="1023" x="4632" y="1023" x="4632" y="1023" x="4632" y="1023" x="4632" y="1023" x="4632" y="1023" x="4632" y="1023" x="4632" y="1023" x="4632" y="1023" x="4632" y="1023" x="4632" y="1023" x="4483" y="511" x="4520" y="1022" x="4717" y="1005" x="4525" y="902" x="4525" y="958" x="4525" y="991" x="4525" y="1023" x="4525" y="1023" x="4716" y="734" />
+				</spring0>
 			</enemies>
 		</entities>
 	</scene>

@@ -74,7 +74,7 @@ bool Scene::Awake()
 		booEnemyList.push_back(enemy1);
 	}
 
-	for (pugi::xml_node enemyNode3 = configParameters.child("entities").child("enemies").child("spring1"); enemyNode3; enemyNode3 = enemyNode3.next_sibling("spring1"))
+	for (pugi::xml_node enemyNode3 = configParameters.child("entities").child("enemies").child("spring0"); enemyNode3; enemyNode3 = enemyNode3.next_sibling("spring1"))
 	{
 		Spring* springEnemy1 = (Spring*)Engine::GetInstance().entityManager->CreateEntity(EntityType::SPRINGENEMY);
 		springEnemy1->SetParameters(enemyNode3);
@@ -310,7 +310,7 @@ void Scene::SaveState() {
 
 	pugi::xml_node playerNode = sceneNode.child("entities").child("player");
 	if (playerNode) {
-		playerNode.attribute("x").set_value(player->GetPosition().getX());  
+		playerNode.attribute("x").set_value(player->GetPosition().getX() - player->texW / 2);
 		playerNode.attribute("y").set_value(player->GetPosition().getY());
 	}
 	else {
@@ -332,6 +332,7 @@ void Scene::SaveState() {
 		enemyNode.append_attribute("x") = enemyList[i]->GetPosition().getX();
 		enemyNode.append_attribute("y") = enemyList[i]->GetPosition().getY();
 	}
+
 
 	for (int i = 0; i < springEnemyList.size(); i++) {
 		std::string enemyNodeName = "spring" + std::to_string(i);
