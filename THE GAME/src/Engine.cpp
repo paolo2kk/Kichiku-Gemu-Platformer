@@ -127,9 +127,19 @@ bool Engine::Start() {
 
 // Called each loop iteration
 bool Engine::Update() {
-
     bool ret = true;
     PrepareUpdate();
+
+    if (input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN) {
+        if (maxFrameDuration == 0) {
+            maxFrameDuration = 1000 / 30; 
+            LOG("FPS cap enabled: 30 FPS");
+        }
+        else {
+            maxFrameDuration = 0; 
+            LOG("FPS cap disabled");
+        }
+    }
 
     if (input->GetWindowEvent(WE_QUIT) == true)
         ret = false;
