@@ -35,7 +35,7 @@ bool Bullet::Start() {
 	// L08 TODO 4: Add a physics to an item - initialize the physics body
 	pbody = Engine::GetInstance().physics.get()->CreateCircle((int)position.getX() + texH / 2, (int)position.getY() + texH / 2, texH / 2, bodyType::DYNAMIC);
 	pbody->listener = this;
-
+	pbody->body->IsBullet();
 	// L08 TODO 7: Assign collider type
 	pbody->ctype = ColliderType::BULLET;
 	pbody->body->SetGravityScale(0);
@@ -86,17 +86,13 @@ bool Bullet::CleanUp()
 void Bullet::OnCollision(PhysBody* physA, PhysBody* physB) {
 	switch (physB->ctype)
 	{
-	case ColliderType::PLAYER:
-		/*LOG("Collided with player - DESTROY");*/
-		//Engine::GetInstance().entityManager.get()->DestroyEntity(this);
-		break;
+
 	
 	case ColliderType::PLATFORM:
-
-		Engine::GetInstance().entityManager.get()->DestroyEntity(this);
-	case ColliderType::ENEMY:
 		//Engine::GetInstance().entityManager.get()->DestroyEntity(this);
+
 		break;
+
 	}
 }
 //void Bullet::OnCollisionEnd(PhysBody* physA, PhysBody* physB)

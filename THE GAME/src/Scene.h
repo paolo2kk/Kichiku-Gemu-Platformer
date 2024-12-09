@@ -78,7 +78,6 @@ public:
 	Player* player;
 	std::vector<Enemy*> enemyList;
 	std::vector<CheckPoint*> checkPointList;
-	std::vector<Bullet*> bulletList;
 	pugi::xml_node bulletParameters;
 	std::vector<Spring*> springEnemyList;
 	std::vector<BOO*> booEnemyList;
@@ -92,6 +91,7 @@ public:
 	GuiControlButton* guiBt;
 	GuiControlButton* layout;
 
+	float shootingTimer = 0;
 	
 
 };

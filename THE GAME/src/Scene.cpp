@@ -144,6 +144,8 @@ bool Scene::Update(float dt)
 	//L03 TODO 3: Make the camera movement independent of framerate
 	float camSpeed = 1;
 
+	shootingTimer += dt / 1000;
+
 	int mapLimitX = 7000;
 	int mapLimitY = 1184;
 	Engine::GetInstance().render.get()->camera.y = (-player->position.getY() * camSpeed) + WHeight / 2;
@@ -182,7 +184,7 @@ bool Scene::Update(float dt)
 
 	// L10 TODO 6: Implement a method that repositions the player in the map with a mouse click
 
-	if (Engine::GetInstance().input.get()->GetKeyDown(SDL_SCANCODE_P) == KEY_DOWN)
+	if (Engine::GetInstance().input.get()->GetKeyDown(SDL_SCANCODE_P) == KEY_DOWN && shootingTimer >= 3)
 		Shoot();
 
 
@@ -460,7 +462,8 @@ void Scene::Shoot()
 		bullet->SetPosition(playerPos + Offset2);
 		bullet->SetVelocity(Direction::LEFT);
 	}
-	bulletList.push_back(bullet);
+
+	shootingTimer = 0;
 }
 // Called before quitting
 bool Scene::CleanUp()
