@@ -12,6 +12,10 @@ Victor Cardenas Hormigo - Link to GitHub: https://github.com/vixtorbir
 
 Kichiku Gemu is a platform game where he objective is simple, players have to find the way to pass the different levels of the game fastest way.
 
+This game is part of the Intellectual Property: I Wanna Be The President! Is a spinoff of William Fox, played by Maria Hops during her stream.
+
+Expect to find triggering encounters such as having to perfectly align jumps or invisible walls, because this game is part of the troll games genre.
+
 ## Game Controls   
 ### Player
     * W -> Move up
@@ -27,3 +31,11 @@ Kichiku Gemu is a platform game where he objective is simple, players have to fi
     * F9 Visualize the colliders / logic
     * F10 God Mode (fly around, cannot be killed)
     * F11 Enable/Disable FPS cap to 30
+
+## Additional Features
+    * Animated tiles
+    * Streamer Layout
+    * Triangle Colliders
+    * Camera Lerp
+    * Shooting
+    * Window can be moved with IJKL
