@@ -52,7 +52,7 @@ bool Enemy::Start() {
 	pathfinding = new Pathfinding();
 	ResetPath();
 
-	showPath = true;
+	showPath = false;
 
 
 	return true;
