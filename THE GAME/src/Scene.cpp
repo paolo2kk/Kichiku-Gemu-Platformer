@@ -54,19 +54,20 @@ bool Scene::Awake()
 	 	enemyList.push_back(enemy);
 	}
 
-	for (pugi::xml_node CheckPointNode = configParameters.child("entities").child("items").child("checkpoint"); CheckPointNode; CheckPointNode = CheckPointNode.next_sibling("CheckPoint"))
+	for (pugi::xml_node CheckPointNode = configParameters.child("entities").child("items").child("checkpoint"); CheckPointNode; CheckPointNode = CheckPointNode.next_sibling("checkpoint"))
 	{
 		checkPoint = (CheckPoint*)Engine::GetInstance().entityManager->CreateEntity(EntityType::CHECKPOINT);
 		checkPoint->SetParameters(CheckPointNode);
 	}
 
-	for (pugi::xml_node enemyNode1 = configParameters.child("entities").child("enemies").child("murcielago"); enemyNode1; enemyNode1 = enemyNode1.next_sibling("murcielago"))
+	for (pugi::xml_node enemyNode1 = configParameters.child("entities").child("enemies").child("murcielago0"); enemyNode1; enemyNode1 = enemyNode1.next_sibling("murcielago0"))
 	{
 		EnemyInClass* enemy1 = (EnemyInClass*)Engine::GetInstance().entityManager->CreateEntity(EntityType::ENEMYBFS);
 		enemy1->SetParameters(enemyNode1);
+		batEnemyList.push_back(enemy1);
 	}
 
-	for (pugi::xml_node enemyNode2 = configParameters.child("entities").child("enemies").child("BOO1"); enemyNode2; enemyNode2 = enemyNode2.next_sibling("BOO1"))
+	for (pugi::xml_node enemyNode2 = configParameters.child("entities").child("enemies").child("BOO0"); enemyNode2; enemyNode2 = enemyNode2.next_sibling("BOO0"))
 	{
 		BOO* enemy1 = (BOO*)Engine::GetInstance().entityManager->CreateEntity(EntityType::BOO);
 		enemy1->SetParameters(enemyNode2);
@@ -74,7 +75,7 @@ bool Scene::Awake()
 		booEnemyList.push_back(enemy1);
 	}
 
-	for (pugi::xml_node enemyNode3 = configParameters.child("entities").child("enemies").child("spring0"); enemyNode3; enemyNode3 = enemyNode3.next_sibling("spring1"))
+	for (pugi::xml_node enemyNode3 = configParameters.child("entities").child("enemies").child("spring0"); enemyNode3; enemyNode3 = enemyNode3.next_sibling("spring0"))
 	{
 		Spring* springEnemy1 = (Spring*)Engine::GetInstance().entityManager->CreateEntity(EntityType::SPRINGENEMY);
 		springEnemy1->SetParameters(enemyNode3);
@@ -312,6 +313,39 @@ void Scene::LoadState() {
 			LOG("Enemy node %s not found in config.xml", enemyNodeName.c_str());
 		}
 	}
+
+	pugi::xml_node booEnemyNode = sceneNode.child("entities").child("enemies");
+	for (int i = 0; i < enemyList.size(); i++) {
+		std::string enemyNodeName = "BOO" + std::to_string(i);
+
+		pugi::xml_node enemyNode = booEnemyNode.child(enemyNodeName.c_str());
+		if (enemyNode) {
+			Vector2D enemyPos = Vector2D(
+				enemyNode.attribute("x").as_int(),
+				enemyNode.attribute("y").as_int()
+			);
+			booEnemyList[i]->SetPosition(enemyPos);
+		}
+		else {
+			LOG("Enemy node %s not found in config.xml", enemyNodeName.c_str());
+		}
+	}
+	pugi::xml_node murcielagoEnemyNode = sceneNode.child("entities").child("enemies");
+	for (int i = 0; i < enemyList.size(); i++) {
+		std::string enemyNodeName = "murcielago" + std::to_string(i);
+
+		pugi::xml_node enemyNode = murcielagoEnemyNode.child(enemyNodeName.c_str());
+		if (enemyNode) {
+			Vector2D enemyPos = Vector2D(
+				enemyNode.attribute("x").as_int(),
+				enemyNode.attribute("y").as_int()
+			);
+			batEnemyList[i]->SetPosition(enemyPos);
+		}
+		else {
+			LOG("Enemy node %s not found in config.xml", enemyNodeName.c_str());
+		}
+	}
 }// L15 TODO 2: Implement the Save function
 void Scene::SaveState() {
 
@@ -346,8 +380,8 @@ void Scene::SaveState() {
 			enemyNode = enemiesNode.append_child(enemyNodeName.c_str());
 		}
 
-		enemyNode.attribute("x").set_value(enemyList[i]->GetPosition().getX());
-		enemyNode.attribute("y").set_value(enemyList[i]->GetPosition().getY());
+		enemyNode.attribute("x").set_value(enemyList[i]->GetPosition().getX() - player->texW / 2);
+		enemyNode.attribute("y").set_value(enemyList[i]->GetPosition().getY() - player->texH / 2);
 	}
 
 
@@ -361,8 +395,8 @@ void Scene::SaveState() {
 			enemyNode = springEnemiesNode.append_child(enemyNodeName.c_str());
 		}
 
-		enemyNode.attribute("x").set_value(springEnemyList[i]->GetPosition().getX());
-		enemyNode.attribute("y").set_value(springEnemyList[i]->GetPosition().getY());
+		enemyNode.attribute("x").set_value(springEnemyList[i]->GetPosition().getX() - player->texW / 2);
+		enemyNode.attribute("y").set_value(springEnemyList[i]->GetPosition().getY() - player->texH / 2);
 	}
 
 	pugi::xml_node booEnemiesNode = sceneNode.child("entities").child("enemies");
@@ -375,10 +409,23 @@ void Scene::SaveState() {
 			enemyNode = booEnemiesNode.append_child(enemyNodeName.c_str());
 		}
 
-		enemyNode.attribute("x").set_value(booEnemyList[i]->GetPosition().getX());
-		enemyNode.attribute("y").set_value(booEnemyList[i]->GetPosition().getY());
+		enemyNode.attribute("x").set_value(booEnemyList[i]->GetPosition().getX() - player->texW / 4);
+		enemyNode.attribute("y").set_value(booEnemyList[i]->GetPosition().getY() - player->texH / 4);
 	}
 
+	pugi::xml_node batEnemiesNode = sceneNode.child("entities").child("enemies");
+
+	for (int i = 0; i < enemyList.size(); i++) {
+		std::string enemyNodeName = "murcielago" + std::to_string(i);
+
+		pugi::xml_node enemyNode = batEnemiesNode.child(enemyNodeName.c_str());
+		if (!enemyNode) {
+			enemyNode = batEnemiesNode.append_child(enemyNodeName.c_str());
+		}
+
+		enemyNode.attribute("x").set_value(batEnemyList[i]->GetPosition().getX() - player->texW / 4);
+		enemyNode.attribute("y").set_value(batEnemyList[i]->GetPosition().getY() - player->texH / 4);
+	}
 
 
 	if (!loadFile.save_file("config.xml")) {
