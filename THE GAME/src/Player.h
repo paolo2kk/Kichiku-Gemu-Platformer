@@ -87,4 +87,7 @@ public:
 	bool isWalking = false;
 
 	bool godMode = false;
+
+	Timer walksoundTimer;
+	
 };

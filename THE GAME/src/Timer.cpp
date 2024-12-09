@@ -13,6 +13,7 @@ Timer::Timer()
 void Timer::Start()
 {
 	startTime = SDL_GetTicks();
+	active = true;
 }
 
 int Timer::ReadSec() const
@@ -23,4 +24,9 @@ int Timer::ReadSec() const
 float Timer::ReadMSec() const
 {
 	return (float)(SDL_GetTicks() - startTime);
+}
+
+void Timer::ResetTimer()
+{
+	active = false;
 }

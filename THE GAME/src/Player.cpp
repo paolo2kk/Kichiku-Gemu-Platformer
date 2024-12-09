@@ -68,6 +68,12 @@ bool Player::Start() {
 
 bool Player::Update(float dt)
 {
+	if (walksoundTimer.ReadMSec() > 200) 
+	{
+		isWalking = false; 
+		walksoundTimer.ResetTimer(); 
+	}
+
 	currentAnimation = (direction == Direction::LEFT) ? &idleL : &idleR;
 	// L08 TODO 5: Add physics to the player - updated player position using physics
 	b2Vec2 velocity = b2Vec2(0, pbody->body->GetLinearVelocity().y);
@@ -81,8 +87,9 @@ bool Player::Update(float dt)
 		velocity.x = -0.2 * 16;
 		direction = Direction::LEFT;
 		currentAnimation = &right;
-		if (!isWalking) {
+		if (!isWalking && !isJumping) {
 			Engine::GetInstance().audio.get()->PlayFx(stepFxId);
+			walksoundTimer.Start();
 			isWalking = true;
 		}
 	}
@@ -92,8 +99,9 @@ bool Player::Update(float dt)
 		velocity.x = 0.2 * 16;      
 		direction = Direction::RIGHT;
 		currentAnimation = &walk;
-		if (!isWalking) {
+		if (!isWalking && !isJumping) {
 			Engine::GetInstance().audio.get()->PlayFx(stepFxId);
+			walksoundTimer.Start();
 			isWalking = true;
 		}
 	}
