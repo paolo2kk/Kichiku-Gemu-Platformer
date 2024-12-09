@@ -3,6 +3,7 @@
 #include "SDL2/SDL.h"
 #include "Animation.h"
 #include "Pathfinding.h"
+#include "Player.h"
 
 struct SDL_Texture;
 class Spring : public Entity
@@ -13,6 +14,7 @@ public:
 	bool Awake();
 	bool Start();
 	bool Update(float dt);
+	int CheckDirection(Player* player);
 	bool CleanUp();
 	void SetParameters(pugi::xml_node parameters) {
 		this->parameters = parameters;

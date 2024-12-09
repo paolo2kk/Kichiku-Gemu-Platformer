@@ -86,7 +86,7 @@ bool Spring::Update(float dt)
 
 			if (timeSinceLastJump >= 4) {
 				LOG("SpringEnemy Jumping");
-				b2Vec2 jumpImpulse = b2Vec2(movementDirectionCoefficient*movementDirection, -jumpForce);
+				b2Vec2 jumpImpulse = b2Vec2(CheckDirection(player)*movementDirectionCoefficient, -jumpForce);
 				pbody->body->ApplyLinearImpulseToCenter(jumpImpulse, true);
 			
 				timeSinceLastJump = 0.0f;
@@ -127,7 +127,12 @@ bool Spring::Update(float dt)
 
     return true;
 }
+int Spring::CheckDirection(Player* player)
+{
 
+	if (player->GetPosition().getX() <= position.getX()) return -1; else if (player->GetPosition().getX() > position.getX()) return 1;
+
+}
 bool Spring::CleanUp()
 {
 	Engine::GetInstance().physics.get()->DeletePhysBody(pbody);
