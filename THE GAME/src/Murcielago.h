@@ -36,7 +36,7 @@ private:
 	Pathfinding* pathfinding;
 
 	int buscando = 0;
-	bool showPath = true;
+	bool showPath = false;
 
 	bool isDead = false;
 	

@@ -81,7 +81,10 @@ public:
 	Animation right;
 	Direction direction;
 
+	bool isDead = false;
 	bool canDJ = true;
 	bool setCheckPoint = false;
 	bool isWalking = false;
+
+	bool godMode = false;
 };

@@ -74,7 +74,7 @@ bool Scene::Awake()
 		booEnemyList.push_back(enemy1);
 	}
 
-	for (pugi::xml_node enemyNode3 = configParameters.child("entities").child("enemies").child("spring1"); enemyNode3; enemyNode3 = enemyNode3.next_sibling("spring1"))
+	for (pugi::xml_node enemyNode3 = configParameters.child("entities").child("enemies").child("spring0"); enemyNode3; enemyNode3 = enemyNode3.next_sibling("spring1"))
 	{
 		Spring* springEnemy1 = (Spring*)Engine::GetInstance().entityManager->CreateEntity(EntityType::SPRINGENEMY);
 		springEnemy1->SetParameters(enemyNode3);
@@ -146,10 +146,10 @@ bool Scene::Update(float dt)
 	int mapLimitX = 7000;
 	int mapLimitY = 1184;
 	Engine::GetInstance().render.get()->camera.y = (-player->position.getY() * camSpeed) + WHeight / 2;
-	layout->bounds.x = -Engine::GetInstance().render->camera.x; 
-	layout->bounds.y = -Engine::GetInstance().render->camera.y; 
-	layout->bounds.w = WWidth;                                  
-	layout->bounds.h = WHeight;                                 
+	layout->bounds.x = -Engine::GetInstance().render->camera.x;
+	layout->bounds.y = -Engine::GetInstance().render->camera.y;
+	layout->bounds.w = WWidth;
+	layout->bounds.h = WHeight;
 
 	/*if (player->position.getX() > WWidth / (camSpeed * 2) &&
 		player->position.getX() < mapLimitX - WWidth / (camSpeed * 2))
@@ -158,7 +158,7 @@ bool Scene::Update(float dt)
 		Slower(Engine::GetInstance().render.get()->camera.x, (-player->position.getX() * camSpeed) + WWidth / 2 - offsetX, 0.2f);
 
 	Engine::GetInstance().render.get()->camera.y =
-		Slower(Engine::GetInstance().render.get()->camera.y, (-player->position.getY() * camSpeed) + WHeight / 2 - offsetY, 0.2f);	
+		Slower(Engine::GetInstance().render.get()->camera.y, (-player->position.getY() * camSpeed) + WHeight / 2 - offsetY, 0.2f);
 	/*}*/
 
 	WindowManipulation(dt);
@@ -167,50 +167,58 @@ bool Scene::Update(float dt)
 
 	SetCheckpoints();
 
-	if(Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 		Engine::GetInstance().render.get()->camera.y -= ceil(camSpeed * dt);
 
-	if(Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 		Engine::GetInstance().render.get()->camera.y += ceil(camSpeed * dt);
 
-	if(Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 		Engine::GetInstance().render.get()->camera.x -= ceil(camSpeed * dt);
 
-	if(Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		Engine::GetInstance().render.get()->camera.x += ceil(camSpeed * dt);
 
 	// L10 TODO 6: Implement a method that repositions the player in the map with a mouse click
-	
+
 	if (Engine::GetInstance().input.get()->GetKeyDown(SDL_SCANCODE_P) == KEY_DOWN)
 		Shoot();
 
 
+	if (player->godMode) {
+		//Get mouse position and obtain the map coordinate
+		Vector2D mousePos = Engine::GetInstance().input.get()->GetMousePosition();
+		Vector2D mouseTile = Engine::GetInstance().map.get()->WorldToMap(mousePos.getX() - Engine::GetInstance().render.get()->camera.x,
+			mousePos.getY() - Engine::GetInstance().render.get()->camera.y);
 
-	//Get mouse position and obtain the map coordinate
-	Vector2D mousePos = Engine::GetInstance().input.get()->GetMousePosition();
-	Vector2D mouseTile = Engine::GetInstance().map.get()->WorldToMap(mousePos.getX() - Engine::GetInstance().render.get()->camera.x,
-																     mousePos.getY() - Engine::GetInstance().render.get()->camera.y);
 
+		//Render a texture where the mouse is over to highlight the tile, use the texture 'mouseTileTex'
+		Vector2D highlightTile = Engine::GetInstance().map.get()->MapToWorld(mouseTile.getX(), mouseTile.getY());
+		SDL_Rect rect = { 0,0,32,32 };
+		Engine::GetInstance().render.get()->DrawTexture(mouseTileTex,
+			highlightTile.getX(),
+			highlightTile.getY(),
+			&rect);
 
-	//Render a texture where the mouse is over to highlight the tile, use the texture 'mouseTileTex'
-	Vector2D highlightTile = Engine::GetInstance().map.get()->MapToWorld(mouseTile.getX(),mouseTile.getY());
-	SDL_Rect rect = { 0,0,32,32 };
-	Engine::GetInstance().render.get()->DrawTexture(mouseTileTex,
-													highlightTile.getX(),
-													highlightTile.getY(),
-													&rect);
+		// saves the tile pos for debugging purposes
+		if (mouseTile.getX() >= 0 && mouseTile.getY() >= 0 || once) {
+			tilePosDebug = "[" + std::to_string((int)mouseTile.getX()) + "," + std::to_string((int)mouseTile.getY()) + "] ";
+			once = true;
+		}
 
-	// saves the tile pos for debugging purposes
-	if (mouseTile.getX() >= 0 && mouseTile.getY() >= 0 || once) {
-		tilePosDebug = "[" + std::to_string((int)mouseTile.getX()) + "," + std::to_string((int)mouseTile.getY()) + "] ";
-		once = true;
+		//If mouse button is pressed modify enemy position
+		if (Engine::GetInstance().input.get()->GetMouseButtonDown(1) == KEY_DOWN) {
+			player->SetPosition(Vector2D(highlightTile.getX(), highlightTile.getY()));
+
+		}
+	}
+	if (player->isDead)
+	{
+		LoadState();
+		player->isDead = false;
+
 	}
 
-	//If mouse button is pressed modify enemy position
-	if (Engine::GetInstance().input.get()->GetMouseButtonDown(1) == KEY_DOWN) {
-		player->SetPosition(Vector2D(highlightTile.getX(), highlightTile.getY()));
-		
-	}
 	return true;
 }
 
@@ -233,8 +241,6 @@ void Scene::SetCheckpoints()
 	if (player->setCheckPoint)
 	{
 		SaveState();
-
-
 	}
 }
 
@@ -289,6 +295,23 @@ void Scene::LoadState() {
 			LOG("Enemy node %s not found in config.xml", enemyNodeName.c_str());
 		}
 	}
+
+	pugi::xml_node springEnemyNode = sceneNode.child("entities").child("enemies");
+	for (int i = 0; i < enemyList.size(); i++) {
+		std::string enemyNodeName = "spring" + std::to_string(i);
+
+		pugi::xml_node enemyNode = springEnemyNode.child(enemyNodeName.c_str());
+		if (enemyNode) {
+			Vector2D enemyPos = Vector2D(
+				enemyNode.attribute("x").as_int(),
+				enemyNode.attribute("y").as_int()
+			);
+			springEnemyList[i]->SetPosition(enemyPos);
+		}
+		else {
+			LOG("Enemy node %s not found in config.xml", enemyNodeName.c_str());
+		}
+	}
 }// L15 TODO 2: Implement the Save function
 void Scene::SaveState() {
 
@@ -304,8 +327,8 @@ void Scene::SaveState() {
 
 	pugi::xml_node playerNode = sceneNode.child("entities").child("player");
 	if (playerNode) {
-		playerNode.attribute("x").set_value(player->GetPosition().getX() - player->texW / 2);  
-		playerNode.attribute("y").set_value(player->GetPosition().getY()- player->texH/2);
+		playerNode.attribute("x").set_value(player->GetPosition().getX() - player->texW / 2);
+		playerNode.attribute("y").set_value(player->GetPosition().getY());
 	}
 	else {
 		playerNode = sceneNode.child("entities").append_child("player");
@@ -323,9 +346,40 @@ void Scene::SaveState() {
 			enemyNode = enemiesNode.append_child(enemyNodeName.c_str());
 		}
 
-		enemyNode.append_attribute("x") = enemyList[i]->GetPosition().getX();
-		enemyNode.append_attribute("y") = enemyList[i]->GetPosition().getY();
+		enemyNode.attribute("x").set_value(enemyList[i]->GetPosition().getX());
+		enemyNode.attribute("y").set_value(enemyList[i]->GetPosition().getY());
 	}
+
+
+	pugi::xml_node springEnemiesNode = sceneNode.child("entities").child("enemies");
+
+	for (int i = 0; i < enemyList.size(); i++) {
+		std::string enemyNodeName = "spring" + std::to_string(i);
+
+		pugi::xml_node enemyNode = springEnemiesNode.child(enemyNodeName.c_str());
+		if (!enemyNode) {
+			enemyNode = springEnemiesNode.append_child(enemyNodeName.c_str());
+		}
+
+		enemyNode.attribute("x").set_value(springEnemyList[i]->GetPosition().getX());
+		enemyNode.attribute("y").set_value(springEnemyList[i]->GetPosition().getY());
+	}
+
+	pugi::xml_node booEnemiesNode = sceneNode.child("entities").child("enemies");
+
+	for (int i = 0; i < enemyList.size(); i++) {
+		std::string enemyNodeName = "BOO" + std::to_string(i);
+
+		pugi::xml_node enemyNode = booEnemiesNode.child(enemyNodeName.c_str());
+		if (!enemyNode) {
+			enemyNode = booEnemiesNode.append_child(enemyNodeName.c_str());
+		}
+
+		enemyNode.attribute("x").set_value(booEnemyList[i]->GetPosition().getX());
+		enemyNode.attribute("y").set_value(booEnemyList[i]->GetPosition().getY());
+	}
+
+
 
 	if (!loadFile.save_file("config.xml")) {
 		LOG("Failed to save game state to file.");
@@ -350,7 +404,7 @@ void Scene::Shoot()
 		bullet->SetVelocity(Direction::RIGHT);
 
 		bullet->SetPosition(playerPos + Offset);
-	}	
+	}
 	else if(player->GetDirection() == Direction::LEFT)
 	{
 		std::cout << "Bullet left";

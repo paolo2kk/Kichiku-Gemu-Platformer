@@ -42,7 +42,7 @@ bool EnemyInClass::Start() {
 	Vector2D tilePos = Engine::GetInstance().map.get()->WorldToMap(pos.getX(), pos.getY());
 	pathfinding->ResetPath(tilePos);
 
-	showPath = true;
+	showPath = false;
 
 	return true;
 }

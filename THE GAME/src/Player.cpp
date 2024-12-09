@@ -14,6 +14,7 @@ Player::Player() : Entity(EntityType::PLAYER)
 	name = "Player";
 	direction = Direction::RIGHT;
 	isWalking = false;
+	godMode = false;
 }
 
 Player::~Player() {
@@ -60,6 +61,7 @@ bool Player::Start() {
 	stepFxId = Engine::GetInstance().audio.get()->LoadFx("Assets/Audio/Fx/step.ogg");
 	shootFxId = Engine::GetInstance().audio.get()->LoadFx("Assets/Audio/Fx/shoot.ogg");
 	
+	godMode = false;
 
 	return true;
 }
@@ -138,6 +140,19 @@ bool Player::Update(float dt)
 
 	Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY(), &currentAnimation->GetCurrentFrame());
 	currentAnimation->Update();
+
+	//Debug
+
+	if (Engine::GetInstance().input.get()->GetKeyDown(SDL_SCANCODE_G) == KEY_DOWN)
+	{
+		if (godMode)
+		{
+			godMode = false;
+		}
+		else
+			godMode = true;
+	}
+
 	return true;
 }
 void Player::SetMass(float newMass) {
@@ -168,7 +183,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 	case ColliderType::ITEM:
 		LOG("Collision ITEM");
 		Engine::GetInstance().audio.get()->PlayFx(pickCoinFxId);
-		Engine::GetInstance().physics.get()->DeletePhysBody(physB); // Deletes the body of the item from the physics world
+		Engine::GetInstance().physics.get()->DeletePhysBody(physB); 
 		break;
 	case ColliderType::UNKNOWN:
 		LOG("Collision UNKNOWN");
@@ -179,6 +194,10 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		break;
 	case ColliderType::KILLER:
 		LOG("Player Killed");
+		//godMode
+		if (!godMode){
+		isDead = true;
+		}
 		break;
 	default:
 		break;
