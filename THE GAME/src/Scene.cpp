@@ -40,11 +40,7 @@ bool Scene::Awake()
 	player->SetParameters(configParameters.child("entities").child("player"));
 	
 	//L08 Create a new item using the entity manager and set the position to (200, 672) to test
-	for(pugi::xml_node itemNode = configParameters.child("entities").child("items").child("item"); itemNode; itemNode = itemNode.next_sibling("item"))
-	{
-		Item* item = (Item*) Engine::GetInstance().entityManager->CreateEntity(EntityType::ITEM);
-		item->SetParameters(itemNode);
-	}
+	
 
 	// Create a enemy using the entity manager 
 	for (pugi::xml_node enemyNode = configParameters.child("entities").child("enemies").child("enemy0"); enemyNode; enemyNode = enemyNode.next_sibling("enemy0"))
@@ -397,7 +393,7 @@ void Scene::SaveState() {
 	pugi::xml_node playerNode = sceneNode.child("entities").child("player");
 	if (playerNode) {
 		playerNode.attribute("x").set_value(player->GetPosition().getX() - player->texW / 2);
-		playerNode.attribute("y").set_value(player->GetPosition().getY());
+		playerNode.attribute("y").set_value(player->GetPosition().getY() - player->texH / 2);
 	}
 	else {
 		playerNode = sceneNode.child("entities").append_child("player");
