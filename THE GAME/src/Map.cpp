@@ -302,7 +302,7 @@ bool Map::Load(std::string path, std::string fileName)
                 float height = objectNode.attribute("height").as_float();
 
                 if (colliderType == ColliderType::UNKNOWN) {
-                    std::string polylinePoints = objectNode.child("polyline").attribute("points").as_string();
+                    std::string polylinePoints = objectNode.child("polygon").attribute("points").as_string();
 
                     float objectX = position.getX(); 
                     float objectY = position.getY(); 

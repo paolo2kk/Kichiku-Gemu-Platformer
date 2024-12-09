@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="95" height="30" tilewidth="64" tileheight="64" infinite="0" nextlayerid="19" nextobjectid="196">
+<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="95" height="30" tilewidth="64" tileheight="64" infinite="0" nextlayerid="19" nextobjectid="202">
  <tileset firstgid="1" name="tmw_desert_spacing" tilewidth="32" tileheight="32" spacing="1" margin="1" tilecount="48" columns="8">
   <image source="tmw_desert_spacing.png" width="265" height="199"/>
   <tile id="30">
@@ -8708,25 +8708,31 @@
    <property name="type" value="triangle"/>
   </properties>
   <object id="152" x="0" y="256">
-   <polyline points="0,0 0,-64 63,-32 0,0"/>
+   <polygon points="0,0 0,-64 63,-32 0,0"/>
   </object>
   <object id="174" x="1" y="640">
-   <polyline points="0,0 0,-64 63,-32 0,0"/>
+   <polygon points="0,0 0,-64 63,-32 0,0"/>
   </object>
   <object id="176" x="0" y="575">
-   <polyline points="0,0 0,-64 63,-32 0,0"/>
+   <polygon points="0,0 0,-64 63,-32 0,0"/>
   </object>
   <object id="177" x="1" y="320">
-   <polyline points="0,0 0,-64 63,-32 0,0"/>
+   <polygon points="0,0 0,-64 63,-32 0,0"/>
   </object>
   <object id="193" x="75.5" y="527.5" rotation="90">
-   <polyline points="0,0 0,-64 63,-32 0,0"/>
+   <polygon points="0,0 0,-64 63,-32 0,0"/>
   </object>
   <object id="194" x="127.5" y="681.5" rotation="-90">
-   <polyline points="0,0 0,-64 63,-32 0,0"/>
+   <polygon points="0,0 0,-64 63,-32 0,0"/>
   </object>
   <object id="195" x="104" y="456" rotation="-180">
-   <polyline points="0,0 0,-64 63,-32 0,0"/>
+   <polygon points="0,0 0,-64 63,-32 0,0"/>
+  </object>
+  <object id="199" x="0" y="704">
+   <polygon points="0,0 0,-64 63,-32 0,0"/>
+  </object>
+  <object id="201" x="0" y="768">
+   <polygon points="0,0 33.3333,-62.6667 64,0 0,0"/>
   </object>
  </objectgroup>
  <objectgroup id="8" name="Floor">
