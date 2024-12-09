@@ -146,10 +146,10 @@ bool Scene::Update(float dt)
 	int mapLimitX = 7000;
 	int mapLimitY = 1184;
 	Engine::GetInstance().render.get()->camera.y = (-player->position.getY() * camSpeed) + WHeight / 2;
-	layout->bounds.x = -Engine::GetInstance().render->camera.x; 
-	layout->bounds.y = -Engine::GetInstance().render->camera.y; 
-	layout->bounds.w = WWidth;                                  
-	layout->bounds.h = WHeight;                                 
+	layout->bounds.x = -Engine::GetInstance().render->camera.x;
+	layout->bounds.y = -Engine::GetInstance().render->camera.y;
+	layout->bounds.w = WWidth;
+	layout->bounds.h = WHeight;
 
 	/*if (player->position.getX() > WWidth / (camSpeed * 2) &&
 		player->position.getX() < mapLimitX - WWidth / (camSpeed * 2))
@@ -158,7 +158,7 @@ bool Scene::Update(float dt)
 		Slower(Engine::GetInstance().render.get()->camera.x, (-player->position.getX() * camSpeed) + WWidth / 2 - offsetX, 0.2f);
 
 	Engine::GetInstance().render.get()->camera.y =
-		Slower(Engine::GetInstance().render.get()->camera.y, (-player->position.getY() * camSpeed) + WHeight / 2 - offsetY, 0.2f);	
+		Slower(Engine::GetInstance().render.get()->camera.y, (-player->position.getY() * camSpeed) + WHeight / 2 - offsetY, 0.2f);
 	/*}*/
 
 	WindowManipulation(dt);
@@ -167,51 +167,51 @@ bool Scene::Update(float dt)
 
 	SetCheckpoints();
 
-	if(Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 		Engine::GetInstance().render.get()->camera.y -= ceil(camSpeed * dt);
 
-	if(Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 		Engine::GetInstance().render.get()->camera.y += ceil(camSpeed * dt);
 
-	if(Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 		Engine::GetInstance().render.get()->camera.x -= ceil(camSpeed * dt);
 
-	if(Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		Engine::GetInstance().render.get()->camera.x += ceil(camSpeed * dt);
 
 	// L10 TODO 6: Implement a method that repositions the player in the map with a mouse click
-	
+
 	if (Engine::GetInstance().input.get()->GetKeyDown(SDL_SCANCODE_P) == KEY_DOWN)
 		Shoot();
 
 
+	if (player->godMode) {
+		//Get mouse position and obtain the map coordinate
+		Vector2D mousePos = Engine::GetInstance().input.get()->GetMousePosition();
+		Vector2D mouseTile = Engine::GetInstance().map.get()->WorldToMap(mousePos.getX() - Engine::GetInstance().render.get()->camera.x,
+			mousePos.getY() - Engine::GetInstance().render.get()->camera.y);
 
-	//Get mouse position and obtain the map coordinate
-	Vector2D mousePos = Engine::GetInstance().input.get()->GetMousePosition();
-	Vector2D mouseTile = Engine::GetInstance().map.get()->WorldToMap(mousePos.getX() - Engine::GetInstance().render.get()->camera.x,
-																     mousePos.getY() - Engine::GetInstance().render.get()->camera.y);
 
+		//Render a texture where the mouse is over to highlight the tile, use the texture 'mouseTileTex'
+		Vector2D highlightTile = Engine::GetInstance().map.get()->MapToWorld(mouseTile.getX(), mouseTile.getY());
+		SDL_Rect rect = { 0,0,32,32 };
+		Engine::GetInstance().render.get()->DrawTexture(mouseTileTex,
+			highlightTile.getX(),
+			highlightTile.getY(),
+			&rect);
 
-	//Render a texture where the mouse is over to highlight the tile, use the texture 'mouseTileTex'
-	Vector2D highlightTile = Engine::GetInstance().map.get()->MapToWorld(mouseTile.getX(),mouseTile.getY());
-	SDL_Rect rect = { 0,0,32,32 };
-	Engine::GetInstance().render.get()->DrawTexture(mouseTileTex,
-													highlightTile.getX(),
-													highlightTile.getY(),
-													&rect);
+		// saves the tile pos for debugging purposes
+		if (mouseTile.getX() >= 0 && mouseTile.getY() >= 0 || once) {
+			tilePosDebug = "[" + std::to_string((int)mouseTile.getX()) + "," + std::to_string((int)mouseTile.getY()) + "] ";
+			once = true;
+		}
 
-	// saves the tile pos for debugging purposes
-	if (mouseTile.getX() >= 0 && mouseTile.getY() >= 0 || once) {
-		tilePosDebug = "[" + std::to_string((int)mouseTile.getX()) + "," + std::to_string((int)mouseTile.getY()) + "] ";
-		once = true;
+		//If mouse button is pressed modify enemy position
+		if (Engine::GetInstance().input.get()->GetMouseButtonDown(1) == KEY_DOWN) {
+			player->SetPosition(Vector2D(highlightTile.getX(), highlightTile.getY()));
+
+		}
 	}
-
-	//If mouse button is pressed modify enemy position
-	if (Engine::GetInstance().input.get()->GetMouseButtonDown(1) == KEY_DOWN) {
-		player->SetPosition(Vector2D(highlightTile.getX(), highlightTile.getY()));
-		
-	}
-	
 	if (player->isDead)
 	{
 		LoadState();

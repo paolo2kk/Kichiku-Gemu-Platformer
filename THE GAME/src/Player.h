@@ -85,4 +85,6 @@ public:
 	bool canDJ = true;
 	bool setCheckPoint = false;
 	bool isWalking = false;
+
+	bool godMode = false;
 };
