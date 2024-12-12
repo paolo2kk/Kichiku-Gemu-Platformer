@@ -7,6 +7,7 @@
 #include "Physics.h"
 
 #include <math.h>
+#include <tracy/Tracy.hpp>
 
 Map::Map() : Module(), mapLoaded(false)
 {
@@ -33,6 +34,7 @@ bool Map::Start() {
 
 bool Map::Update(float dt)
 {
+    ZoneScoped;
     bool ret = true;
 
     float cameraX = Engine::GetInstance().render.get()->camera.x;

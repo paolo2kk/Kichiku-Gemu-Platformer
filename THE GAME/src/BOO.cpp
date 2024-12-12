@@ -9,6 +9,7 @@
 #include "Physics.h"
 #include "Map.h"
 #include "EntityManager.h"
+#include <tracy/Tracy.hpp>
 
 BOO::BOO() : Entity(EntityType::ENEMYBFS)
 {
@@ -51,6 +52,8 @@ bool BOO::Start() {
 
 bool BOO::Update(float dt)
 {
+	ZoneScoped;
+
 	Player* player = Engine::GetInstance().scene.get()->player;
 
 	if (!player) return true;
