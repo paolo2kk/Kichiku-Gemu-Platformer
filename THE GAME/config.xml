@@ -17,7 +17,7 @@
 	<scene>
 		<map path="Assets/Maps/" name="MapTemplate.tmx" />
 		<entities>
-			<player x="640" y="1629" w="64" h="64" texture="Assets/Textures/player/Idle.png" gravity="true">
+			<player x="661" y="1691" w="64" h="64" texture="Assets/Textures/player/Idle.png" gravity="true">
 				<animations>
 					<idleR loop="true" speed="0.02">
 						<frame x="0" y="0" w="64" h="64" />
@@ -113,7 +113,7 @@
 				</bullet>
 			</items>
 			<enemies>
-				<enemy0 name="badguy" x="4541" y="991" w="64" h="64" texture="Assets/Textures/enemy/Idle.png" gravity="true">
+				<enemy0 name="badguy" x="4541" y="989" w="64" h="64" texture="Assets/Textures/enemy/Idle.png" gravity="true">
 					<animations>
 						<idle loop="true" speed="0.05">
 							<frame x="0" y="0" w="64" h="64" />
@@ -133,7 +133,7 @@
 						</idle>
 					</animations>
 				</enemy0>
-				<enemy1 name="badguy" x="573" y="1715" w="64" h="64" texture="Assets/Textures/enemy/Idle.png" gravity="true">
+				<enemy1 name="badguy" x="618" y="1717" w="64" h="64" texture="Assets/Textures/enemy/Idle.png" gravity="true">
 					<animations>
 						<idle loop="true" speed="0.05">
 							<frame x="0" y="0" w="64" h="64" />
@@ -153,7 +153,7 @@
 						</idle>
 					</animations>
 				</enemy1>
-				<murcielago0 name="murcielago" x="4700" y="1015" w="48" h="48" texture="Assets/Textures/enemy/Idle.png" gravity="true">
+				<murcielago0 name="murcielago" x="4975" y="4419" w="48" h="48" texture="Assets/Textures/enemy/Idle.png" gravity="true">
 					<animations>
 						<idle loop="true" speed="0.05">
 							<frame x="0" y="128" w="48" h="48" />
@@ -163,7 +163,7 @@
 						</idle>
 					</animations>
 				</murcielago0>
-				<murcielago1 name="murcielago" x="882" y="1012" w="48" h="48" texture="Assets/Textures/enemy/Idle.png" gravity="true">
+				<murcielago1 name="murcielago" x="869" y="1166" w="48" h="48" texture="Assets/Textures/enemy/Idle.png" gravity="true">
 					<animations>
 						<idle loop="true" speed="0.05">
 							<frame x="0" y="128" w="48" h="48" />
@@ -189,7 +189,7 @@
 						</scaredL>
 					</animations>
 				</BOO0>
-				<spring0 name="spring1" x="1933" y="1050" w="64" h="64" texture="Assets/Textures/spring.png" gravity="true">
+				<spring0 name="spring1" x="1933" y="1088" w="64" h="64" texture="Assets/Textures/spring.png" gravity="true">
 					<animations>
 						<idle loop="true" speed="0.05">
 							<frame x="0" y="0" w="64" h="64" />

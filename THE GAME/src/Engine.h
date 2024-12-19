@@ -13,6 +13,8 @@ class Input;
 class Render;
 class Textures;
 class Audio;
+class Menu;
+
 class Scene;
 class EntityManager;
 class Map;
@@ -95,6 +97,8 @@ public:
 	std::shared_ptr<Render> render;
 	std::shared_ptr<Textures> textures;
 	std::shared_ptr<Audio> audio;
+	std::shared_ptr<Menu> menu;
+
 	std::shared_ptr<Scene> scene;
 	// L04: TODO 1: Add the EntityManager Module to the Engine
 	std::shared_ptr<EntityManager> entityManager;
@@ -128,6 +132,7 @@ private:
 	int maxFrameDuration = 16;
 
 	std::string gameTitle = "Platformer Game";
+	bool paused = false;
 
 	//L05 TODO 2: Declare a xml_document to load the config file
 	pugi::xml_document configFile;
