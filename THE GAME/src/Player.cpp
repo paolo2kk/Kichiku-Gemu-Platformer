@@ -8,7 +8,6 @@
 #include "Log.h"
 #include "Physics.h"
 #include "EntityManager.h"
-#include "tracy/Tracy.hpp"
 
 Player::Player() : Entity(EntityType::PLAYER)
 {
@@ -70,8 +69,7 @@ bool Player::Start() {
 
 bool Player::Update(float dt)
 {
-	ZoneScoped;
-
+	
 	if (isDead) {
 		
 		if (!currentAnimation->HasFinished()) {

@@ -2,7 +2,6 @@
 #include "Window.h"
 #include "Render.h"
 #include "Log.h"
-#include <tracy/Tracy.hpp>
 
 #define VSYNC true
 
@@ -76,8 +75,6 @@ bool Render::Update(float dt)
 
 bool Render::PostUpdate()
 {
-	ZoneScoped;
-
 	SDL_SetRenderDrawColor(renderer, background.r, background.g, background.g, background.a);
 	SDL_RenderPresent(renderer);
 	SDL_RenderSetLogicalSize(renderer, camera.w, camera.h);
@@ -116,7 +113,6 @@ void Render::ResetViewPort()
 // Blit to screen
 bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float speed, double angle, int pivotX, int pivotY) const
 {
-
 	bool ret = true;
 	int scale = Engine::GetInstance().window.get()->GetScale();
 
