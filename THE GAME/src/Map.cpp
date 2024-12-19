@@ -41,59 +41,38 @@ bool Map::Update(float dt)
     float cameraY = Engine::GetInstance().render.get()->camera.y;
 
     Engine::GetInstance().render.get()->DrawTexture(BG, -cameraX, -cameraY);
+
     Engine::GetInstance().render.get()->DrawTexture(BG1, -cameraX * parallaxFactor1, -cameraY * parallaxFactor1);
     Engine::GetInstance().render.get()->DrawTexture(BG2, -cameraX * parallaxFactor2, -cameraY * parallaxFactor2);
     Engine::GetInstance().render.get()->DrawTexture(BG3, -cameraX * parallaxFactor3, -cameraY * parallaxFactor3);
     Engine::GetInstance().render.get()->DrawTexture(BG4, -cameraX * parallaxFactor4, -cameraY * parallaxFactor4);
 
+
     if (mapLoaded) {
-        // Calculate frustum bounds in map coordinates using float precision
-        Vector2D start = WorldToMap(-cameraX, -cameraY);
-        Vector2D end = WorldToMap(
-            -cameraX + Engine::GetInstance().render->camera.w,
-            -cameraY + Engine::GetInstance().render->camera.h
-        );
 
-        // Ensure we are working with integer indices for the tiles
-        int startX = std::max(0, static_cast<int>(start.getX()));
-        int startY = std::max(0, static_cast<int>(start.getY()));
-        int endX = std::min(static_cast<int>(mapData.width), static_cast<int>(std::ceil(end.getX())));
-        int endY = std::min(static_cast<int>(mapData.height), static_cast<int>(std::ceil(end.getY())));
-
-        // Iterate over layers
+        // L07 TODO 5: Prepare the loop to draw all tiles in a layer + DrawTexture()
+        // iterate all tiles in a layer
         for (const auto& mapLayer : mapData.layers) {
-            if (mapLayer->properties.GetProperty("Draw") &&
-                mapLayer->properties.GetProperty("Draw")->value) {
+            //Check if the property Draw exist get the value, if it's true draw the lawyer
+            if (mapLayer->properties.GetProperty("Draw") != NULL && mapLayer->properties.GetProperty("Draw")->value == true) {
+                for (int i = 0; i < mapData.width; i++) {
+                    for (int j = 0; j < mapData.height; j++) {
 
-                // Render tiles only within the frustum
-                for (int j = startY; j < endY; ++j) {
-                    for (int i = startX; i < endX; ++i) {
+                        // L07 TODO 9: Complete the draw function
+
+                        //Get the gid from tile
                         int gid = mapLayer->Get(i, j);
+                        //Check if the gid is different from 0 - some tiles are empty
                         if (gid != 0) {
+                            //L09: TODO 3: Obtain the tile set using GetTilesetFromTileId
                             TileSet* tileSet = GetTilesetFromTileId(gid);
                             if (tileSet != nullptr) {
-                                // Handle animated tiles if any
-                                if (tileSet->animatedTiles.count(gid)) {
-                                    gid = tileSet->animatedTiles[gid].gid;
-                                }
-
-                                // Get tile texture and position
+                                //Get the Rect from the tileSetTexture;
                                 SDL_Rect tileRect = tileSet->GetRect(gid);
+                                //Get the screen coordinates from the tile coordinates
                                 Vector2D mapCoord = MapToWorld(i, j);
-
-                                // Adjust render position with camera offset and fix Y-axis inversion
-                                float renderX = mapCoord.getX() + cameraX - fmodf(cameraX, tileSet->tileWidth);
-                                float renderY = mapCoord.getY() + cameraY - fmodf(cameraY, tileSet->tileHeight);
-
-                                // Invert Y-coordinate if necessary (depending on the coordinate system)
-                                renderY = Engine::GetInstance().render->camera.h - renderY - tileSet->tileHeight;
-
-                                // Render the tile at the adjusted position
-                                Engine::GetInstance().render->DrawTexture(
-                                    tileSet->texture,
-                                    renderX, renderY,
-                                    &tileRect
-                                );
+                                //Draw the texture
+                                Engine::GetInstance().render->DrawTexture(tileSet->texture, mapCoord.getX(), mapCoord.getY(), &tileRect);
                             }
                         }
                     }
@@ -103,6 +82,29 @@ bool Map::Update(float dt)
     }
     UpdateAnimatedTiles(dt);
 
+    if (mapLoaded) {
+        for (const auto& mapLayer : mapData.layers) {
+            if (mapLayer->properties.GetProperty("Draw") &&
+                mapLayer->properties.GetProperty("Draw")->value) {
+                for (int i = 0; i < mapData.width; i++) {
+                    for (int j = 0; j < mapData.height; j++) {
+                        int gid = mapLayer->Get(i, j);
+                        if (gid != 0) {
+                            TileSet* tileSet = GetTilesetFromTileId(gid);
+                            if (tileSet != nullptr) {
+                                if (tileSet->animatedTiles.count(gid)) {
+                                    gid = tileSet->animatedTiles[gid].gid;
+                                }
+                                SDL_Rect tileRect = tileSet->GetRect(gid);
+                                Vector2D mapCoord = MapToWorld(i, j);
+                                Engine::GetInstance().render->DrawTexture(tileSet->texture, mapCoord.getX(), mapCoord.getY(), &tileRect);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
     return ret;
 }
 
