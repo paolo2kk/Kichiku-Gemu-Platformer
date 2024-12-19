@@ -17,7 +17,7 @@
 	<scene>
 		<map path="Assets/Maps/" name="MapTemplate.tmx" />
 		<entities>
-			<player x="455" y="135" w="64" h="64" texture="Assets/Textures/player/Idle.png" gravity="true">
+			<player x="640" y="1629" w="64" h="64" texture="Assets/Textures/player/Idle.png" gravity="true">
 				<animations>
 					<idleR loop="true" speed="0.02">
 						<frame x="0" y="0" w="64" h="64" />
@@ -113,7 +113,7 @@
 				</bullet>
 			</items>
 			<enemies>
-				<enemy0 name="badguy" x="4479" y="989" w="64" h="64" texture="Assets/Textures/enemy/Idle.png" gravity="true">
+				<enemy0 name="badguy" x="4541" y="991" w="64" h="64" texture="Assets/Textures/enemy/Idle.png" gravity="true">
 					<animations>
 						<idle loop="true" speed="0.05">
 							<frame x="0" y="0" w="64" h="64" />
@@ -133,7 +133,7 @@
 						</idle>
 					</animations>
 				</enemy0>
-				<enemy1 name="badguy" x="574" y="1717" w="64" h="64" texture="Assets/Textures/enemy/Idle.png" gravity="true">
+				<enemy1 name="badguy" x="573" y="1715" w="64" h="64" texture="Assets/Textures/enemy/Idle.png" gravity="true">
 					<animations>
 						<idle loop="true" speed="0.05">
 							<frame x="0" y="0" w="64" h="64" />
@@ -153,7 +153,7 @@
 						</idle>
 					</animations>
 				</enemy1>
-				<murcielago0 name="murcielago" x="4342" y="1422" w="48" h="48" texture="Assets/Textures/enemy/Idle.png" gravity="true">
+				<murcielago0 name="murcielago" x="4700" y="1015" w="48" h="48" texture="Assets/Textures/enemy/Idle.png" gravity="true">
 					<animations>
 						<idle loop="true" speed="0.05">
 							<frame x="0" y="128" w="48" h="48" />
@@ -163,7 +163,7 @@
 						</idle>
 					</animations>
 				</murcielago0>
-				<murcielago1 name="murcielago" x="1363" y="1501" w="48" h="48" texture="Assets/Textures/enemy/Idle.png" gravity="true">
+				<murcielago1 name="murcielago" x="882" y="1012" w="48" h="48" texture="Assets/Textures/enemy/Idle.png" gravity="true">
 					<animations>
 						<idle loop="true" speed="0.05">
 							<frame x="0" y="128" w="48" h="48" />
@@ -173,7 +173,7 @@
 						</idle>
 					</animations>
 				</murcielago1>
-				<BOO0 name="boo0" x="4038" y="888" w="32" h="32" texture="Assets/Textures/enemy/BOO.png" gravity="true">
+				<BOO0 name="boo0" x="4742" y="758" w="32" h="32" texture="Assets/Textures/enemy/BOO.png" gravity="true">
 					<animations>
 						<idleR loop="true" speed="0.05">
 							<frame x="0" y="0" w="32" h="32" />
@@ -189,7 +189,7 @@
 						</scaredL>
 					</animations>
 				</BOO0>
-				<spring0 name="spring1" x="2111" y="1088" w="64" h="64" texture="Assets/Textures/spring.png" gravity="true">
+				<spring0 name="spring1" x="1933" y="1050" w="64" h="64" texture="Assets/Textures/spring.png" gravity="true">
 					<animations>
 						<idle loop="true" speed="0.05">
 							<frame x="0" y="0" w="64" h="64" />

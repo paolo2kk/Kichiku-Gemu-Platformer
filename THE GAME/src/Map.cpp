@@ -5,6 +5,7 @@
 #include "Map.h"
 #include "Log.h"
 #include "Physics.h"
+#include "Window.h"
 
 #include <math.h>
 
@@ -70,7 +71,15 @@ bool Map::Update(float dt)
                                 //Get the screen coordinates from the tile coordinates
                                 Vector2D mapCoord = MapToWorld(i, j);
                                 //Draw the texture
-                                Engine::GetInstance().render->DrawTexture(tileSet->texture, mapCoord.getX(), mapCoord.getY(), &tileRect);
+                                int windowSizeW;
+                                int windowSizeH;
+
+                                Engine::GetInstance().window.get()->GetWindowSize(windowSizeW, windowSizeH);
+                                
+                                if (mapCoord.getX() >= -cameraX - 100 && mapCoord.getX() < -cameraX + windowSizeW && mapCoord.getY() >= -cameraY && mapCoord.getY() < -cameraY + windowSizeH)
+                                {
+                                    Engine::GetInstance().render->DrawTexture(tileSet->texture, mapCoord.getX(), mapCoord.getY(), &tileRect);
+                                }
                             }
                         }
                     }
@@ -80,29 +89,7 @@ bool Map::Update(float dt)
     }
     UpdateAnimatedTiles(dt);
 
-    if (mapLoaded) {
-        for (const auto& mapLayer : mapData.layers) {
-            if (mapLayer->properties.GetProperty("Draw") &&
-                mapLayer->properties.GetProperty("Draw")->value) {
-                for (int i = 0; i < mapData.width; i++) {
-                    for (int j = 0; j < mapData.height; j++) {
-                        int gid = mapLayer->Get(i, j);
-                        if (gid != 0) {
-                            TileSet* tileSet = GetTilesetFromTileId(gid);
-                            if (tileSet != nullptr) {
-                                if (tileSet->animatedTiles.count(gid)) {
-                                    gid = tileSet->animatedTiles[gid].gid;
-                                }
-                                SDL_Rect tileRect = tileSet->GetRect(gid);
-                                Vector2D mapCoord = MapToWorld(i, j);
-                                Engine::GetInstance().render->DrawTexture(tileSet->texture, mapCoord.getX(), mapCoord.getY(), &tileRect);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
+  
     return ret;
 }
 
