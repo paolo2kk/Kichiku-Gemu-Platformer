@@ -92,8 +92,13 @@ public:
 	float offsetY = 450;
 	int shootFxId;
 
+	GuiControlButton* resumeBt;
+	GuiControlButton* backtotitleBt;
+	GuiControlButton* settingsBt;
 	GuiControlButton* guiBt;
 	GuiControlButton* layout;
+
+	std::vector<GuiControlButton*> guiButtons;
 
 	float shootingTimer = 0;
 	bool help = false;
