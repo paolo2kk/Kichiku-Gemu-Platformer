@@ -130,7 +130,13 @@ bool Scene::Awake()
 
 	SDL_Rect layoutBounds = { 0, 0, WWidth, WHeight }; 
 	layout = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "Layout", layoutBounds, this);
-	layout->isLayout = true; // Mark as layout
+	layout->isLayout = true; 
+
+	SDL_Rect layoutBounds2 = { 0, 0, WWidth, WHeight };
+	menuLayout = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "Layout", layoutBounds2, this);
+	menuLayout->isLayout = true; 
+	menuLayout->isMenu = true;
+
 
 	return ret;
 }
@@ -241,6 +247,11 @@ bool Scene::Update(float dt)
 	layout->bounds.y = -Engine::GetInstance().render->camera.y;
 	layout->bounds.w = WWidth;
 	layout->bounds.h = WHeight;
+
+	menuLayout->bounds.x = -Engine::GetInstance().render->camera.x;
+	menuLayout->bounds.y = -Engine::GetInstance().render->camera.y;
+	menuLayout->bounds.w = WWidth;
+	menuLayout->bounds.h = WHeight;
 
 	/*if (player->position.getX() > WWidth / (camSpeed * 2) &&
 		player->position.getX() < mapLimitX - WWidth / (camSpeed * 2))

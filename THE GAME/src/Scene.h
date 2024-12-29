@@ -13,6 +13,13 @@
 
 struct SDL_Texture;
 
+enum UIStates
+{
+	MAINMENU,
+	PLAYING,
+	PAUSED
+};
+
 class Scene : public Module
 {
 public:
@@ -99,6 +106,10 @@ public:
 	GuiControlButton* layout;
 
 	std::vector<GuiControlButton*> guiButtons;
+
+	GuiControlButton* menuLayout;
+
+	UIStates uiState = MAINMENU;
 
 	float shootingTimer = 0;
 	bool help = false;

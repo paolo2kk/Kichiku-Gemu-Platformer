@@ -14,14 +14,20 @@ public:
 	// Called each loop iteration
 	bool Update(float dt);
 	bool isLayout = false;
+	bool isLayoutMenu = false;
 	bool isClicked = false;
 	bool visible = true;
+	bool hasGameStarted = false;
+	bool isMenu = false;
+
 private:
 
 	bool canClick = true;
 	bool isLayoutSet = false;
 	bool drawBasic = false;
 	SDL_Texture* layoutUI;
+	SDL_Texture* menuUI;
+
 };
 
 #pragma once
