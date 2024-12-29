@@ -28,12 +28,18 @@ bool Player::Awake() {
 
 bool Player::Start() {
 
+
+
 	//L03: TODO 2: Initialize Player parameters
 	texture = Engine::GetInstance().textures.get()->Load(parameters.attribute("texture").as_string());
 	position.setX(parameters.attribute("x").as_int());
 	position.setY(parameters.attribute("y").as_int());
 	texW = parameters.attribute("w").as_int();
 	texH = parameters.attribute("h").as_int();
+
+
+	initialPosition = Vector2D(100, 100);
+	SetPosition(initialPosition);
 
 	//Load animations
 	idleR.LoadAnimations(parameters.child("animations").child("idleR"));
@@ -70,17 +76,33 @@ bool Player::Start() {
 bool Player::Update(float dt)
 {
 	if (isDead) {
-		
-		if (!currentAnimation->HasFinished()) {
-			currentAnimation->Update(dt);
+		if (lives == 0) {
+			if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) {
+				Respaw();
+			}
+		}
+		else {
+			if (!currentAnimation->HasFinished()) {
+				currentAnimation->Update(dt);
+			}
+
+			Engine::GetInstance().render.get()->DrawTexture(texture,
+				(int)position.getX(),
+				(int)position.getY(),
+				&currentAnimation->GetCurrentFrame());
+
+			respawnTimer += dt / 1000; 
+			if (respawnTimer >= 2) {
+				//SetPosition(initialPosition); 
+				isDead = false;
+				isJumping = false;
+				canDJ = true;
+				currentAnimation = &idleR;
+				respawnTimer = 0; 
+			}
 		}
 
-		Engine::GetInstance().render.get()->DrawTexture(texture,
-			(int)position.getX(),
-			(int)position.getY(),
-			&currentAnimation->GetCurrentFrame());
-
-		return true; 
+		return true;
 	}
 
 	if (walksoundTimer.ReadMSec() > 200) {
@@ -205,26 +227,49 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		break;
 	case ColliderType::CHECKPOINT:
 		LOG("CheckPoint collision ON");
+		checkpointActivated = true;
 		Engine::GetInstance().audio.get()->PlayFx(pickCoinFxId);
 		setCheckPoint = true;
 		break;
 	case ColliderType::KILLER:
 		LOG("Player Killed");
-		if (!godMode && !isDead){
-			Engine::GetInstance().audio.get()->PlayFx(playerdieFxId);
-		currentAnimation = &dead;
-		currentAnimation->Reset();
-		isDead = true;
+		if (!godMode && !isDead) {
+			lives--;
+
+			if (lives > 0) {
+				Engine::GetInstance().audio.get()->PlayFx(playerdieFxId);
+				currentAnimation = &dead;
+				currentAnimation->Reset();
+				isDead = true;
+			}
+			else {
+				Engine::GetInstance().audio.get()->PlayFx(gameOverFxId);
+				currentAnimation = &dead;
+				currentAnimation->Reset();
+				isDead = true;
+				checkpointActivated = false;
+			}
 		}
 		break;
 	case ColliderType::ENEMY:
 		break;
 	case ColliderType::ENEMYBFS:
 		if (!godMode && !isDead) {
-			Engine::GetInstance().audio.get()->PlayFx(playerdieFxId);
-			currentAnimation = &dead;
-			currentAnimation->Reset();
-			isDead = true;
+			lives--; 
+
+			if (lives > 0) {
+				Engine::GetInstance().audio.get()->PlayFx(playerdieFxId);
+				currentAnimation = &dead;
+				currentAnimation->Reset();
+				isDead = true;
+			}
+			else {
+				Engine::GetInstance().audio.get()->PlayFx(gameOverFxId);
+				currentAnimation = &dead;
+				currentAnimation->Reset();
+				isDead = true;
+				checkpointActivated = false;
+			}
 		}
 		break;
 
@@ -274,3 +319,15 @@ void Player::Bounce()
 	b2Vec2 bounceImpulse = b2Vec2(0.0f, -120.0f); 
 	pbody->body->ApplyLinearImpulseToCenter(bounceImpulse, true);
 }
+
+void Player::Respaw()
+{
+	lives = 3; 
+	isDead = false;
+	canDJ = true;
+	checkpointActivated = false;
+	currentAnimation = &idleR;
+	SetPosition(initialPosition);
+	respawnTimer = 0; 
+}
+

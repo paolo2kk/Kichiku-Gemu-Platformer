@@ -314,23 +314,41 @@ bool Scene::Update(float dt)
 
 		}
 	}
-	if (player->isDead)
-	{
-		//make a cooldwon for the player to respawn
-		player->respawnTimer += dt / 1000;
-		if (player->respawnTimer >= 2)
-		{
-			LoadState();
-			player->isDead = false;
-			player->isJumping = false;
-			player->canDJ = true;
-			player->currentAnimation = &player->idleR;
-			player->respawnTimer = 0;
+	if (player->isDead) {
+		if (player->lives > 0) {
+			player->respawnTimer += dt / 1000;
+			if (player->respawnTimer >= 2) {
+				if (player->checkpointActivated) {
+					LoadState(); 
+				}
+				else {
+					player->SetPosition(player->initialPosition); 
+				}
+				player->isDead = false;
+				player->isJumping = false;
+				player->canDJ = true;
+				player->currentAnimation = &player->idleR;
+				player->respawnTimer = 0;
+			}
 		}
+		else {
+			Engine::GetInstance().render.get()->DrawTexture(
+				Engine::GetInstance().textures.get()->Load("Assets/UI/help.png"),
+				WWidth / 2 - 100,
+				WHeight / 2 - 50,
+				nullptr,
+				0.0f
+			);
 
-
-		
-
+			if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) {
+				player->Respaw(); 
+				player->isDead = false;
+				player->isJumping = false;
+				player->canDJ = true;
+				player->currentAnimation = &player->idleR;
+				player->respawnTimer = 0;
+			}
+		}
 	}
 
 	return true;
@@ -397,8 +415,7 @@ void Scene::SetCheckpoints()
 	}
 	hasCheckpointsBeenSetted = true;
 
-	if (player->setCheckPoint)
-	{
+	if (player->setCheckPoint && player->lives > 0) { 
 		SaveState();
 	}
 }
