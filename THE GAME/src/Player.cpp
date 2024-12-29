@@ -69,7 +69,6 @@ bool Player::Start() {
 
 bool Player::Update(float dt)
 {
-	
 	if (isDead) {
 		
 		if (!currentAnimation->HasFinished()) {
@@ -94,51 +93,55 @@ bool Player::Update(float dt)
 
 	b2Vec2 velocity = b2Vec2(0, pbody->body->GetLinearVelocity().y);
 
-	
-	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-		velocity.x = -0.2f * 16.0f;
-		direction = Direction::LEFT;
-		currentAnimation = &right; 
+	if (!stop)
+	{
+		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+			velocity.x = -0.2f * 16.0f;
+			direction = Direction::LEFT;
+			currentAnimation = &right;
 
-		if (!isWalking && !isJumping) {
-			Engine::GetInstance().audio.get()->PlayFx(stepFxId);
-			walksoundTimer.Start();
-			isWalking = true;
+			if (!isWalking && !isJumping) {
+				Engine::GetInstance().audio.get()->PlayFx(stepFxId);
+				walksoundTimer.Start();
+				isWalking = true;
+			}
+		}
+
+
+		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+			velocity.x = 0.2f * 16.0f;
+			direction = Direction::RIGHT;
+			currentAnimation = &walk;
+
+			if (!isWalking && !isJumping) {
+				Engine::GetInstance().audio.get()->PlayFx(stepFxId);
+				walksoundTimer.Start();
+				isWalking = true;
+			}
+		}
+
+		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) != KEY_REPEAT &&
+			Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_D) != KEY_REPEAT) {
+			isWalking = false;
+		}
+
+		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
+			if (!isJumping) {
+				pbody->body->SetLinearVelocity(b2Vec2(velocity.x, 0));
+				pbody->body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpForce), true);
+				Engine::GetInstance().audio.get()->PlayFx(jumpFxId);
+				isJumping = true;
+			}
+			else if (canDJ) {
+				pbody->body->SetLinearVelocity(b2Vec2(velocity.x, 0));
+				pbody->body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpForce), true);
+				Engine::GetInstance().audio.get()->PlayFx(jumpFxId);
+				canDJ = false;
+			}
 		}
 	}
 
 	
-	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-		velocity.x = 0.2f * 16.0f;
-		direction = Direction::RIGHT;
-		currentAnimation = &walk; 
-
-		if (!isWalking && !isJumping) {
-			Engine::GetInstance().audio.get()->PlayFx(stepFxId);
-			walksoundTimer.Start();
-			isWalking = true;
-		}
-	}
-
-	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) != KEY_REPEAT &&
-		Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_D) != KEY_REPEAT) {
-		isWalking = false;
-	}
-
-	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
-		if (!isJumping) {
-			pbody->body->SetLinearVelocity(b2Vec2(velocity.x, 0));
-			pbody->body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpForce), true);
-			Engine::GetInstance().audio.get()->PlayFx(jumpFxId);
-			isJumping = true;
-		}
-		else if (canDJ) {
-			pbody->body->SetLinearVelocity(b2Vec2(velocity.x, 0));
-			pbody->body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpForce), true);
-			Engine::GetInstance().audio.get()->PlayFx(jumpFxId);
-			canDJ = false;
-		}
-	}
 
 	if (isJumping) {
 		velocity.y = pbody->body->GetLinearVelocity().y;

@@ -34,6 +34,10 @@ public:
 	// Called each loop iteration
 	bool Update(float dt);
 
+	void PauseMenu(float dt);
+
+	void PauseMenu();
+
 	void SpringEnemyThings();
 
 	float Slower(float ogPos, float goalPos, float time);
@@ -94,5 +98,7 @@ public:
 
 	float shootingTimer = 0;
 	bool help = false;
+
+	bool isPaused = false;
 
 };

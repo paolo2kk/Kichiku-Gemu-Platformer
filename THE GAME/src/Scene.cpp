@@ -158,6 +158,37 @@ float Scene::Slower(float ogPos, float goalPos, float time)
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
+	{
+		isPaused = !isPaused;
+	}
+
+	if (isPaused)
+	{
+		PauseMenu(dt);
+		return true;
+	}
+	else
+	{
+		player->stop = false;
+		for (Entity* entity : booEnemyList)
+		{
+			entity->stop = false;
+		}
+		for (Entity* entity : springEnemyList)
+		{
+			entity->stop = false;
+		}
+		for (Entity* entity : enemyList)
+		{
+			entity->stop = false;
+		}
+		for (Entity* entity : batEnemyList)
+		{
+			entity->stop = false;
+		}
+	}
+
 	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_H) == KEY_DOWN)
 	{
 		if (help == false)
@@ -267,7 +298,42 @@ bool Scene::Update(float dt)
 
 	}
 
+	
+
 	return true;
+}
+
+void Scene::PauseMenu(float dt)
+{
+	
+	if (isPaused)
+	{
+		SDL_Rect rect = { 0, 0, WWidth, WHeight };
+		SDL_RenderFillRect(Engine::GetInstance().render.get()->renderer, &rect);
+		for (Entity* entity : booEnemyList)
+		{
+			entity->stop = true;
+		}
+		for (Entity* entity : springEnemyList)
+		{
+			entity->stop = true;
+		}
+		for (Entity* entity : enemyList)
+		{
+			entity->stop = true;
+		}
+		for (Entity* entity : batEnemyList)
+		{
+			entity->stop = true;
+		}
+		player->stop = true;
+	}
+	else
+	{
+		player->stop = false;
+
+	}
+
 }
 
 void Scene::SpringEnemyThings()
