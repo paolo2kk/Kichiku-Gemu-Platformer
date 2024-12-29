@@ -41,6 +41,9 @@ public:
 	// Called each loop iteration
 	bool Update(float dt);
 
+	void StateManagement(UIStates uiStates);
+
+	void MainMenu();
 
 	void PauseMenu(float dt);
 
@@ -106,10 +109,20 @@ public:
 	GuiControlButton* layout;
 
 	std::vector<GuiControlButton*> guiButtons;
-
 	GuiControlButton* menuLayout;
 
+
+	GuiControlButton* playBt;
+	GuiControlButton* continueBt;
+	GuiControlButton* settingsMMBt;
+	GuiControlButton* creditsBt;
+	GuiControlButton* exitBt;
+
+	std::vector<GuiControlButton*> guiButtonsMM;
+
+
 	UIStates uiState = MAINMENU;
+	UIStates currentState;
 
 	float shootingTimer = 0;
 	bool help = false;

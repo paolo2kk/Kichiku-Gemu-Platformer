@@ -127,15 +127,36 @@ bool Scene::Awake()
 	settingsBt->visible = false;
 	guiButtons.push_back(settingsBt);
 
+	
 
 	SDL_Rect layoutBounds = { 0, 0, WWidth, WHeight }; 
 	layout = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "Layout", layoutBounds, this);
 	layout->isLayout = true; 
 
-	SDL_Rect layoutBounds2 = { 0, 0, WWidth, WHeight };
+	SDL_Rect layoutBounds2 = { 0, -90, WWidth, WHeight };
 	menuLayout = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "Layout", layoutBounds2, this);
 	menuLayout->isLayout = true; 
 	menuLayout->isMenu = true;
+
+	playBt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "MyButton", btPos, this);
+	playBt->visible = true;
+	guiButtonsMM.push_back(playBt);
+
+	continueBt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "MyButton", btPosresume, this);
+	continueBt->visible = true;
+	guiButtonsMM.push_back(continueBt);
+
+	settingsMMBt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "MyButton", btPosbacktotitle, this);
+	settingsMMBt->visible = true;
+	guiButtonsMM.push_back(settingsMMBt);
+
+	creditsBt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "MyButton", btPossettings, this);
+	creditsBt->visible = true;
+	guiButtonsMM.push_back(creditsBt);
+
+	exitBt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "MyButton", btPos, this);
+	exitBt->visible = true;
+	guiButtonsMM.push_back(exitBt);
 
 
 	return ret;
@@ -183,6 +204,8 @@ float Scene::Slower(float ogPos, float goalPos, float time)
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
+	StateManagement(uiState);
+
 	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
 	{
 		isPaused = !isPaused;
@@ -354,6 +377,63 @@ bool Scene::Update(float dt)
 	return true;
 }
 
+void Scene::StateManagement(UIStates uiStates)
+{
+	if (currentState != uiStates)
+	{
+		currentState = uiStates;
+
+		switch (currentState)
+		{
+		case UIStates::MAINMENU:
+			menuLayout->visible = true;
+			isPaused = true;
+			break;
+
+		case UIStates::PAUSED:
+			menuLayout->visible = false;
+			isPaused = true;
+			break;
+
+		case UIStates::PLAYING:
+			menuLayout->visible = false;
+			isPaused = false; 
+			break;
+		}
+	}
+
+	switch (currentState)
+	{
+	case UIStates::MAINMENU:
+		MainMenu(); 
+		break;
+
+	case UIStates::PAUSED:
+		break;
+
+	case UIStates::PLAYING:
+		break;
+	}
+}
+void Scene::MainMenu()
+{
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+	{
+		uiState = UIStates::PLAYING;
+
+		menuLayout->visible = false;
+
+		isPaused = false;        
+	}
+	if (playBt->isClicked) {
+		isPaused = false;
+		menuLayout->visible = false;
+
+		uiState = UIStates::PLAYING;
+
+		playBt->isClicked = false;
+	}
+}
 void Scene::PauseMenu(float dt)
 {
 	
