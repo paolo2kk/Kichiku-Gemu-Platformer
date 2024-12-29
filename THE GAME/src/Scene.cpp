@@ -18,6 +18,7 @@
 #include "GuiManager.h"
 #include "Spring.h"
 #include "BOO.h"
+#include "Hp.h"
 
 Scene::Scene() : Module()
 {
@@ -103,6 +104,12 @@ bool Scene::Awake()
 	for (pugi::xml_node bulletNode = configParameters.child("entities").child("items").child("bullet"); bulletNode; bulletNode = bulletNode.next_sibling("enemy"))
 	{
 		bulletParameters = bulletNode;
+	}
+
+	for (pugi::xml_node hpNode = configParameters.child("entities").child("items").child("hp"); hpNode; hpNode = hpNode.next_sibling("hp"))
+	{
+		Hp* hp = (Hp*)Engine::GetInstance().entityManager->CreateEntity(EntityType::HP);
+		hp->SetParameters(hpNode);
 	}
 
 

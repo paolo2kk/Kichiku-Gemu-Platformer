@@ -13,7 +13,8 @@ enum class EntityType
 	BULLET,
 	SPRINGENEMY,
 	BOO,
-	CHECKPOINT
+	CHECKPOINT,
+	HP
 };
 
 enum class States

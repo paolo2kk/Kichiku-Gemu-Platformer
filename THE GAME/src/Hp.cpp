@@ -1,0 +1,81 @@
+#include "Hp.h"
+#include "Engine.h"
+#include "Textures.h"
+#include "Audio.h"
+#include "Input.h"
+#include "Render.h"
+#include "Scene.h"
+#include "Log.h"
+#include "Physics.h"
+#include "Player.h"
+
+Hp::Hp() : Entity(EntityType::HP) 
+{
+    name = "hp";
+}
+
+Hp::~Hp() {}
+
+bool Hp::Awake() {
+    return true;
+}
+
+bool Hp::Start() {
+
+    texture = Engine::GetInstance().textures.get()->Load(parameters.attribute("texture").as_string());
+    position.setX(parameters.attribute("x").as_int());
+    position.setY(parameters.attribute("y").as_int());
+    texW = parameters.attribute("w").as_int();
+    texH = parameters.attribute("h").as_int();
+
+    idle.LoadAnimations(parameters.child("animations").child("idle"));
+    currentAnimation = &idle;
+
+    pbody = Engine::GetInstance().physics.get()->CreateCircle(
+        (int)position.getX() + texH / 2,
+        (int)position.getY() + texH / 2,
+        texH / 2,
+        bodyType::STATIC
+    );
+
+    pbody->ctype = ColliderType::HP;
+
+    if (!parameters.attribute("gravity").as_bool()) pbody->body->SetGravityScale(0);
+
+    return true;
+}
+
+bool Hp::Update(float dt)
+{
+    b2Transform pbodyPos = pbody->body->GetTransform();
+    position.setX(METERS_TO_PIXELS(pbodyPos.p.x) - texH / 2);
+    position.setY(METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2);
+
+    Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY(), &currentAnimation->GetCurrentFrame());
+    currentAnimation->Update(dt);
+
+    return true;
+}
+
+bool Hp::CleanUp()
+{
+    LOG("Cleaning up Hp entity");
+
+    
+    if (texture) {
+        Engine::GetInstance().textures.get()->UnLoad(texture);
+        texture = nullptr; 
+    }
+
+   
+    if (pbody) {
+        Engine::GetInstance().physics.get()->DeletePhysBody(pbody);
+        pbody = nullptr;
+    }
+
+    return true;
+}
+
+
+
+
