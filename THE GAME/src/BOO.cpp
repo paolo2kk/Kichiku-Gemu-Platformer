@@ -81,7 +81,6 @@ bool BOO::Update(float dt)
 			Vector2D nextPos = Engine::GetInstance().map->MapToWorld(nextTile.getX(), nextTile.getY());
 			Vector2D dir = nextPos - enemyPos;
 			dir.normalized();
-			std::cout << stop;
 			if (player->GetDirection() == lookDirection && !stop)
 			{
 				float speed = 0.02f;

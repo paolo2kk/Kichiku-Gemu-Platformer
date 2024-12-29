@@ -108,7 +108,8 @@ bool Scene::Awake()
 
 	SDL_Rect btPos = { 520, 350, 120,20 };
 
-	//guiBt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "MyButton", btPos, this);
+	guiBt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "MyButton", btPos, this);
+	guiBt->visible = false;
 	SDL_Rect layoutBounds = { 0, 0, WWidth, WHeight }; 
 	layout = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "Layout", layoutBounds, this);
 	layout->isLayout = true; // Mark as layout
@@ -187,6 +188,7 @@ bool Scene::Update(float dt)
 		{
 			entity->stop = false;
 		}
+		guiBt->visible = false;
 	}
 
 	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_H) == KEY_DOWN)
@@ -298,8 +300,6 @@ bool Scene::Update(float dt)
 
 	}
 
-	
-
 	return true;
 }
 
@@ -308,8 +308,7 @@ void Scene::PauseMenu(float dt)
 	
 	if (isPaused)
 	{
-		SDL_Rect rect = { 0, 0, WWidth, WHeight };
-		SDL_RenderFillRect(Engine::GetInstance().render.get()->renderer, &rect);
+		guiBt->visible = true;
 		for (Entity* entity : booEnemyList)
 		{
 			entity->stop = true;
@@ -332,6 +331,11 @@ void Scene::PauseMenu(float dt)
 	{
 		player->stop = false;
 
+	}
+
+	if(guiBt->isClicked)
+	{
+		player->SetPosition(Vector2D(1,1));
 	}
 
 }

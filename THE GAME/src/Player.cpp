@@ -93,6 +93,8 @@ bool Player::Update(float dt)
 
 	b2Vec2 velocity = b2Vec2(0, pbody->body->GetLinearVelocity().y);
 
+	if (stop) velocity = b2Vec2(0, 0);
+
 	if (!stop)
 	{
 		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {

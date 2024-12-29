@@ -34,9 +34,8 @@ public:
 	// Called each loop iteration
 	bool Update(float dt);
 
-	void PauseMenu(float dt);
 
-	void PauseMenu();
+	void PauseMenu(float dt);
 
 	void SpringEnemyThings();
 
