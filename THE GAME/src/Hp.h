@@ -25,6 +25,8 @@ public:
         this->parameters = parameters;
     }
 
+    void OnCollision(PhysBody* physA, PhysBody* physB);
+
 private:
 
     

@@ -8,6 +8,7 @@
 #include "Log.h"
 #include "Physics.h"
 #include "Player.h"
+#include "EntityManager.h"
 
 Hp::Hp() : Entity(EntityType::HP) 
 {
@@ -39,6 +40,7 @@ bool Hp::Start() {
     );
 
     pbody->ctype = ColliderType::HP;
+    pbody->listener = this;
 
     if (!parameters.attribute("gravity").as_bool()) pbody->body->SetGravityScale(0);
 
@@ -74,6 +76,25 @@ bool Hp::CleanUp()
     }
 
     return true;
+}
+
+void Hp::OnCollision(PhysBody* physA, PhysBody* physB) {
+     if (physB->ctype == ColliderType::PLAYER) {
+        Player* player = (Player*)physB->listener; 
+
+        if (player->lives < 3) {
+            player->lives++; 
+          
+			
+            Engine::GetInstance().physics.get()->DeletePhysBody(pbody); 
+			Engine::GetInstance().entityManager.get()->DestroyEntity(this);
+
+            LOG("Player's HP restored!");
+        }
+        else {
+            LOG("Player already has max HP!");
+        }
+    }
 }
 
 
