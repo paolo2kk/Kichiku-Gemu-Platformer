@@ -108,9 +108,10 @@ bool Scene::Awake()
 
 	SDL_Rect btPos = { 520, 350, 120,20 };
 
+	//guiBt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "MyButton", btPos, this);
 	SDL_Rect layoutBounds = { 0, 0, WWidth, WHeight }; 
 	layout = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "Layout", layoutBounds, this);
-	layout->isLayout = true;
+	layout->isLayout = true; // Mark as layout
 
 	return ret;
 }

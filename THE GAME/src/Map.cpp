@@ -76,7 +76,7 @@ bool Map::Update(float dt)
 
                                 Engine::GetInstance().window.get()->GetWindowSize(windowSizeW, windowSizeH);
                                 
-                                if (mapCoord.getX() >= -cameraX - 10 && mapCoord.getX() < -cameraX + windowSizeW && mapCoord.getY() >= -cameraY && mapCoord.getY() < -cameraY + windowSizeH)
+                                if (mapCoord.getX() >= -cameraX - 100 && mapCoord.getX() < -cameraX + windowSizeW && mapCoord.getY() >= -cameraY && mapCoord.getY() < -cameraY + windowSizeH)
                                 {
                                     Engine::GetInstance().render->DrawTexture(tileSet->texture, mapCoord.getX(), mapCoord.getY(), &tileRect);
                                 }

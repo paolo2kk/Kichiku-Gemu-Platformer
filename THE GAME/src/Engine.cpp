@@ -9,7 +9,6 @@
 #include "Render.h"
 #include "Textures.h"
 #include "Audio.h"
-#include "Menu.h"
 #include "Scene.h"
 #include "EntityManager.h"
 #include "Map.h"
@@ -38,7 +37,6 @@ Engine::Engine() {
     audio = std::make_shared<Audio>();
     // L08: TODO 2: Add Physics module
     physics = std::make_shared<Physics>();
-    menu = std::make_shared<Menu>();
     scene = std::make_shared<Scene>();
     map = std::make_shared<Map>();
     entityManager = std::make_shared<EntityManager>();
@@ -53,7 +51,6 @@ Engine::Engine() {
     // L08: TODO 2: Add Physics module
     AddModule(std::static_pointer_cast<Module>(physics));
     AddModule(std::static_pointer_cast<Module>(map));
-    AddModule(std::static_pointer_cast<Module>(menu));
     AddModule(std::static_pointer_cast<Module>(scene));
     AddModule(std::static_pointer_cast<Module>(entityManager));
     AddModule(std::static_pointer_cast<Module>(guiManager));
@@ -133,21 +130,6 @@ bool Engine::Update() {
     bool ret = true;
     PrepareUpdate();
 
-    if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
-    {
-        paused = !paused;
-    }
-
-    // Set dt to 0 if the game is paused
-    if (paused)
-    {
-        dt = 0.0f;
-    }
-    else
-    {
-        dt = (float)frameTime.ReadMs(); // Calculate dt only if not paused
-    }
-
     if (input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN) {
         if (maxFrameDuration == 0) {
             maxFrameDuration = 1000 / 30; 
@@ -200,10 +182,7 @@ bool Engine::CleanUp() {
 // ---------------------------------------------
 void Engine::PrepareUpdate()
 {
-    if (!paused)
-    {
-        frameTime.Start();
-    }
+    frameTime.Start();
 }
 
 // ---------------------------------------------
@@ -279,10 +258,7 @@ bool Engine::DoUpdate()
     //Iterates the module list and calls Update on each module
     bool result = true;
     for (const auto& module : moduleList) {
-
-        if (!paused) {
-            result = module.get()->Update(dt); // Modules should respect dt = 0 when paused
-        }
+        result = module.get()->Update(dt);
         if (!result) {
             break;
         }
