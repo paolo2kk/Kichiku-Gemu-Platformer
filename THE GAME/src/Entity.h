@@ -80,6 +80,7 @@ public:
 	};
 
 public:
+	bool stop = false;
 
 	std::string name;
 	EntityType type;

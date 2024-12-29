@@ -34,6 +34,9 @@ public:
 	// Called each loop iteration
 	bool Update(float dt);
 
+
+	void PauseMenu(float dt);
+
 	void SpringEnemyThings();
 
 	float Slower(float ogPos, float goalPos, float time);
@@ -89,10 +92,17 @@ public:
 	float offsetY = 450;
 	int shootFxId;
 
+	GuiControlButton* resumeBt;
+	GuiControlButton* backtotitleBt;
+	GuiControlButton* settingsBt;
 	GuiControlButton* guiBt;
 	GuiControlButton* layout;
 
+	std::vector<GuiControlButton*> guiButtons;
+
 	float shootingTimer = 0;
 	bool help = false;
+
+	bool isPaused = false;
 
 };

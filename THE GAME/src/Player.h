@@ -71,7 +71,7 @@ public:
 	int playerdieFxId;
 	float respawnTimer = 0;
 	
-
+	bool stop = false;
 
 	// L08 TODO 5: Add physics to the player - declare a Physics body
 	PhysBody* pbody;

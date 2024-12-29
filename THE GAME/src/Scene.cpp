@@ -106,9 +106,28 @@ bool Scene::Awake()
 	}
 
 
-	SDL_Rect btPos = { 520, 350, 120,20 };
+	SDL_Rect btPos = { 520, 250, 120,20 };
+	SDL_Rect btPosresume = { 520, 100, 120,20 };
+	SDL_Rect btPossettings = { 520, 150, 120,20 };
+	SDL_Rect btPosbacktotitle = { 520, 200, 120,20 };
 
-	//guiBt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "MyButton", btPos, this);
+	guiBt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "MyButton", btPos, this);
+	guiBt->visible = false;
+	guiButtons.push_back(guiBt);
+	
+	resumeBt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "MyButton", btPosresume, this);
+	resumeBt->visible = false;
+	guiButtons.push_back(resumeBt);
+
+	backtotitleBt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "MyButton", btPosbacktotitle, this);
+	backtotitleBt->visible = false;
+	guiButtons.push_back(backtotitleBt);
+
+	settingsBt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "MyButton", btPossettings, this);
+	settingsBt->visible = false;
+	guiButtons.push_back(settingsBt);
+
+
 	SDL_Rect layoutBounds = { 0, 0, WWidth, WHeight }; 
 	layout = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "Layout", layoutBounds, this);
 	layout->isLayout = true; // Mark as layout
@@ -158,6 +177,42 @@ float Scene::Slower(float ogPos, float goalPos, float time)
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
+	{
+		isPaused = !isPaused;
+	}
+
+	if (isPaused)
+	{
+		PauseMenu(dt);
+		return true;
+	}
+	else
+	{
+		player->stop = false;
+		for (Entity* entity : booEnemyList)
+		{
+			entity->stop = false;
+		}
+		for (Entity* entity : springEnemyList)
+		{
+			entity->stop = false;
+		}
+		for (Entity* entity : enemyList)
+		{
+			entity->stop = false;
+		}
+		for (Entity* entity : batEnemyList)
+		{
+			entity->stop = false;
+		}
+		for (GuiControlButton* guiButton : guiButtons)
+		{
+			guiButton->visible = false;
+		}
+		
+	}
+
 	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_H) == KEY_DOWN)
 	{
 		if (help == false)
@@ -286,6 +341,51 @@ bool Scene::Update(float dt)
 	}
 
 	return true;
+}
+
+void Scene::PauseMenu(float dt)
+{
+	
+	if (isPaused)
+	{
+		for (GuiControlButton* guiButton : guiButtons)
+		{
+			guiButton->visible = true;
+		}
+
+		for (Entity* entity : booEnemyList)
+		{
+			entity->stop = true;
+		}
+		for (Entity* entity : springEnemyList)
+		{
+			entity->stop = true;
+		}
+		for (Entity* entity : enemyList)
+		{
+			entity->stop = true;
+		}
+		for (Entity* entity : batEnemyList)
+		{
+			entity->stop = true;
+		}
+		player->stop = true;
+	}
+	else
+	{
+		player->stop = false;
+
+	}
+
+	if (guiBt->isClicked) 
+	{
+		player->SetPosition(Vector2D(1, 1));
+		guiBt->isClicked = false;
+	}
+	if (resumeBt->isClicked) {
+		isPaused = false;
+		resumeBt->isClicked = false;
+	}
 }
 
 void Scene::SpringEnemyThings()

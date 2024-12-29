@@ -89,7 +89,7 @@ bool Enemy::Update(float dt)
 				buscando = 0;
 			}
 
-			if (pathfinding->pathTiles.size() > 0) {
+			if (pathfinding->pathTiles.size() > 0 && !stop) {
 				Vector2D nextTile = pathfinding->pathTiles.front();
 				Vector2D nextPos = Engine::GetInstance().map->MapToWorld(nextTile.getX(), nextTile.getY());
 				Vector2D dir = nextPos - enemyPos;
