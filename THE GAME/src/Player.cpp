@@ -39,7 +39,7 @@ bool Player::Start() {
 
 
 	initialPosition = Vector2D(100, 100);
-	SetPosition(initialPosition);
+	
 
 	//Load animations
 	idleR.LoadAnimations(parameters.child("animations").child("idleR"));
