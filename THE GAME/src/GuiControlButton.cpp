@@ -23,6 +23,7 @@ bool GuiControlButton::Update(float dt)
 	if (!isLayoutSet)
 	{
 		layoutUI = Engine::GetInstance().textures.get()->Load("Assets/UI/GUI.png");
+		menuUI = Engine::GetInstance().textures.get()->Load("Assets/UI/menu.jpg");
 		isLayoutSet = true;
 	}
 	
@@ -76,8 +77,19 @@ bool GuiControlButton::Update(float dt)
 	}
 	else {
 
-		state = GuiControlState::NORMAL;
-		Engine::GetInstance().render->DrawTexture(layoutUI, bounds.x, bounds.y + 90);
+		if (isMenu)
+		{
+			Engine::GetInstance().render->DrawTexture(menuUI, bounds.x, bounds.y + 90);
+		}
+		else if (!isMenu)
+		{
+			state = GuiControlState::NORMAL;
+			Engine::GetInstance().render->DrawTexture(layoutUI, bounds.x, bounds.y + 90);
+
+
+		}
+		
+		
 	}
 
 	return false;
