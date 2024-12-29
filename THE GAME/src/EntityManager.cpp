@@ -10,6 +10,7 @@
 #include "Bullet.h"
 #include "Spring.h"
 #include "BOO.h"
+#include "Hp.h"
 
 EntityManager::EntityManager() : Module()
 {
@@ -97,6 +98,9 @@ Entity* EntityManager::CreateEntity(EntityType type)
 		break;
 	case EntityType::BOO:
 		entity = new BOO();
+		break;
+	case EntityType::HP:
+		entity = new Hp();
 		break;
 	default:
 		break;

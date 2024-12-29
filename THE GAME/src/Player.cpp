@@ -29,7 +29,6 @@ bool Player::Awake() {
 bool Player::Start() {
 
 
-
 	//L03: TODO 2: Initialize Player parameters
 	texture = Engine::GetInstance().textures.get()->Load(parameters.attribute("texture").as_string());
 	position.setX(parameters.attribute("x").as_int());
@@ -190,9 +189,6 @@ bool Player::Update(float dt)
 	return true;
 }
 
-
-
-
 void Player::SetMass(float newMass) {
 	if (pbody && pbody->body) {
 		b2MassData massData;
@@ -222,6 +218,18 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		Engine::GetInstance().audio.get()->PlayFx(pickCoinFxId);
 		Engine::GetInstance().physics.get()->DeletePhysBody(physB); 
 		break;
+	case ColliderType::HP:
+		if (lives < 3) {
+			lives++;
+			Engine::GetInstance().audio.get()->PlayFx(pickCoinFxId);
+			//Engine::GetInstance().physics.get()->DeletePhysBody(physB);
+			LOG("Player's HP restored!");
+		}
+		else {
+			LOG("Player already has max HP!");
+		}
+		break; 
+
 	case ColliderType::UNKNOWN:
 		LOG("Collision UNKNOWN");
 		break;

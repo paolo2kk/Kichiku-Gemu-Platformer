@@ -33,7 +33,8 @@ enum class ColliderType {
 	CHECKPOINT,
 	BULLET,
 	KILLER,
-	UNKNOWN
+	UNKNOWN,
+	HP
 	
 	// ..
 };
