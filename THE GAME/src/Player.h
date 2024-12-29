@@ -53,6 +53,8 @@ public:
 
 	void Bounce();
 
+	void Respaw();
+
 public:
 
 	//Declare player parameters
@@ -91,6 +93,13 @@ public:
 	bool isWalking = false;
 
 	bool godMode = false;
+
+	int lives = 3;
+
+	int gameOverFxId;
+
+	bool checkpointActivated = false;
+	Vector2D initialPosition;
 
 	Timer walksoundTimer;
 	
