@@ -114,11 +114,16 @@ public:
 
 	GuiControlButton* playBt;
 	GuiControlButton* continueBt;
-	GuiControlButton* settingsMMBt;
+	GuiControlButton* quitgameMMBT;
 	GuiControlButton* creditsBt;
 	GuiControlButton* exitBt;
 
 	std::vector<GuiControlButton*> guiButtonsMM;
+
+	GuiControlButton* returnSTBT;
+
+	std::vector<GuiControlButton*> guiButtonsSettings;
+
 
 
 	UIStates uiState = MAINMENU;
@@ -126,7 +131,7 @@ public:
 
 	float shootingTimer = 0;
 	bool help = false;
-
+	bool settings = false;
 	bool isPaused = false;
 
 };

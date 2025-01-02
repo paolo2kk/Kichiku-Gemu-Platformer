@@ -153,9 +153,9 @@ bool Scene::Awake()
 	continueBt->visible = true;
 	guiButtonsMM.push_back(continueBt);
 
-	settingsMMBt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "MyButton", btPosbacktotitle, this);
-	settingsMMBt->visible = true;
-	guiButtonsMM.push_back(settingsMMBt);
+	quitgameMMBT = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "MyButton", btPosbacktotitle, this);
+	quitgameMMBT->visible = true;
+	guiButtonsMM.push_back(quitgameMMBT);
 
 	creditsBt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "MyButton", btPossettings, this);
 	creditsBt->visible = true;
@@ -164,6 +164,11 @@ bool Scene::Awake()
 	exitBt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "MyButton", btPos, this);
 	exitBt->visible = true;
 	guiButtonsMM.push_back(exitBt);
+
+
+	returnSTBT = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "MyButton", btPos, this);
+	returnSTBT->visible = false;
+	guiButtonsSettings.push_back(returnSTBT);
 
 
 	return ret;
@@ -394,17 +399,27 @@ void Scene::StateManagement(UIStates uiStates)
 		{
 		case UIStates::MAINMENU:
 			menuLayout->visible = true;
+			for (GuiControlButton* guiBTMM : guiButtonsMM)
+			{
+				guiBTMM->visible = true;
+			}
 			isPaused = true;
 			break;
 
 		case UIStates::PAUSED:
 			menuLayout->visible = false;
+
 			isPaused = true;
 			break;
 
 		case UIStates::PLAYING:
 			menuLayout->visible = false;
+			for (GuiControlButton* guiBTMM : guiButtonsMM)
+			{
+				guiBTMM->visible = false;
+			}
 			isPaused = false; 
+
 			break;
 		}
 	}
@@ -419,37 +434,76 @@ void Scene::StateManagement(UIStates uiStates)
 		break;
 
 	case UIStates::PLAYING:
+
+		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_ESCAPE)) uiState = UIStates::MAINMENU;
+
 		break;
 	}
 }
 void Scene::MainMenu()
 {
-	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+	if (!settings)
 	{
-		uiState = UIStates::PLAYING;
+		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+		{
+			uiState = UIStates::PLAYING;
 
-		menuLayout->visible = false;
+			menuLayout->visible = false;
 
-		isPaused = false;        
+			isPaused = false;
+		}
+		if (playBt->isClicked) {
+			isPaused = false;
+			menuLayout->visible = false;
+
+			uiState = UIStates::PLAYING;
+
+			playBt->isClicked = false;
+		}
+		menuLayout->visible = true;
+		for (GuiControlButton* guiBTMM : guiButtonsMM)
+		{
+			guiBTMM->visible = true;
+		}
+		for (GuiControlButton* guibtST : guiButtonsSettings)
+		{
+			guibtST->visible = false;
+		}
 	}
-	if (playBt->isClicked) {
-		isPaused = false;
-		menuLayout->visible = false;
-
-		uiState = UIStates::PLAYING;
-
-		playBt->isClicked = false;
+	
+	if (creditsBt->isClicked)
+	{
+		//settings go here
+		settings = true;
+		for (GuiControlButton* guibtST : guiButtonsSettings)
+		{
+			guibtST->visible = true;
+		}
+		for (GuiControlButton* guiBTMM : guiButtonsMM)
+		{
+			guiBTMM->visible = false;
+		}
+		if (returnSTBT->isClicked)
+		{
+			settings = false;
+		}
 	}
+	
+
 }
 void Scene::PauseMenu(float dt)
 {
 	
 	if (isPaused)
 	{
-		for (GuiControlButton* guiButton : guiButtons)
+		if (uiState == UIStates::PLAYING)
 		{
-			guiButton->visible = true;
+			for (GuiControlButton* guiButton : guiButtons)
+			{
+				guiButton->visible = true;
+			}
 		}
+		
 
 		for (Entity* entity : booEnemyList)
 		{
@@ -512,8 +566,9 @@ bool Scene::PostUpdate()
 {
 	bool ret = true;
 
-	if(Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		ret = false;
+
+	if (/*Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && */uiState == UIStates::MAINMENU ) /*ret = false;*/
+
 	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
 		LoadState();
 	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
