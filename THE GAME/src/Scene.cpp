@@ -118,19 +118,19 @@ bool Scene::Awake()
 	SDL_Rect btPossettings = { 520, 150, 120,20 };
 	SDL_Rect btPosbacktotitle = { 520, 200, 120,20 };
 
-	guiBt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "MyButton", btPos, this);
+	guiBt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "sacame de este antro", btPos, this);
 	guiBt->visible = false;
 	guiButtons.push_back(guiBt);
 	
-	resumeBt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "MyButton", btPosresume, this);
+	resumeBt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "prosigue la aventura", btPosresume, this);
 	resumeBt->visible = false;
 	guiButtons.push_back(resumeBt);
 
-	backtotitleBt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "MyButton", btPosbacktotitle, this);
+	backtotitleBt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "miau", btPosbacktotitle, this);
 	backtotitleBt->visible = false;
 	guiButtons.push_back(backtotitleBt);
 
-	settingsBt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "MyButton", btPossettings, this);
+	settingsBt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "configurame", btPossettings, this);
 	settingsBt->visible = false;
 	guiButtons.push_back(settingsBt);
 
@@ -145,23 +145,23 @@ bool Scene::Awake()
 	menuLayout->isLayout = true; 
 	menuLayout->isMenu = true;
 
-	playBt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "MyButton", btPos, this);
+	playBt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "dale", btPos, this);
 	playBt->visible = true;
 	guiButtonsMM.push_back(playBt);
 
-	continueBt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "MyButton", btPosresume, this);
+	continueBt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "dale", btPosresume, this);
 	continueBt->visible = true;
 	guiButtonsMM.push_back(continueBt);
 
-	quitgameMMBT = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "MyButton", btPosbacktotitle, this);
+	quitgameMMBT = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "configurame", btPosbacktotitle, this);
 	quitgameMMBT->visible = true;
 	guiButtonsMM.push_back(quitgameMMBT);
 
-	creditsBt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "MyButton", btPossettings, this);
+	creditsBt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "hola soy un credito jajaja gracioso", btPossettings, this);
 	creditsBt->visible = true;
 	guiButtonsMM.push_back(creditsBt);
 
-	exitBt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "MyButton", btPos, this);
+	exitBt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "adios master", btPos, this);
 	exitBt->visible = true;
 	guiButtonsMM.push_back(exitBt);
 
@@ -588,6 +588,8 @@ bool Scene::PostUpdate()
 
 // L15 TODO 1: Implement the Load function
 void Scene::LoadState() {
+
+	LOG("Loading State");
 
 	pugi::xml_document loadFile;
 	pugi::xml_parse_result result = loadFile.load_file("config.xml");

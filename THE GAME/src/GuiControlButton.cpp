@@ -32,6 +32,7 @@ bool GuiControlButton::Update(float dt)
 	{
 		if (visible)
 		{
+
 			// L16: TODO 3: Update the state of the GUiButton according to the mouse position
 			Vector2D mousePos = Engine::GetInstance().input->GetMousePosition();
 
@@ -70,7 +71,6 @@ bool GuiControlButton::Update(float dt)
 				isClicked = true;
 				break;
 			}
-
 			Engine::GetInstance().render->DrawText(text.c_str(), bounds.x, bounds.y, bounds.w, bounds.h);
 
 		}
