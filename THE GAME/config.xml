@@ -17,7 +17,7 @@
 	<scene>
 		<map path="Assets/Maps/" name="MapTemplate.tmx" />
 		<entities>
-			<player x="637" y="1724" w="64" h="64" texture="Assets/Textures/player/Idle.png" gravity="true">
+			<player x="633" y="1724" w="64" h="64" texture="Assets/Textures/player/Idle.png" gravity="true">
 				<animations>
 					<idleR loop="true" speed="0.02">
 						<frame x="0" y="0" w="64" h="64" />
@@ -140,7 +140,7 @@
 						</idle>
 					</animations>
 				</enemy0>
-				<enemy1 name="badguy" x="594" y="1717" w="64" h="64" texture="Assets/Textures/enemy/Idle.png" gravity="true">
+				<enemy1 name="badguy" x="590" y="1717" w="64" h="64" texture="Assets/Textures/enemy/Idle.png" gravity="true">
 					<animations>
 						<idle loop="true" speed="0.05">
 							<frame x="0" y="0" w="64" h="64" />
@@ -160,7 +160,7 @@
 						</idle>
 					</animations>
 				</enemy1>
-				<murcielago0 name="murcielago" x="4935" y="3347" w="48" h="48" texture="Assets/Textures/enemy/Idle.png" gravity="true">
+				<murcielago0 name="murcielago" x="4975" y="3903" w="48" h="48" texture="Assets/Textures/enemy/Idle.png" gravity="true">
 					<animations>
 						<idle loop="true" speed="0.05">
 							<frame x="0" y="128" w="48" h="48" />

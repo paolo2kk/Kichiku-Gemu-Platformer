@@ -165,8 +165,9 @@ bool Scene::Awake()
 	exitBt->visible = true;
 	guiButtonsMM.push_back(exitBt);
 
+	SDL_Rect returnsettings = { 520, 400, 120,20 };
 
-	returnSTBT = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "MyButton", btPos, this);
+	returnSTBT = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "MyButton", returnsettings, this);
 	returnSTBT->visible = false;
 	guiButtonsSettings.push_back(returnSTBT);
 
@@ -469,12 +470,16 @@ void Scene::MainMenu()
 		{
 			guibtST->visible = false;
 		}
+		if (creditsBt->isClicked)
+		{
+			settings = true;
+			creditsBt->isClicked = false;
+
+		}
 	}
-	
-	if (creditsBt->isClicked)
+	else if(settings)
 	{
 		//settings go here
-		settings = true;
 		for (GuiControlButton* guibtST : guiButtonsSettings)
 		{
 			guibtST->visible = true;
@@ -486,8 +491,12 @@ void Scene::MainMenu()
 		if (returnSTBT->isClicked)
 		{
 			settings = false;
+			returnSTBT->isClicked = false;
 		}
 	}
+	
+	
+	
 	
 
 }
