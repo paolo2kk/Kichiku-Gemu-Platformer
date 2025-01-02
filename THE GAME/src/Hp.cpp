@@ -97,6 +97,19 @@ void Hp::OnCollision(PhysBody* physA, PhysBody* physB) {
     }
 }
 
+//crea una funcion para que aparezca el hp en el mapa (ui) y que se actualice dependiendo de las vidas del player
+
+void DrawHp() {
+	int x = 10;
+	int y = 10;
+	int w = 50;
+	int h = 50;
+	for (int i = 0; i < Engine::GetInstance().scene.get()->player->lives; i++) {
+		Engine::GetInstance().render.get()->DrawTexture(Engine::GetInstance().textures.get()->Load("Assets/Textures/goldCoin.png"), x, y, nullptr, 0.0f);
+		x += w;
+	}
+}
+
 
 
 
