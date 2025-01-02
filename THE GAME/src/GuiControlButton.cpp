@@ -24,6 +24,7 @@ bool GuiControlButton::Update(float dt)
 	{
 		layoutUI = Engine::GetInstance().textures.get()->Load("Assets/UI/GUI.png");
 		menuUI = Engine::GetInstance().textures.get()->Load("Assets/UI/menu.png");
+		goldCoin = Engine::GetInstance().textures.get()->Load("Assets/Textures/goldCoin.png");
 		isLayoutSet = true;
 	}
 	
@@ -85,9 +86,15 @@ bool GuiControlButton::Update(float dt)
 			else if (!isMenu)
 			{
 				state = GuiControlState::NORMAL;
+				
 				Engine::GetInstance().render->DrawTexture(layoutUI, bounds.x, bounds.y + 90);
 
+				//Dependiendo de las vidas del player se dibujan las monedas
 
+				for (int i = 0; i < Engine::GetInstance().scene->player->lives; i++) {
+					Engine::GetInstance().render->DrawTexture(goldCoin, bounds.x + 20, bounds.y + 100);
+					bounds.x += 25;
+				}
 			}
 		}
 		

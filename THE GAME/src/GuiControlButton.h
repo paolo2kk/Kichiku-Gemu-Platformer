@@ -27,7 +27,7 @@ private:
 	bool drawBasic = false;
 	SDL_Texture* layoutUI;
 	SDL_Texture* menuUI;
+	SDL_Texture* goldCoin;
 
 };
 
-#pragma once
