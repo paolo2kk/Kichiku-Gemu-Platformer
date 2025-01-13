@@ -617,6 +617,14 @@ void Scene::PauseMenu(float dt)
 	if (backtotitleBt->isClicked)
 	{
 		uiState = UIStates::MAINMENU;
+		backtotitleBt->isClicked = false;
+	}
+	if (settingsBt->isClicked)
+	{
+		uiState = UIStates::MAINMENU;
+		settings = true;
+	
+		settingsBt->isClicked = false;
 	}
 	if (resumeBt->isClicked) {
 		isPaused = false;
