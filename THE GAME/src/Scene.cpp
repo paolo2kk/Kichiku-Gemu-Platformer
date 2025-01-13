@@ -113,14 +113,14 @@ bool Scene::Awake()
 	}
 
 
-	SDL_Rect btPos = { 520, 250, 120,20 };
-	SDL_Rect btPosresume = { 520, 100, 120,20 };
-	SDL_Rect btPossettings = { 520, 150, 120,20 };
-	SDL_Rect btPosbacktotitle = { 520, 200, 120,20 };
+	SDL_Rect btPos = { 520, 350, 120,40 };
+	SDL_Rect btPosresume = { 520, 200, 120,40 };
+	SDL_Rect btPossettings = { 520, 250, 120,40 };
+	SDL_Rect btPosbacktotitle = { 520, 300, 120,40 };
 
-	guiBt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "sacame de este antro", btPos, this);
-	guiBt->visible = false;
-	guiButtons.push_back(guiBt);
+	quitgameBT2 = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "sacame de este antro", btPos, this);
+	quitgameBT2->visible = false;
+	guiButtons.push_back(quitgameBT2);
 	
 	resumeBt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "prosigue la aventura", btPosresume, this);
 	resumeBt->visible = false;
@@ -145,25 +145,22 @@ bool Scene::Awake()
 	menuLayout->isLayout = true; 
 	menuLayout->isMenu = true;
 
-	playBt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "dale", btPos, this);
+	playBt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "dale", btPosresume, this);
 	playBt->visible = true;
 	guiButtonsMM.push_back(playBt);
 
-	continueBt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "dale", btPosresume, this);
-	continueBt->visible = true;
-	guiButtonsMM.push_back(continueBt);
 
-	quitgameMMBT = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "configurame", btPosbacktotitle, this);
-	quitgameMMBT->visible = true;
-	guiButtonsMM.push_back(quitgameMMBT);
+	creditsButton = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "configurame", btPosbacktotitle, this);
+	creditsButton->visible = true;
+	guiButtonsMM.push_back(creditsButton);
 
-	creditsBt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "hola soy un credito jajaja gracioso", btPossettings, this);
-	creditsBt->visible = true;
-	guiButtonsMM.push_back(creditsBt);
+	settingsButton = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "Settings", btPossettings, this);
+	settingsButton->visible = true;
+	guiButtonsMM.push_back(settingsButton);
 
-	exitBt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "adios master", btPos, this);
-	exitBt->visible = true;
-	guiButtonsMM.push_back(exitBt);
+	exitGameBT = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "Get out", btPos, this);
+	exitGameBT->visible = true;
+	guiButtonsMM.push_back(exitGameBT);
 
 	SDL_Rect returnsettings = { 520, 400, 120,20 };
 
@@ -171,6 +168,31 @@ bool Scene::Awake()
 	returnSTBT->visible = false;
 	guiButtonsSettings.push_back(returnSTBT);
 
+	SDL_Rect checkboxBounds = { 100, 100, 20, 20 };
+	myCheckBox = (GuiCheckBox*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::CHECKBOX, 1, "Fullscreen (UNSTABLE)", checkboxBounds, this);
+	myCheckBox->visible = false;
+
+	SDL_Rect musicSliderBounds = { 100, 200, 300, 20 };
+	SDL_Rect fxSliderBounds = { 100, 250, 300, 20 };
+
+	// Create and configure the music slider
+	musicSlider = (GuiSlider*)Engine::GetInstance().guiManager->CreateGuiControl(
+		GuiControlType::SLIDER,
+		2,                     
+		"Music Volume",        
+		musicSliderBounds,     
+		this                   
+	);
+	musicSlider->visible = false;          
+
+	fxSlider = (GuiSlider*)Engine::GetInstance().guiManager->CreateGuiControl(
+		GuiControlType::SLIDER,
+		3,                     
+		"FX Volume",           
+		fxSliderBounds,        
+		this                   
+	);
+	fxSlider->visible = false; 
 
 	return ret;
 }
@@ -229,6 +251,7 @@ bool Scene::Update(float dt)
 		PauseMenu(dt);
 		return true;
 	}
+
 	else
 	{
 		player->stop = false;
@@ -443,7 +466,7 @@ void Scene::StateManagement(UIStates uiStates)
 }
 void Scene::MainMenu()
 {
-	if (!settings)
+	if (!settings && !credits)
 	{
 		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 		{
@@ -470,16 +493,23 @@ void Scene::MainMenu()
 		{
 			guibtST->visible = false;
 		}
-		if (creditsBt->isClicked)
+		if (settingsButton->isClicked)
 		{
 			settings = true;
-			creditsBt->isClicked = false;
-
+			settingsButton->isClicked = false;
 		}
+		if (creditsButton->isClicked)
+		{
+			credits = true;
+			creditsButton->isClicked = false;
+		}
+		myCheckBox->visible = false;
+		fxSlider->visible = false;
+		musicSlider->visible = false;
 	}
-	else if(settings)
+	else if (settings)
 	{
-		//settings go here
+		// Settings logic
 		for (GuiControlButton* guibtST : guiButtonsSettings)
 		{
 			guibtST->visible = true;
@@ -493,10 +523,55 @@ void Scene::MainMenu()
 			settings = false;
 			returnSTBT->isClicked = false;
 		}
+		myCheckBox->visible = true;
+		fxSlider->visible = true;
+		musicSlider->visible = true;
+
+		musicVolume = musicSlider->GetValue();
+		Engine::GetInstance().audio->SetMusicVolume(musicVolume);
+
+		fxVolume = fxSlider->GetValue();
+		Engine::GetInstance().audio->SetFxVolume(fxVolume);
+
+		if (myCheckBox->isChecked() && !fullScreen)
+		{
+			Engine::GetInstance().window->ToggleFullscreen();
+			fullScreen = true;
+			!myCheckBox->isChecked();
+		}
+		else if (myCheckBox->isChecked() && fullScreen)
+		{
+			Engine::GetInstance().window->UnToggleFullscreen();
+			fullScreen = false;
+			!myCheckBox->isChecked();
+		}
 	}
-	
-	
-	
+	else if (credits)
+	{
+
+		for (GuiControlButton* guiBTMM : guiButtonsMM)
+		{
+			guiBTMM->visible = false;
+		}
+		for (GuiControlButton* guibtST : guiButtonsSettings)
+		{
+			guibtST->visible = false;
+		}
+
+		returnSTBT->visible = true;
+
+		if (returnSTBT->isClicked)
+		{
+			credits = false;
+			returnSTBT->isClicked = false;
+
+			for (GuiControlButton* guiBTMM : guiButtonsMM)
+			{
+				guiBTMM->visible = true;
+			}
+			menuLayout->visible = true;
+		}
+	}
 	
 
 }
@@ -511,6 +586,7 @@ void Scene::PauseMenu(float dt)
 			{
 				guiButton->visible = true;
 			}
+
 		}
 		
 
@@ -538,10 +614,9 @@ void Scene::PauseMenu(float dt)
 
 	}
 
-	if (guiBt->isClicked) 
+	if (backtotitleBt->isClicked)
 	{
-		player->SetPosition(Vector2D(1, 1));
-		guiBt->isClicked = false;
+		uiState = UIStates::MAINMENU;
 	}
 	if (resumeBt->isClicked) {
 		isPaused = false;
@@ -576,7 +651,7 @@ bool Scene::PostUpdate()
 	bool ret = true;
 
 
-	if (/*Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && */uiState == UIStates::MAINMENU ) /*ret = false;*/
+	if (exitGameBT->isClicked || quitgameBT2->isClicked )ret = false;
 
 	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
 		LoadState();

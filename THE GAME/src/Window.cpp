@@ -70,6 +70,14 @@ bool Window::CleanUp()
 	SDL_Quit();
 	return true;
 }
+void Window::ToggleFullscreen()
+{
+	SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+}
+void Window::UnToggleFullscreen()
+{
+	SDL_SetWindowFullscreen(window, 0);
+}
 
 // Set new window title
 void Window::SetTitle(const char* new_title)

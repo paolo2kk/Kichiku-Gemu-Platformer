@@ -10,6 +10,8 @@
 #include "Spring.h"
 #include "BOO.h"
 #include "Murcielago.h"
+#include "GuiCheckBox.h"
+#include "GuiSlider.h"
 
 struct SDL_Texture;
 
@@ -105,7 +107,7 @@ public:
 	GuiControlButton* resumeBt;
 	GuiControlButton* backtotitleBt;
 	GuiControlButton* settingsBt;
-	GuiControlButton* guiBt;
+	GuiControlButton* quitgameBT2;
 	GuiControlButton* layout;
 
 	std::vector<GuiControlButton*> guiButtons;
@@ -113,10 +115,13 @@ public:
 
 
 	GuiControlButton* playBt;
-	GuiControlButton* continueBt;
-	GuiControlButton* quitgameMMBT;
-	GuiControlButton* creditsBt;
-	GuiControlButton* exitBt;
+	GuiControlButton* playGameBT;
+	GuiControlButton* creditsButton;
+	GuiControlButton* settingsButton;
+	GuiControlButton* exitGameBT;
+	GuiCheckBox* myCheckBox;
+	GuiSlider* musicSlider;
+	GuiSlider* fxSlider;
 
 	std::vector<GuiControlButton*> guiButtonsMM;
 
@@ -124,7 +129,8 @@ public:
 
 	std::vector<GuiControlButton*> guiButtonsSettings;
 
-
+	int musicVolume;
+	int fxVolume;
 
 	UIStates uiState = MAINMENU;
 	UIStates currentState;
@@ -132,6 +138,8 @@ public:
 	float shootingTimer = 0;
 	bool help = false;
 	bool settings = false;
+	bool credits = false;
 	bool isPaused = false;
+	bool fullScreen = false;
 
 };

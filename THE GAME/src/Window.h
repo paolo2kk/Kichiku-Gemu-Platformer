@@ -19,6 +19,10 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	void ToggleFullscreen();
+
+	void UnToggleFullscreen();
+
 	// Changae title
 	void SetTitle(const char* title);
 
