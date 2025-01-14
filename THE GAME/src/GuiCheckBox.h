@@ -17,10 +17,10 @@ public:
     bool canClick = true;
     bool drawBasic = false;
     bool isClicked = false;
-    bool visible = true;
+    bool visible = true;   
+    bool checked = false;
 
 private:
-    bool checked = false;
 
     Vector2D mousePos;
 

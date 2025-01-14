@@ -537,13 +537,15 @@ void Scene::MainMenu()
 		{
 			Engine::GetInstance().window->ToggleFullscreen();
 			fullScreen = true;
-			!myCheckBox->isChecked();
+			myCheckBox->checked = false;
+
 		}
 		else if (myCheckBox->isChecked() && fullScreen)
 		{
 			Engine::GetInstance().window->UnToggleFullscreen();
 			fullScreen = false;
-			!myCheckBox->isChecked();
+			myCheckBox->checked = false;
+
 		}
 	}
 	else if (credits)
