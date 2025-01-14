@@ -17,7 +17,7 @@
 	<scene>
 		<map path="Assets/Maps/" name="MapTemplate.tmx" />
 		<entities>
-			<player x="256" y="135" w="64" h="64" texture="Assets/Textures/player/Idle.png" gravity="true">
+			<player x="2029" y="1096" w="64" h="64" texture="Assets/Textures/player/Idle.png" gravity="true">
 				<animations>
 					<idleR loop="true" speed="0.02">
 						<frame x="0" y="0" w="64" h="64" />
@@ -140,7 +140,7 @@
 						</idle>
 					</animations>
 				</enemy0>
-				<enemy1 name="badguy" x="574" y="1717" w="64" h="64" texture="Assets/Textures/enemy/Idle.png" gravity="true">
+				<enemy1 name="badguy" x="1230" y="1781" w="64" h="64" texture="Assets/Textures/enemy/Idle.png" gravity="true">
 					<animations>
 						<idle loop="true" speed="0.05">
 							<frame x="0" y="0" w="64" h="64" />
@@ -160,7 +160,7 @@
 						</idle>
 					</animations>
 				</enemy1>
-				<murcielago0 name="murcielago" x="5157" y="6629" w="48" h="48" texture="Assets/Textures/enemy/Idle.png" gravity="true">
+				<murcielago0 name="murcielago" x="5211" y="7314" w="48" h="48" texture="Assets/Textures/enemy/Idle.png" gravity="true">
 					<animations>
 						<idle loop="true" speed="0.05">
 							<frame x="0" y="128" w="48" h="48" />
@@ -170,7 +170,7 @@
 						</idle>
 					</animations>
 				</murcielago0>
-				<murcielago1 name="murcielago" x="719" y="1037" w="48" h="48" texture="Assets/Textures/enemy/Idle.png" gravity="true">
+				<murcielago1 name="murcielago" x="829" y="1166" w="48" h="48" texture="Assets/Textures/enemy/Idle.png" gravity="true">
 					<animations>
 						<idle loop="true" speed="0.05">
 							<frame x="0" y="128" w="48" h="48" />
@@ -196,7 +196,7 @@
 						</scaredL>
 					</animations>
 				</BOO0>
-				<spring0 name="spring1" x="1928" y="1088" w="64" h="64" texture="Assets/Textures/spring.png" gravity="true">
+				<spring0 name="spring1" x="2006" y="964" w="64" h="64" texture="Assets/Textures/spring.png" gravity="true">
 					<animations>
 						<idle loop="true" speed="0.05">
 							<frame x="0" y="0" w="64" h="64" />

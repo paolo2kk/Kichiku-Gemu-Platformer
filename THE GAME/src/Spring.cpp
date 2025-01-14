@@ -160,9 +160,7 @@ void Spring::OnCollision(PhysBody* physA, PhysBody* physB) {
 		break;
 	}
 	case ColliderType::BULLET:
-		LOG("Collided with Bullet");
-		imDead = true;
-		Engine::GetInstance().entityManager.get()->DestroyEntity(this);
+
 		break;
 
 	default:
