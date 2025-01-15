@@ -115,6 +115,7 @@ bool Scene::Awake()
 
 	SDL_Rect btPos = { 520, 350, 120,40 };
 	SDL_Rect btPosresume = { 520, 200, 120,40 };
+	SDL_Rect btPosNewGame = { 700, 200, 120,40 };
 	SDL_Rect btPossettings = { 520, 250, 120,40 };
 	SDL_Rect btPosbacktotitle = { 520, 300, 120,40 };
 
@@ -149,6 +150,9 @@ bool Scene::Awake()
 	playBt->visible = true;
 	guiButtonsMM.push_back(playBt);
 
+	newGameBT = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "dale", btPosNewGame, this);
+	newGameBT->visible = true;
+	guiButtonsMM.push_back(newGameBT);
 
 	creditsButton = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "configurame", btPosbacktotitle, this);
 	creditsButton->visible = true;
@@ -506,6 +510,11 @@ void Scene::MainMenu()
 		myCheckBox->visible = false;
 		fxSlider->visible = false;
 		musicSlider->visible = false;
+		if (newGameBT->isClicked)
+		{
+			ResetWholeGame();
+			newGameBT->isClicked = false;
+		}
 	}
 	else if (settings)
 	{
@@ -577,6 +586,61 @@ void Scene::MainMenu()
 	
 
 }
+void Scene::ResetWholeGame() {
+	LOG("Resetting game to initial state...");
+
+	pugi::xml_document newGameFile;
+	pugi::xml_parse_result result = newGameFile.load_file("newgame.xml");
+
+	if (!result) {
+		LOG("Could not load newgame.xml. Pugi error: %s", result.description());
+		return;
+	}
+
+	pugi::xml_node sceneNode = newGameFile.child("config").child("scene");
+
+	pugi::xml_node playerNode = sceneNode.child("entities").child("player");
+	if (playerNode) {
+		Vector2D playerPos = Vector2D(
+			playerNode.attribute("x").as_int(),
+			playerNode.attribute("y").as_int()
+		);
+		player->SetPosition(playerPos);
+	}
+	else {
+		LOG("Player node not found in newgame.xml");
+	}
+
+	ResetEnemyList<Enemy>(enemyList, sceneNode, "enemy", EntityType::ENEMY);
+	ResetEnemyList<EnemyInClass>(batEnemyList, sceneNode, "murcielago", EntityType::ENEMYBFS);
+	ResetEnemyList<BOO>(booEnemyList, sceneNode, "BOO", EntityType::BOO);
+	ResetEnemyList<Spring>(springEnemyList, sceneNode, "spring", EntityType::SPRINGENEMY);
+
+	LOG("Game reset completed.");
+}
+template <typename T>
+void Scene::ResetEnemyList(std::vector<T*>& enemyList, pugi::xml_node& sceneNode, const std::string& baseName, EntityType entityType) {
+	pugi::xml_node enemiesNode = sceneNode.child("entities").child("enemies");
+
+	int index = 0;
+	for (pugi::xml_node enemyNode = enemiesNode.child((baseName + "0").c_str()); enemyNode;
+		enemyNode = enemyNode.next_sibling((baseName + std::to_string(index)).c_str()), index++) {
+
+		if (index >= enemyList.size()) {
+			LOG("Skipping node %s as it exceeds the current enemy list size.", (baseName + std::to_string(index)).c_str());
+			continue;
+		}
+
+		if (enemyList[index]->imDead) {
+			enemyList[index] = (T*)Engine::GetInstance().entityManager->CreateEntity(entityType);
+			LOG("Recreated enemy %s from newgame.xml", (baseName + std::to_string(index)).c_str());
+		}
+
+		enemyList[index]->SetParameters(enemyNode);
+		LOG("Set parameters for enemy %s from newgame.xml", (baseName + std::to_string(index)).c_str());
+	}
+}
+
 void Scene::PauseMenu(float dt)
 {
 	
@@ -667,6 +731,8 @@ bool Scene::PostUpdate()
 		LoadState();
 	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 		SaveState();
+
+	SetPlayerCheckpointPos();
 
 	return ret;
 }
@@ -857,6 +923,17 @@ void Scene::SaveState() {
 	}
 	else {
 		LOG("Game state saved successfully.");
+	}
+}
+void Scene::SetPlayerCheckpointPos()
+{
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+	{
+		player->SetPosition(Vector2D(644, 1732));
+	}
+	else if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+	{
+		player->SetPosition(checkPoint->position);
 	}
 }
 void Scene::Shoot()

@@ -69,11 +69,14 @@ public:
 	//L15 TODO 2: Implement the Save function
 	void SaveState();
 
+	void SetPlayerCheckpointPos();
+
 	void Shoot();
 
 
 	void WindowManipulation(float dt);
 
+	void ResetWholeGame();
 
 public:
 	// Get tilePosDebug value
@@ -122,6 +125,7 @@ public:
 	GuiCheckBox* myCheckBox;
 	GuiSlider* musicSlider;
 	GuiSlider* fxSlider;
+	GuiControlButton* newGameBT;
 
 	std::vector<GuiControlButton*> guiButtonsMM;
 
@@ -141,5 +145,12 @@ public:
 	bool credits = false;
 	bool isPaused = false;
 	bool fullScreen = false;
+
+	
+	template<typename T>
+	void ResetEnemyList(std::vector<T*>& enemyList, pugi::xml_node& sceneNode, const std::string& baseName, EntityType entityType);
+
+	template<typename T>
+	T* CreateNewEnemy();
 
 };
