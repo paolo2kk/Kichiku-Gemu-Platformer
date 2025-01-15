@@ -24,6 +24,8 @@ public:
 	void SetParameters(pugi::xml_node parameters) {
 		this->parameters = parameters;
 	}
+	void OnPickedUp();
+
 
 public:
 
@@ -40,4 +42,6 @@ private:
 
 	//L08 TODO 4: Add a physics to an item
 	PhysBody* pbody;
+
+	static int score;
 };

@@ -8,6 +8,8 @@
 #include "Log.h"
 #include "Physics.h"
 
+int Item::score = 0;
+
 Item::Item() : Entity(EntityType::ITEM)
 {
 	name = "item";
@@ -56,6 +58,15 @@ bool Item::Update(float dt)
 	currentAnimation->Update(dt);
 
 	return true;
+}
+void Item::OnPickedUp()
+{
+	if (!isPicked) {
+		isPicked = true;
+		score += 10; 
+		LOG("Item picked up! Current score: %d", score);
+		// play a sound
+	}
 }
 
 bool Item::CleanUp()
