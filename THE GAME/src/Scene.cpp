@@ -414,7 +414,65 @@ bool Scene::Update(float dt)
 		}
 	}
 
+	if(player->loadLevel2 == true)
+	{
+		Engine::GetInstance().map->Load("Assets/Maps/", "level2.tmx");
+
+		for (const auto entities : Engine::GetInstance().entityManager.get()->entities)
+		{
+			if (entities->active == true)
+			{
+				entities->Disable();
+
+			}
+		}
+		Engine::GetInstance().entityManager.get()->entities.clear();
+        enemyList.clear();
+        player = (Player*)Engine::GetInstance().entityManager->CreateEntity(EntityType::PLAYER);
+		Vector2D pos = { 100, 100 };
+		player->SetPosition(pos);
+		player->SetParameters(configParameters.child("player"));
+		CreateEnemies2();
+		Engine::GetInstance().entityManager.get()->Awake();
+		Engine::GetInstance().entityManager.get()->Start();
+	}
+
+
 	return true;
+}
+
+void Scene::CreateEnemies2() {
+
+	for (pugi::xml_node enemyNode = configParameters.child("entities").child("enemies").child("enemy0"); enemyNode; enemyNode = enemyNode.next_sibling("enemy0"))
+	{
+		Enemy* enemy = (Enemy*)Engine::GetInstance().entityManager->CreateEntity(EntityType::ENEMY);
+		enemy->SetParameters(enemyNode);
+		enemyList.push_back(enemy);
+	}
+	for (pugi::xml_node enemyNode = configParameters.child("entities").child("enemies").child("enemy1"); enemyNode; enemyNode = enemyNode.next_sibling("enemy1"))
+	{
+		Enemy* enemy2 = (Enemy*)Engine::GetInstance().entityManager->CreateEntity(EntityType::ENEMY);
+		enemy2->SetParameters(enemyNode);
+		enemyList.push_back(enemy2);
+	}
+	for (pugi::xml_node enemyNode1 = configParameters.child("entities").child("enemies").child("murcielago0"); enemyNode1; enemyNode1 = enemyNode1.next_sibling("murcielago0"))
+	{
+		EnemyInClass* enemy1 = (EnemyInClass*)Engine::GetInstance().entityManager->CreateEntity(EntityType::ENEMYBFS);
+		enemy1->SetParameters(enemyNode1);
+		batEnemyList.push_back(enemy1);
+	}
+	for (pugi::xml_node enemyNode2 = configParameters.child("entities").child("enemies").child("murcielago1"); enemyNode2; enemyNode2 = enemyNode2.next_sibling("murcielago1"))
+	{
+		EnemyInClass* enemy1 = (EnemyInClass*)Engine::GetInstance().entityManager->CreateEntity(EntityType::ENEMYBFS);
+		enemy1->SetParameters(enemyNode2);
+		batEnemyList.push_back(enemy1);
+	}
+	for (pugi::xml_node enemyNode2 = configParameters.child("entities").child("enemies").child("BOO0"); enemyNode2; enemyNode2 = enemyNode2.next_sibling("BOO0"))
+	{
+		BOO* enemy1 = (BOO*)Engine::GetInstance().entityManager->CreateEntity(EntityType::BOO);
+		enemy1->SetParameters(enemyNode2);
+		booEnemyList.push_back(enemy1);
+	}
 }
 
 void Scene::StateManagement(UIStates uiStates)

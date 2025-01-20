@@ -73,6 +73,7 @@ public:
 
 	void Shoot();
 
+	void CreateEnemies2();
 
 	void WindowManipulation(float dt);
 

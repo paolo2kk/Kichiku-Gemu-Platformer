@@ -102,5 +102,7 @@ public:
 	Vector2D initialPosition;
 
 	Timer walksoundTimer;
+
+	bool loadLevel2 = false;
 	
 };
