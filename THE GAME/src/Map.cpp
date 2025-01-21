@@ -126,6 +126,11 @@ bool Map::CleanUp()
     }
     mapData.layers.clear();
 
+    for (auto body : collisionBodies) {
+		Engine::GetInstance().physics.get()->DeletePhysBody(body);
+    }
+    collisionBodies.clear();
+
     return true;
 }
 
@@ -258,6 +263,7 @@ bool Map::Load(std::string path, std::string fileName)
                             Vector2D mapCoord = MapToWorld(i, j);
                             PhysBody* c1 = Engine::GetInstance().physics.get()->CreateRectangle(mapCoord.getX()+ mapData.tileWidth/2, mapCoord.getY()+ mapData.tileHeight/2, mapData.tileWidth, mapData.tileHeight, STATIC);
                             c1->ctype = ColliderType::PLATFORM;
+							collisionBodies.push_back(c1);
                         }
                     }
                 }
@@ -329,6 +335,7 @@ bool Map::Load(std::string path, std::string fileName)
                         );
 
                         triangle->ctype = ColliderType::KILLER;
+                        collisionBodies.push_back(triangle);
                     }
                 }
                 else {
@@ -340,6 +347,7 @@ bool Map::Load(std::string path, std::string fileName)
                     );
 
                     platform->ctype = colliderType;
+                    collisionBodies.push_back(platform);
                 }
             }
         }

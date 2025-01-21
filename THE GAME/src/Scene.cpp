@@ -414,11 +414,20 @@ bool Scene::Update(float dt)
 		}
 	}
 
+
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+	{
+		player->loadLevel2 = true;
+	}
+
+
 	if (player->loadLevel2 == true)
 	{
 		FadeTransition(Engine::GetInstance().render.get()->renderer, false, 1.0f); 
 
-		Engine::GetInstance().map->Load("Assets/Maps/", "level2.tmx");
+		Engine::GetInstance().map->CleanUp();
+
+		Engine::GetInstance().map->Load("Assets/Maps/", "MapTemplate2.tmx");
 
 		for (const auto entities : Engine::GetInstance().entityManager.get()->entities)
 		{
@@ -430,15 +439,16 @@ bool Scene::Update(float dt)
 		Engine::GetInstance().entityManager.get()->entities.clear();
 		enemyList.clear();
 		player = (Player*)Engine::GetInstance().entityManager->CreateEntity(EntityType::PLAYER);
-		Vector2D pos = { 100, 100 };
-		player->SetPosition(pos);
-		player->SetParameters(configParameters.child("player"));
+		player->SetParameters(configParameters.child("entities").child("player"));
+		player->Start();
+		
 		CreateEnemies2();
 
 		Engine::GetInstance().entityManager.get()->Awake();
 		Engine::GetInstance().entityManager.get()->Start();
 
 		FadeTransition(Engine::GetInstance().render.get()->renderer, true, 1.0f); 
+		player->SetPosition(Vector2D(206, 1158));
 
 		player->loadLevel2 = false;
 

@@ -92,7 +92,7 @@ bool Player::Update(float dt)
 
 			respawnTimer += dt / 1000; 
 			if (respawnTimer >= 2) {
-				//SetPosition(initialPosition); 
+				SetPosition(initialPosition); 
 				isDead = false;
 				isJumping = false;
 				canDJ = true;
@@ -202,6 +202,7 @@ bool Player::CleanUp()
 {
 	LOG("Cleanup player");
 	Engine::GetInstance().textures.get()->UnLoad(texture);
+	Engine::GetInstance().physics.get()->DeletePhysBody(pbody);
 	return true;
 }
 
@@ -222,9 +223,6 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		if (lives < 3) {
 			lives++;
 			Engine::GetInstance().audio.get()->PlayFx(pickCoinFxId);
-			Engine::GetInstance().physics.get()->DeletePhysBody(physB);
-			delete physB;
-			LOG("Player's HP restored!");
 		}
 		else {
 			LOG("Player already has max HP!");

@@ -192,4 +192,7 @@ private:
     float parallaxFactor3 = 0.85f;
     float parallaxFactor4 = 0.80f;
 
+    std::vector<PhysBody*> collisionBodies;
+
+
 };
