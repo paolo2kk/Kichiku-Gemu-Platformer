@@ -17,7 +17,7 @@
 	<scene>
 		<map path="Assets/Maps/" name="MapTemplate.tmx" />
 		<entities>
-			<player x="669" y="1724" w="64" h="64" texture="Assets/Textures/player/Idle.png" gravity="true">
+			<player x="100" y="100" w="64" h="64" texture="Assets/Textures/player/Idle.png" gravity="true">
 				<animations>
 					<idleR loop="true" speed="0.02">
 						<frame x="0" y="0" w="64" h="64" />
@@ -111,9 +111,16 @@
 						</idle>
 					</animations>
 				</bullet>
+				<hp name="hp" x="300" y="100" w="64" h="64" texture="Assets/Textures/goldCoin.png" gravity="false">
+					<animations>
+						<idle loop="true" speed="0.1">
+							<frame x="0" y="0" w="64" h="64" />
+						</idle>
+					</animations>
+				</hp>
 			</items>
 			<enemies>
-				<enemy0 name="badguy" x="4541" y="991" w="64" h="64" texture="Assets/Textures/enemy/Idle.png" gravity="true">
+				<enemy0 name="badguy" x="4541" y="989" w="64" h="64" texture="Assets/Textures/enemy/Idle.png" gravity="true">
 					<animations>
 						<idle loop="true" speed="0.05">
 							<frame x="0" y="0" w="64" h="64" />
@@ -133,7 +140,7 @@
 						</idle>
 					</animations>
 				</enemy0>
-				<enemy1 name="badguy" x="593" y="1717" w="64" h="64" texture="Assets/Textures/enemy/Idle.png" gravity="true">
+				<enemy1 name="badguy" x="608" y="1717" w="64" h="64" texture="Assets/Textures/enemy/Idle.png" gravity="true">
 					<animations>
 						<idle loop="true" speed="0.05">
 							<frame x="0" y="0" w="64" h="64" />
@@ -153,7 +160,7 @@
 						</idle>
 					</animations>
 				</enemy1>
-				<murcielago0 name="murcielago" x="4760" y="1015" w="48" h="48" texture="Assets/Textures/enemy/Idle.png" gravity="true">
+				<murcielago0 name="murcielago" x="4776" y="1030" w="48" h="48" texture="Assets/Textures/enemy/Idle.png" gravity="true">
 					<animations>
 						<idle loop="true" speed="0.05">
 							<frame x="0" y="128" w="48" h="48" />

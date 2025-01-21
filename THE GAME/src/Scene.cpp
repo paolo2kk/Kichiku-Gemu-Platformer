@@ -414,8 +414,10 @@ bool Scene::Update(float dt)
 		}
 	}
 
-	if(player->loadLevel2 == true)
+	if (player->loadLevel2 == true)
 	{
+		FadeTransition(Engine::GetInstance().render.get()->renderer, false, 1.0f); 
+
 		Engine::GetInstance().map->Load("Assets/Maps/", "level2.tmx");
 
 		for (const auto entities : Engine::GetInstance().entityManager.get()->entities)
@@ -423,19 +425,25 @@ bool Scene::Update(float dt)
 			if (entities->active == true)
 			{
 				entities->Disable();
-
 			}
 		}
 		Engine::GetInstance().entityManager.get()->entities.clear();
-        enemyList.clear();
-        player = (Player*)Engine::GetInstance().entityManager->CreateEntity(EntityType::PLAYER);
+		enemyList.clear();
+		player = (Player*)Engine::GetInstance().entityManager->CreateEntity(EntityType::PLAYER);
 		Vector2D pos = { 100, 100 };
 		player->SetPosition(pos);
 		player->SetParameters(configParameters.child("player"));
 		CreateEnemies2();
+
 		Engine::GetInstance().entityManager.get()->Awake();
 		Engine::GetInstance().entityManager.get()->Start();
+
+		FadeTransition(Engine::GetInstance().render.get()->renderer, true, 1.0f); 
+
+		player->loadLevel2 = false;
+
 	}
+
 
 
 	return true;
@@ -474,6 +482,40 @@ void Scene::CreateEnemies2() {
 		booEnemyList.push_back(enemy1);
 	}
 }
+
+void Scene::FadeTransition(SDL_Renderer* renderer, bool fadeIn, float duration)
+{
+	Uint32 startTime = SDL_GetTicks();
+	Uint8 alpha = fadeIn ? 255 : 0;
+	Uint8 targetAlpha = fadeIn ? 0 : 255;
+
+	SDL_Rect screenRect = { 0, 0, 1280, 720 };
+	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+
+	while (true)
+	{
+		Uint32 elapsedTime = SDL_GetTicks() - startTime;
+		float progress = (float)elapsedTime / (duration * 1000);
+
+		if (progress > 1.0f)
+			break;
+
+		alpha = fadeIn
+			? (Uint8)(255 * (1.0f - progress))
+			: (Uint8)(255 * progress);
+
+		SDL_SetRenderDrawColor(renderer, 0, 0, 0, alpha);
+		SDL_RenderFillRect(renderer, &screenRect);
+		SDL_RenderPresent(renderer);
+
+		SDL_Delay(16); 
+	}
+
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, targetAlpha);
+	SDL_RenderFillRect(renderer, &screenRect);
+	SDL_RenderPresent(renderer);
+}
+
 
 void Scene::StateManagement(UIStates uiStates)
 {

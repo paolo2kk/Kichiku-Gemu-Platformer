@@ -75,6 +75,8 @@ public:
 
 	void CreateEnemies2();
 
+	void FadeTransition(SDL_Renderer* renderer, bool fadeIn, float duration);
+
 	void WindowManipulation(float dt);
 
 	void ResetWholeGame();

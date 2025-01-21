@@ -222,7 +222,8 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		if (lives < 3) {
 			lives++;
 			Engine::GetInstance().audio.get()->PlayFx(pickCoinFxId);
-			//Engine::GetInstance().physics.get()->DeletePhysBody(physB);
+			Engine::GetInstance().physics.get()->DeletePhysBody(physB);
+			delete physB;
 			LOG("Player's HP restored!");
 		}
 		else {
@@ -260,6 +261,23 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		}
 		break;
 	case ColliderType::ENEMY:
+		if (!godMode && !isDead) {
+			lives--;
+
+			if (lives > 0) {
+				Engine::GetInstance().audio.get()->PlayFx(playerdieFxId);
+				currentAnimation = &dead;
+				currentAnimation->Reset();
+				isDead = true;
+			}
+			else {
+				Engine::GetInstance().audio.get()->PlayFx(gameOverFxId);
+				currentAnimation = &dead;
+				currentAnimation->Reset();
+				isDead = true;
+				checkpointActivated = false;
+			}
+		}
 		break;
 	case ColliderType::ENEMYBFS:
 		if (!godMode && !isDead) {
