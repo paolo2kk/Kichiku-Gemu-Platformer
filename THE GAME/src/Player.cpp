@@ -38,6 +38,7 @@ bool Player::Start() {
 
 
 	initialPosition = Vector2D(100, 100);
+	initialPosition2 = Vector2D(206, 1158);
 	
 
 	//Load animations
@@ -91,13 +92,21 @@ bool Player::Update(float dt)
 				&currentAnimation->GetCurrentFrame());
 
 			respawnTimer += dt / 1000; 
-			if (respawnTimer >= 2) {
+			if (respawnTimer >= 2 && currentLevel == 1) {
 				SetPosition(initialPosition); 
 				isDead = false;
 				isJumping = false;
 				canDJ = true;
 				currentAnimation = &idleR;
 				respawnTimer = 0; 
+			}
+			else if (respawnTimer >= 2 && currentLevel == 2) {
+				SetPosition(initialPosition2);
+				isDead = false;
+				isJumping = false;
+				canDJ = true;
+				currentAnimation = &idleR;
+				respawnTimer = 0;
 			}
 		}
 

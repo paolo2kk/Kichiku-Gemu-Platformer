@@ -381,11 +381,16 @@ bool Scene::Update(float dt)
 		if (player->lives > 0) {
 			player->respawnTimer += dt / 1000;
 			if (player->respawnTimer >= 2) {
-				if (player->checkpointActivated) {
+				if (player->checkpointActivated && player->currentLevel == 1) {
 					LoadState(); 
 				}
 				else {
-					player->SetPosition(player->initialPosition); 
+					if (player->currentLevel == 1) {
+						player->SetPosition(player->initialPosition);
+					}
+					else {
+						player->SetPosition(player->initialPosition2);
+					}
 				}
 				player->isDead = false;
 				player->isJumping = false;
@@ -404,20 +409,48 @@ bool Scene::Update(float dt)
 			);
 
 			if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) {
-				player->Respaw(); 
-				player->isDead = false;
-				player->isJumping = false;
-				player->canDJ = true;
-				player->currentAnimation = &player->idleR;
-				player->respawnTimer = 0;
+				player->loadLevel1 = true;
+				player->currentLevel = 1;
 			}
 		}
 	}
 
 
-	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
 	{
 		player->loadLevel2 = true;
+		
+	}
+
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+	{
+		player->loadLevel1 = true;
+		player->currentLevel = 1;
+	}
+
+	if (player->loadLevel1 == true)
+	{
+		FadeTransition(Engine::GetInstance().render.get()->renderer, false, 1.0f);
+		Engine::GetInstance().map->CleanUp();
+		Engine::GetInstance().map->Load("Assets/Maps/", "MapTemplate.tmx");
+		for (const auto entities : Engine::GetInstance().entityManager.get()->entities)
+		{
+			if (entities->active == true)
+			{
+				entities->Disable();
+			}
+		}
+		enemyList.clear();
+		player = (Player*)Engine::GetInstance().entityManager->CreateEntity(EntityType::PLAYER);
+		player->SetParameters(configParameters.child("entities").child("player"));
+		player->Start();
+
+		CreateEnemies2();
+		Engine::GetInstance().entityManager.get()->Awake();
+		Engine::GetInstance().entityManager.get()->Start();
+		FadeTransition(Engine::GetInstance().render.get()->renderer, true, 1.0f);
+		player->SetPosition(Vector2D(100, 100));
+		player->loadLevel1 = false;
 	}
 
 
@@ -451,9 +484,9 @@ bool Scene::Update(float dt)
 		player->SetPosition(Vector2D(206, 1158));
 
 		player->loadLevel2 = false;
+		player->currentLevel = 2;
 
 	}
-
 
 
 	return true;

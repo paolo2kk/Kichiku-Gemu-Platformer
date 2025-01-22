@@ -100,9 +100,14 @@ public:
 
 	bool checkpointActivated = false;
 	Vector2D initialPosition;
+	Vector2D initialPosition2;
 
 	Timer walksoundTimer;
 
 	bool loadLevel2 = false;
 	
+	bool loadLevel1 = false;
+
+	int currentLevel = 1;
+
 };
