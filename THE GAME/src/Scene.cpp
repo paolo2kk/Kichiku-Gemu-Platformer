@@ -145,11 +145,15 @@ bool Scene::Awake()
 	menuLayout->isLayout = true; 
 	menuLayout->isMenu = true;
 
-	playBt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "start", btPosresume, this);
+	playBt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "dale", btPosresume, this);
 	playBt->visible = true;
 	guiButtonsMM.push_back(playBt);
 
-	creditsButton = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "config", btPosbacktotitle, this);
+	newGameBT = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "dale", btPosNewGame, this);
+	newGameBT->visible = true;
+	guiButtonsMM.push_back(newGameBT);
+
+	creditsButton = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "configurame", btPosbacktotitle, this);
 	creditsButton->visible = true;
 	guiButtonsMM.push_back(creditsButton);
 
@@ -199,7 +203,7 @@ bool Scene::Awake()
 // Called before the first frame
 bool Scene::Start()
 {
-	youWin = false;
+	
 	//L06 TODO 3: Call the function to load the map. 
 	Engine::GetInstance().map->Load(configParameters.child("map").attribute("path").as_string(), configParameters.child("map").attribute("name").as_string());
 	shootFxId = Engine::GetInstance().audio.get()->LoadFx("Assets/Audio/Fx/shoot.ogg");
@@ -407,28 +411,6 @@ bool Scene::Update(float dt)
 				player->currentLevel = 1;
 			}
 		}
-	}
-	if (boss != nullptr && boss->health == 0) {
-		youWin = true;
-	}
-
-	if (youWin) {
-		Engine::GetInstance().render.get()->DrawTexture(
-			Engine::GetInstance().textures.get()->Load("Assets/UI/WinScreen.png"),
-			-60, -15, NULL, 0.0f
-		);
-
-		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) {
-			player->loadLevel1 = true; 
-			youWin = false;           
-		}
-
-		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) {
-			uiState = UIStates::MAINMENU; 
-			youWin = false;               
-		}
-
-		return true; 
 	}
 
 
