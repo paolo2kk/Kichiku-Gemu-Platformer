@@ -42,7 +42,8 @@ public:
 
     Vector2D position;
     PhysBody* pbody;
-    Animation idle;
+    Animation idleR;
+    Animation idleL;
     Animation* currentAnimation;
     SDL_Texture* texture;
 

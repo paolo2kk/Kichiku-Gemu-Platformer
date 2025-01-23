@@ -15,6 +15,7 @@ Boss::Boss() : Entity(EntityType::BOSS) {
     isActive = false;
     fadeInProgress = 0.0f;
     fadeOutProgress = 0.0f;
+    pbody = nullptr;
     texture = nullptr;
     currentAnimation = nullptr;
 }
@@ -40,41 +41,23 @@ bool Boss::Start() {
     position.setY(1031);
 
     // Initialize dimensions
-    texW = 64;
-    texH = 64;
+    texW = 96;
+    texH = 96;
+    
+    currentAnimation = nullptr;
 
-    // Simulate XML node for animations
-    pugi::xml_document doc;
-    pugi::xml_node animationNode = doc.append_child("idle");
-    animationNode.append_attribute("speed") = 0.05f;
-    animationNode.append_attribute("loop") = true;
-
-    pugi::xml_node frame = animationNode.append_child("frame");
-    frame.append_attribute("x") = 0;
-    frame.append_attribute("y") = 0;
-    frame.append_attribute("w") = 64;
-    frame.append_attribute("h") = 64;
-
-    // Load animations
-    idle.LoadAnimations(animationNode);
-    currentAnimation = &idle;
-
-    // Initialize physics
-    if (pbody == NULL) 
-    {
-        pbody = Engine::GetInstance().physics.get()->CreateCircle(
-            (int)position.getX() + texW / 2,
-            (int)position.getY() + texH / 2,
-            texW / 2, // Radius based on texture width
-            bodyType::DYNAMIC
-        );
-   
+    pbody = Engine::GetInstance().physics.get()->CreateCircle(
+        (int)position.getX() + texW / 2,
+        (int)position.getY() + texH / 2,
+        texW / 2, // Radius based on texture width
+        bodyType::DYNAMIC
+    );
     pbody->ctype = ColliderType::BOSS;
     pbody->listener = this;
 
     // No gravity for the boss
     pbody->body->SetGravityScale(0);
-    }
+
     return true;
 }
 
@@ -102,14 +85,13 @@ bool Boss::Update(float dt) {
     pbody->body->SetLinearVelocity(velocity);
 
     b2Transform pbodyPos = pbody->body->GetTransform();
-    position.setX(METERS_TO_PIXELS(pbodyPos.p.x) - 32);
-    position.setY(METERS_TO_PIXELS(pbodyPos.p.y) - 32);
+    position.setX(METERS_TO_PIXELS(pbodyPos.p.x) - 48);
+    position.setY(METERS_TO_PIXELS(pbodyPos.p.y) - 48);
 
     // Draw the boss
     Engine::GetInstance().render.get()->DrawTexture(
-        texture, (int)position.getX(), (int)position.getY(), &currentAnimation->GetCurrentFrame()
+        texture, (int)position.getX(), (int)position.getY()
     );
-    currentAnimation->Update(dt);
 
     return true;
 }
