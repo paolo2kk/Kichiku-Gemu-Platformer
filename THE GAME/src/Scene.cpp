@@ -399,15 +399,11 @@ bool Scene::Update(float dt)
 			}
 		}
 		else {
-			Engine::GetInstance().render.get()->DrawTexture(
-				Engine::GetInstance().textures.get()->Load("Assets/UI/help.png"),
-				WWidth / 2 - 100,
-				WHeight / 2 - 50,
-				nullptr,
-				0.0f
-			);
 
-			if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) {
+			//Haz que la textura aparezca arriba a la izquerda
+			Engine::GetInstance().render.get()->DrawTexture(Engine::GetInstance().textures.get()->Load("Assets/UI/gameover.png"), -60, -15, NULL, 0.0f);
+
+			if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_LSHIFT) == KEY_DOWN) {
 				player->loadLevel1 = true;
 				player->currentLevel = 1;
 			}
@@ -856,7 +852,9 @@ void Scene::PauseMenu(float dt)
 			entity->stop = true;
 		}
 		player->stop = true;
+		if (boss!= nullptr){
 		boss->stop = true;
+		}
 	}
 	else
 	{
