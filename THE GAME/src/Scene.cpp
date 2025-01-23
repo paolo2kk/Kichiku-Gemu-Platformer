@@ -145,23 +145,19 @@ bool Scene::Awake()
 	menuLayout->isLayout = true; 
 	menuLayout->isMenu = true;
 
-	playBt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "dale", btPosresume, this);
+	playBt = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "start", btPosresume, this);
 	playBt->visible = true;
 	guiButtonsMM.push_back(playBt);
 
-	newGameBT = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "dale", btPosNewGame, this);
-	newGameBT->visible = true;
-	guiButtonsMM.push_back(newGameBT);
-
-	creditsButton = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "configurame", btPosbacktotitle, this);
+	creditsButton = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "config", btPosbacktotitle, this);
 	creditsButton->visible = true;
 	guiButtonsMM.push_back(creditsButton);
 
-	settingsButton = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "Settings", btPossettings, this);
+	settingsButton = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "settings", btPossettings, this);
 	settingsButton->visible = true;
 	guiButtonsMM.push_back(settingsButton);
 
-	exitGameBT = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "Get out", btPos, this);
+	exitGameBT = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "get out", btPos, this);
 	exitGameBT->visible = true;
 	guiButtonsMM.push_back(exitGameBT);
 

@@ -40,8 +40,8 @@ bool Boss::Start() {
     position.setY(1031);
 
     // Initialize dimensions
-    texW = 96;
-    texH = 96;
+    texW = 120;
+    texH = 120;
     
     currentAnimation = nullptr;
     if (pbody == NULL)
@@ -85,8 +85,8 @@ bool Boss::Update(float dt) {
     pbody->body->SetLinearVelocity(velocity);
 
     b2Transform pbodyPos = pbody->body->GetTransform();
-    position.setX(METERS_TO_PIXELS(pbodyPos.p.x) - 48);
-    position.setY(METERS_TO_PIXELS(pbodyPos.p.y) - 48);
+    position.setX(METERS_TO_PIXELS(pbodyPos.p.x) - 60);
+    position.setY(METERS_TO_PIXELS(pbodyPos.p.y) - 60);
 
     // Draw the boss
     Engine::GetInstance().render.get()->DrawTexture(
