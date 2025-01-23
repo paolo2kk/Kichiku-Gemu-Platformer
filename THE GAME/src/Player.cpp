@@ -316,7 +316,24 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 			}
 		}
 		break;
-
+	case ColliderType::BOSS:
+		if (!godMode && !isDead) {
+			lives--;
+			if (lives > 0) {
+				Engine::GetInstance().audio.get()->PlayFx(playerdieFxId);
+				currentAnimation = &dead;
+				currentAnimation->Reset();
+				isDead = true;
+			}
+			else {
+				Engine::GetInstance().audio.get()->PlayFx(gameOverFxId);
+				currentAnimation = &dead;
+				currentAnimation->Reset();
+				isDead = true;
+				checkpointActivated = false;
+			}
+		}
+		break;
 	default:
 		break;
 	}
