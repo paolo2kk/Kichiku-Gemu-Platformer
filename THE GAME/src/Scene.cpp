@@ -401,7 +401,7 @@ bool Scene::Update(float dt)
 		}
 		else {
 
-			//Haz que la textura aparezca arriba a la izquerda
+			
 			Engine::GetInstance().render.get()->DrawTexture(Engine::GetInstance().textures.get()->Load("Assets/UI/gameover.png"), -60, -15, NULL, 0.0f);
 
 			if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_LSHIFT) == KEY_DOWN) {
@@ -516,7 +516,7 @@ bool Scene::Update(float dt)
 		boss->isActive = true;
 	}
 
-	if (player->currentLevel == 2 && boss != nullptr) {
+	if (player->currentLevel == 2 && boss != nullptr && uiState == PLAYING) {
 		boss->Update(dt);
 	}
 
@@ -925,7 +925,7 @@ bool Scene::PostUpdate()
 
 	SetPlayerCheckpointPos();
 
-	if (player->currentLevel == 2 && boss != nullptr) {
+	if (player->currentLevel == 2 && boss != nullptr && uiState == PLAYING) {
 		boss->Update(0); 
 	}
 
