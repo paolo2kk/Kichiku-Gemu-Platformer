@@ -11,7 +11,7 @@
 #include "EntityManager.h"
 
 Boss::Boss() : Entity(EntityType::BOSS) {
-    health = 6;
+    health = 4;
     isActive = false;
     fadeInProgress = 0.0f;
     fadeOutProgress = 0.0f;
@@ -35,7 +35,7 @@ bool Boss::Awake() {
 
 bool Boss::Start() {
     // Hardcoded values for the boss
-    texture = Engine::GetInstance().textures.get()->Load("Assets/Textures/spring.png");
+    texture = Engine::GetInstance().textures.get()->Load("Assets/Textures/Boss.png");
 
     position.setX(5432);
     position.setY(1031);
