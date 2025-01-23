@@ -19,6 +19,7 @@
 #include "Spring.h"
 #include "BOO.h"
 #include "Hp.h"
+#include "Boss.h"
 
 Scene::Scene() : Module()
 {
@@ -39,8 +40,6 @@ bool Scene::Awake()
 	//L04: TODO 3b: Instantiate the player using the entity manager
 	player = (Player*)Engine::GetInstance().entityManager->CreateEntity(EntityType::PLAYER);
 	player->SetParameters(configParameters.child("entities").child("player"));
-	
-	//L08 Create a new item using the entity manager and set the position to (200, 672) to test
 	
 
 	// Create a enemy using the entity manager 
@@ -419,7 +418,7 @@ bool Scene::Update(float dt)
 	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
 	{
 		player->loadLevel2 = true;
-		
+		player->currentLevel = 2;
 	}
 
 	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
@@ -440,6 +439,17 @@ bool Scene::Update(float dt)
 				entities->Disable();
 			}
 		}
+
+		for (Entity* entity : checkPointList)
+		{
+			entity->Disable();
+		}
+
+		if (boss != nullptr) {
+			boss->Die(); 
+			boss = nullptr; 
+		}
+
 		enemyList.clear();
 		player = (Player*)Engine::GetInstance().entityManager->CreateEntity(EntityType::PLAYER);
 		player->SetParameters(configParameters.child("entities").child("player"));
@@ -469,11 +479,22 @@ bool Scene::Update(float dt)
 				entities->Disable();
 			}
 		}
+
+		for (Entity* entity : checkPointList)
+		{
+			entity->Disable();
+		}
+
 		Engine::GetInstance().entityManager.get()->entities.clear();
 		enemyList.clear();
 		player = (Player*)Engine::GetInstance().entityManager->CreateEntity(EntityType::PLAYER);
 		player->SetParameters(configParameters.child("entities").child("player"));
 		player->Start();
+
+		boss = (Boss*)Engine::GetInstance().entityManager->CreateEntity(EntityType::BOSS);
+		boss->SetParameters(configParameters.child("entities").child("boss"));
+		boss->Start();
+
 		
 		CreateEnemies2();
 
@@ -488,9 +509,18 @@ bool Scene::Update(float dt)
 
 	}
 
+	if (player->currentLevel == 2 && player->position.getX() >= 5171 && player->position.getY() >= 1025)
+	{
+		boss->isActive = true;
+	}
+
+	if (player->currentLevel == 2 && boss != nullptr) {
+		boss->Update(dt);
+	}
 
 	return true;
 }
+
 
 void Scene::CreateEnemies2() {
 
@@ -524,7 +554,17 @@ void Scene::CreateEnemies2() {
 		enemy1->SetParameters(enemyNode2);
 		booEnemyList.push_back(enemy1);
 	}
+
+	for (pugi::xml_node enemyNode3 = configParameters.child("entities").child("enemies").child("spring0"); enemyNode3; enemyNode3 = enemyNode3.next_sibling("spring0"))
+	{
+		Spring* springEnemy1 = (Spring*)Engine::GetInstance().entityManager->CreateEntity(EntityType::SPRINGENEMY);
+		springEnemy1->SetParameters(enemyNode3);
+		springEnemyList.push_back(springEnemy1);
+	}
+
 }
+
+
 
 void Scene::FadeTransition(SDL_Renderer* renderer, bool fadeIn, float duration)
 {
@@ -816,6 +856,7 @@ void Scene::PauseMenu(float dt)
 			entity->stop = true;
 		}
 		player->stop = true;
+		boss->stop = true;
 	}
 	else
 	{
@@ -876,6 +917,10 @@ bool Scene::PostUpdate()
 		SaveState();
 
 	SetPlayerCheckpointPos();
+
+	if (player->currentLevel == 2 && boss != nullptr) {
+		boss->Update(0); 
+	}
 
 	return ret;
 }

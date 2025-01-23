@@ -8,6 +8,7 @@
 #include "Log.h"
 #include "Physics.h"
 #include "EntityManager.h"
+#include "Boss.h"
 
 Player::Player() : Entity(EntityType::PLAYER)
 {
@@ -194,6 +195,16 @@ bool Player::Update(float dt)
 	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) {
 		godMode = !godMode;
 	}
+
+
+	if (GetPosition().getX() >= 5434 && GetPosition().getY() >= 1000 && currentLevel == 1) {
+		if (loadLevel2 == false) {
+			loadLevel2 = true;
+		}
+	}
+
+	
+
 
 	return true;
 }

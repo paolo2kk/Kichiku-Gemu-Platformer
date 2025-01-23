@@ -14,7 +14,8 @@ enum class EntityType
 	SPRINGENEMY,
 	BOO,
 	CHECKPOINT,
-	HP
+	HP,
+	BOSS
 };
 
 enum class States

@@ -12,6 +12,7 @@
 #include "Murcielago.h"
 #include "GuiCheckBox.h"
 #include "GuiSlider.h"
+#include "Boss.h"
 
 struct SDL_Texture;
 
@@ -81,6 +82,8 @@ public:
 
 	void ResetWholeGame();
 
+	void CreateBoss();
+
 public:
 	// Get tilePosDebug value
 	std::string GetTilePosDebug() {
@@ -103,6 +106,8 @@ public:
 	std::vector<Spring*> springEnemyList;
 	std::vector<BOO*> booEnemyList;
 	std::vector<EnemyInClass*> batEnemyList;
+
+	Boss* boss;
 
 	int WWidth;
 	int WHeight;

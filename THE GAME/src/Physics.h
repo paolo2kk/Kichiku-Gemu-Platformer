@@ -34,7 +34,8 @@ enum class ColliderType {
 	BULLET,
 	KILLER,
 	UNKNOWN,
-	HP
+	HP,
+	BOSS
 	
 	// ..
 };

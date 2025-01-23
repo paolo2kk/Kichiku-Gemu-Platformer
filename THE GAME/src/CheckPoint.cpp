@@ -60,5 +60,9 @@ bool CheckPoint::Update(float dt)
 
 bool CheckPoint::CleanUp()
 {
+	if (pbody != nullptr) {
+		Engine::GetInstance().physics.get()->DeletePhysBody(pbody);
+	}
+
 	return true;
 }

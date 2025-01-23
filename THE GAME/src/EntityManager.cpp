@@ -11,6 +11,7 @@
 #include "Spring.h"
 #include "BOO.h"
 #include "Hp.h"
+#include "Boss.h"
 
 EntityManager::EntityManager() : Module()
 {
@@ -101,6 +102,9 @@ Entity* EntityManager::CreateEntity(EntityType type)
 		break;
 	case EntityType::HP:
 		entity = new Hp();
+		break;
+	case EntityType::BOSS:
+		entity = new Boss();
 		break;
 	default:
 		break;
