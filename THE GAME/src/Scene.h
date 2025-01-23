@@ -153,7 +153,7 @@ public:
 	bool credits = false;
 	bool isPaused = false;
 	bool fullScreen = false;
-
+	bool youWin = false;
 	
 	template<typename T>
 	void ResetEnemyList(std::vector<T*>& enemyList, pugi::xml_node& sceneNode, const std::string& baseName, EntityType entityType);
