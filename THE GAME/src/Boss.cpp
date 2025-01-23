@@ -34,14 +34,31 @@ bool Boss::Awake() {
 }
 
 bool Boss::Start() {
-    texture = Engine::GetInstance().textures.get()->Load(parameters.attribute("texture").as_string());
-    position.setX(parameters.attribute("x").as_int());
-    position.setY(parameters.attribute("y").as_int());
-    texW = parameters.attribute("w").as_int();
-    texH = parameters.attribute("h").as_int();
-    //Load animations
-    idleL.LoadAnimations(parameters.child("animations").child("idle"));
-    currentAnimation = &idleL;
+    // Hardcoded values for the boss
+    texture = Engine::GetInstance().textures.get()->Load("Assets/Textures/Boss.png");
+
+    position.setX(5432);
+    position.setY(1031);
+
+    // Initialize dimensions
+    texW = 64;
+    texH = 64;
+
+    // Simulate XML node for animations
+    pugi::xml_document doc;
+    pugi::xml_node animationNode = doc.append_child("idle");
+    animationNode.append_attribute("speed") = 0.05f;
+    animationNode.append_attribute("loop") = true;
+
+    pugi::xml_node frame = animationNode.append_child("frame");
+    frame.append_attribute("x") = 0;
+    frame.append_attribute("y") = 0;
+    frame.append_attribute("w") = 64;
+    frame.append_attribute("h") = 64;
+
+    // Load animations
+    idle.LoadAnimations(animationNode);
+    currentAnimation = &idle;
 
     // Initialize physics
     pbody = Engine::GetInstance().physics.get()->CreateCircle(

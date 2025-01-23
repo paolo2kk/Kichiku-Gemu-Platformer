@@ -120,18 +120,11 @@
 				</hp>
 			</items>
 			<enemies>
-				<boss name="boss" x="5432" y="1031" w="64" h="50" texture="Assets/Textures/Boss.png" gravity="false">
+				<boss name="boss" x="5432" y="1031" w="64" h="64" texture="Assets/Textures/spring.png" gravity="false">
 					<animations>
-						<idleL loop="true" speed="0.05">
-							<frame x="0" y="0" w="64" h="50" />
-							<frame x="64" y="0" w="64" h="50" />
-							<frame x="128" y="0" w="64" h="50" />
-						</idleL>
-						<idleR loop="true" speed="0.05">
-							<frame x="0" y="50" w="64" h="50" />
-							<frame x="64" y="50" w="64" h="50" />
-							<frame x="128" y="50" w="64" h="50" />
-						</idleR>
+						<idle loop="true" speed="0.05">
+							<frame x="0" y="0" w="64" h="64" />
+						</idle>
 					</animations>
 				</boss>
 				<enemy0 name="badguy" x="4541" y="989" w="64" h="64" texture="Assets/Textures/enemy/Idle.png" gravity="true">

@@ -37,23 +37,16 @@ public:
     bool isActive;
     float fadeInProgress;
     float fadeOutProgress;
-    PhysBody* pbody; 
-    Vector2D position;
-private:
-    SDL_Texture* texture;
-    const char* texturePath;
-    int texW, texH;
-    pugi::xml_node parameters;
-   
-    Animation* currentAnimation=nullptr;
-    Animation idleL;
-    Animation idleR;
-    
-   
-    
-    
 
-   
+    int texW, texH;
+
+    Vector2D position;
+    PhysBody* pbody;
+    Animation idle;
+    Animation* currentAnimation;
+    SDL_Texture* texture;
+
+    pugi::xml_node parameters;
 
 };
 
