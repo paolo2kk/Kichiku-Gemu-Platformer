@@ -10,7 +10,9 @@ Victor Cardenas Hormigo - Link to GitHub: https://github.com/vixtorbir
 
 ## Description
 
-Kichiku Gemu is a platform troll game where he objective is simple, players have to find the way to pass the different levels of the game and keep the satisfaction of passing the levels since you will never be able to win. The win condition doesn't exist.
+Kichiku Gemu is a platform troll game where he objective is simple, players have to find the way to pass the different levels of the game and keep the satisfaction of passing the levels since you will never be 
+able to win. The win condition doesn't exist.
+
 
 This game is part of the Intellectual Property: I Wanna Be The President! Is a spinoff of William Fox, played by Maria Hops during her stream.
 
