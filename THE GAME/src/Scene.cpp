@@ -258,7 +258,9 @@ bool Scene::Update(float dt)
 	else
 	{
 		player->stop = false;
+		if (boss!= nullptr){
 		boss->stop = false;
+		}
 		for (Entity* entity : booEnemyList)
 		{
 			entity->stop = false;
