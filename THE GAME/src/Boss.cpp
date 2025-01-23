@@ -15,7 +15,6 @@ Boss::Boss() : Entity(EntityType::BOSS) {
     isActive = false;
     fadeInProgress = 0.0f;
     fadeOutProgress = 0.0f;
-    pbody = nullptr;
     texture = nullptr;
     currentAnimation = nullptr;
 }
@@ -45,19 +44,20 @@ bool Boss::Start() {
     texH = 96;
     
     currentAnimation = nullptr;
+    if (pbody == NULL)
+    {
+        pbody = Engine::GetInstance().physics.get()->CreateCircle(
+            (int)position.getX() + texW / 2,
+            (int)position.getY() + texH / 2,
+            texW / 2, // Radius based on texture width
+            bodyType::DYNAMIC
+        );
+        pbody->ctype = ColliderType::BOSS;
+        pbody->listener = this;
 
-    pbody = Engine::GetInstance().physics.get()->CreateCircle(
-        (int)position.getX() + texW / 2,
-        (int)position.getY() + texH / 2,
-        texW / 2, // Radius based on texture width
-        bodyType::DYNAMIC
-    );
-    pbody->ctype = ColliderType::BOSS;
-    pbody->listener = this;
-
-    // No gravity for the boss
-    pbody->body->SetGravityScale(0);
-
+        // No gravity for the boss
+        pbody->body->SetGravityScale(0);
+    }
     return true;
 }
 
@@ -80,7 +80,7 @@ bool Boss::Update(float dt) {
 
     dir.normalized();
 
-    float speed = 0.03f;
+    float speed = 0.01f;
     b2Vec2 velocity = b2Vec2(dir.getX() * speed, dir.getY() * speed);
     pbody->body->SetLinearVelocity(velocity);
 
