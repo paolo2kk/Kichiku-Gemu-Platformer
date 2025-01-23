@@ -258,6 +258,7 @@ bool Scene::Update(float dt)
 	else
 	{
 		player->stop = false;
+		boss->stop = false;
 		for (Entity* entity : booEnemyList)
 		{
 			entity->stop = false;
@@ -479,6 +480,11 @@ bool Scene::Update(float dt)
 		for (Entity* entity : checkPointList)
 		{
 			entity->Disable();
+		}
+
+		if (boss != nullptr) {
+			boss->Die();
+			boss = nullptr;
 		}
 
 		Engine::GetInstance().entityManager.get()->entities.clear();
@@ -859,6 +865,9 @@ void Scene::PauseMenu(float dt)
 	else
 	{
 		player->stop = false;
+		if (boss != nullptr) {
+			boss->stop = false;
+		}
 
 	}
 
