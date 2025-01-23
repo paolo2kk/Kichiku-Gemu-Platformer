@@ -414,7 +414,7 @@ bool Scene::Update(float dt)
 
 	if (youWin) {
 		Engine::GetInstance().render.get()->DrawTexture(
-			Engine::GetInstance().textures.get()->Load("Assets/UI/gameover.png"),
+			Engine::GetInstance().textures.get()->Load("Assets/UI/WinScreen.png"),
 			-60, -15, NULL, 0.0f
 		);
 
